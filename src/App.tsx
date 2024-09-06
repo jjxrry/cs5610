@@ -1,15 +1,19 @@
 import './App.css'
-import { Lab1 } from './labs/lab1/'
-import { Name } from './components/Name'
+import { Labs } from './labs/index'
+// import { Name } from './components/Name'
+import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
 
 function App() {
 
     return (
-        <>
-            <Name />
-            <h1>Labs</h1>
-            <Lab1 />
-        </>
+        <HashRouter>
+            <div>
+                <Routes>
+                    <Route path='/' element={<Navigate to="Labs"/>}/>
+                    <Route path='/Labs/*' element={<Labs />}/>
+                </Routes>
+            </div>
+        </HashRouter>
     )
 }
 
