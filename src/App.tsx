@@ -1,12 +1,10 @@
-import { LabOne } from './labs/LabOne'
 import './App.css'
 
 function App() {
 
   return (
     <>
-      <h1>Labs</h1>
-      <LabOne />
+      <h1>Web Apps!</h1>
     </>
   )
 }
