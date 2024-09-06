@@ -31,7 +31,7 @@ export const Lab1 = () => {
                 </div>
                 <div id="wd-p-tag">
                     <h4>Paragraph Tag</h4>
-                    <p id="wd-p-1"> ... </p>
+                    <p id="wd-p-1"> ... do we keep this? lab instructions show html incremental id formatting with p-1 starting here but doesn't show on right-side render</p>
                     <p id="wd-p-2">
                     This is the first paragraph. The paragraph tag is used to format
                     vertical gaps between long pieces of text like this one.
@@ -61,8 +61,110 @@ export const Lab1 = () => {
                         <li>Flip and cook the other side.</li>
                         <li>Serve and enjoy!</li>
                     </ol>
+                    My Favorite Recipe:
+                    <ol id="wd-your-favorite-recipe">                      
+                        <li>Open ramen packet.</li>
+                        <li>Add dry ingredients to a bowl with water.</li>
+                        <li>Heat for around 3 minutes in the microwave.</li>
+                    </ol>
+                    <h5>Unordered List Tag</h5>
+                    Professor's favorite books (in no particular order)
+                    <ul id="wd-my-books">
+                        <li>Dune</li>
+                        <li>Lord of the Rings</li>
+                        <li>Ender's Game</li>
+                        <li>Red Mars</li>
+                        <li>The Forever War</li>
+                    </ul>
+                    My favorite books (in no particular order)
+                    <ul id="wd-your-books">
+                        <li>The Giver</li>
+                        <li>Slaughterhouse 5</li>
+                        <li>A Little Life</li>
+                    </ul>
                 </div>
-
+                <div id="wd-tables">
+                    <h4>Table Tag</h4>
+                    <table border={1} width="100%">
+                    <thead>
+                        <tr>
+                        <th>Quiz</th>
+                        <th>Topic</th>
+                        <th>Date</th>
+                        <th>Grade</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                        <td>Q1</td>
+                        <td>HTML</td>
+                        <td>2/3/21</td>
+                        <td>85</td>
+                        </tr>
+                        <tr>
+                        <td>Q2</td>
+                        <td>CSS</td>
+                        <td>2/10/21</td>
+                        <td>90</td>
+                        </tr>
+                        <tr>
+                        <td>Q3</td>
+                        <td>JavaScript</td>
+                        <td>2/17/21</td>
+                        <td>95</td>
+                        </tr>
+                        <tr>
+                        <td>Q4</td>
+                        <td>Routing</td>
+                        <td>2/17/23</td>
+                        <td>75</td>
+                        </tr>
+                        <tr>
+                        <td>Q5</td>
+                        <td>State & Redux</td>
+                        <td>1/9/22</td>
+                        <td>97</td>
+                        </tr>
+                        <tr>
+                        <td>Q6</td>
+                        <td>Node</td>
+                        <td>6/27/24</td>
+                        <td>91</td>
+                        </tr>
+                        <tr>
+                        <td>Q7</td>
+                        <td>Session</td>
+                        <td>2/17/21</td>
+                        <td>100</td>
+                        </tr>
+                        <tr>
+                        <td>Q8</td>
+                        <td>MongoDB</td>
+                        <td>7/17/21</td>
+                        <td>88</td>
+                        </tr>
+                        <tr>
+                        <td>Q9</td>
+                        <td>Mongoose</td>
+                        <td>4/4/22</td>
+                        <td>65</td>
+                        </tr>
+                        <tr>
+                        <td>Q10</td>
+                        <td>APIs</td>
+                        <td>9/18/24</td>
+                        <td>90</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                        <td colSpan={3}>Average</td>
+                        <td>90</td>
+                        </tr>
+                    </tfoot>
+                    </table>
+                </div>
+                {/* 2.10 here */}
             </div>
         </>
     )
