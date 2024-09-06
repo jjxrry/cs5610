@@ -1,6 +1,6 @@
 export const Lab1 = () => {
   return (
-        <div id="wd-labs">
+    <div id="wd-labs">
         <div id="wd-lab1" className="lab-container">
             <h2>Lab One</h2>
             <h3>HTML Examples</h3>

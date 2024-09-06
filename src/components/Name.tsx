@@ -4,9 +4,9 @@ export const Name = () => {
     <h3>Jerry Gao</h3>
     <h4>Section 20595 | 7PM (EST) Thursday Lecture</h4>
     <ul className="link-ul">
-        <li>
+        {/* <li>
             <a href="https://northeastern.instructure.com/courses/192548/assignments/2423279?module_item_id=10952038">Lab Assignment 1 (Canvas)</a>
-        </li>
+        </li> */}
         <li>
             <a href="https://a1--kanbas-react-app-cs5610-jerrygao.netlify.app">Lab Assignment 1 (Live Deployment)</a>
         </li>
