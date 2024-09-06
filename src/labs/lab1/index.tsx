@@ -1,9 +1,9 @@
-import { LabOne } from "./LabOne";
+import { Lab1 } from "./Lab1";
 
 export const Labs = () => {
   return (
     <div id="wd-labs">
       <h1>Labs</h1>
-      <LabOne />
+      <Lab1 />
     </div>
 );}
