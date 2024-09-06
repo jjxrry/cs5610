@@ -1,11 +1,12 @@
 import './App.css'
-import { Labs } from './labs/lab1'
+import { Lab1 } from './labs/lab1'
 
 function App() {
 
   return (
     <>
-      <Labs />
+      <h1>Labs</h1>
+      <Lab1 />
     </>
   )
 }
