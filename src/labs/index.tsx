@@ -1,6 +1,6 @@
 import { Lab1 } from "./lab1";
 import { Route, Routes, Navigate } from "react-router";
-import { TOC }from "./toc";
+import { TOC }from "./TOC";
 import { Lab2 } from "./lab2";
 import { Lab3 } from "./lab3";
 
