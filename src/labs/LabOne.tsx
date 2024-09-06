@@ -15,6 +15,9 @@ export const LabOne = () => {
                     <li>
                         <a href="https://github.com/jjxrry/cs5610">Source Code Repo (Github)</a>
                     </li>
+                    <li>
+                        <a href="/">Back to Landing Page</a>
+                    </li>
                 </ul>
             </div>
         </>
