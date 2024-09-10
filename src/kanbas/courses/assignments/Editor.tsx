@@ -57,10 +57,10 @@ export const AssignmentEditor = () => {
         </tr>
         <br />
         <tr>
-            <td align="left" valign="top">
+            <td align="right" valign="top">
                 <label>Online Entry Options</label>
-                <br/>
-
+            </td>
+            <td>
                 <input type="checkbox" name="online-entry" id="wd-text-entry"/>
                 <label htmlFor="wd-text-entry">Text Entry</label><br/>
 
@@ -68,57 +68,66 @@ export const AssignmentEditor = () => {
                 <label htmlFor="wd-website-url">Website URL</label><br/>
 
                 <input type="checkbox" name="online-entry" id="wd-media-recordings"/>
-                <label htmlFor="wd-chkbox-scifi">Media Recordings</label><br/>
+                <label htmlFor="wd-media-recordings">Media Recordings</label><br/>
 
                 <input type="checkbox" name="online-entry" id="wd-student-annotation"/>
-                <label htmlFor="wd-chkbox-fantasy">Student Annotation</label><br/>
+                <label htmlFor="wd-student-annotation">Student Annotation</label><br/>
 
                 <input type="checkbox" name="online-entry" id="wd-file-upload"/>
-                <label htmlFor="wd-chkbox-uploads">File Uploads</label>
+                <label htmlFor="wd-file-upload">File Uploads</label>
             </td>
         </tr>
+        <br />
         <tr>
             <td align="right" valign="top">
                 <label htmlFor="wd-assign-to">Assign to</label>
-                <br />
-                <input id="wd-assign-to" value={"Everyone"} />
+            </td>
+            <td>
+                <div>
+                    <input id="wd-assign-to" value={"Everyone"} />
+                </div>
             </td>
         </tr>
+        <br />
         <tr>
-            <td>
+            <td align="right" valign="top">
                 <label htmlFor="wd-due-date">Due</label>
-                <br />
+            </td>
+            <td>
                 <input type="date"
-                        id="wd-due-date"
-                        value="2024-05-13"
+                    id="wd-due-date"
+                    value="2024-05-13"
                 />
             </td>
         </tr>
+        <br />
         <tr>
-            <td>
+            <td align="right" valign="top">
                 <label htmlFor="wd-available-until">Available from</label>
-                <br />
+            </td>
+            <td>
                 <input type="date"
                     id="wd-available-until"
                     value="2024-05-06"
                 />
             </td>
-            <td>
+        </tr>
+        <tr>
+            <td align="right" valign="top">
                 <label htmlFor="wd-available-until">Until</label>
-                <br />
+            </td>
+            <td>
                 <input type="date"
                     id="wd-available-until"
                     value="2024-05-20"
                 />
             </td>
         </tr>
-        <hr />
-        <tr>
-            <td align="right" valign="top">
-                <button>Cancel</button>
-                <button>Save</button>
-            </td>
-        </tr>
         </table>
-    </div>
-);}
+        <hr />
+        <button>Cancel</button>
+        <button>Save</button>
+      </div>
+    );
+}
+
