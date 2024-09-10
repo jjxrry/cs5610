@@ -16,6 +16,6 @@ export const Profile = () => {
         <option value="FACULTY">Faculty</option>
         <option value="STUDENT">Student</option>
       </select><br/>
-      <Link to="/kanbas/account/Signin" >Sign out</Link>
+      <Link to="/kanbas/account/signin" >Sign out</Link>
     </div>
 );}

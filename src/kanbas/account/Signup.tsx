@@ -7,7 +7,7 @@ export const Signup = () => {
       <input placeholder="username" /><br/>
       <input placeholder="password" type="password" /><br/>
       <input placeholder="verify password" type="password" /><br/>
-      <Link to="/kanbas/account/Profile" >Sign up </Link><br/>
-      <Link to="/kanbas/account/Signin" >Sign in </Link>
+      <Link to="/kanbas/account/profile" >Sign up </Link><br/>
+      <Link to="/kanbas/account/signin" >Sign in </Link>
     </div>
 );}
