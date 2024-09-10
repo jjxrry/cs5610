@@ -1,3 +1,4 @@
+import { Home } from "./home";
 import { Modules } from "./modules";
 import { CoursesNavigation } from "./Navigation";
 import { Navigate, Route, Routes } from "react-router";
@@ -15,7 +16,7 @@ export const Courses = () => {
                     <td valign="top">
                         <Routes>
                         <Route path="/" element={<Navigate to="home" />} />
-                        <Route path="home" element={<h2>Home</h2>} />
+                        <Route path="home" element={<Home />} />
                         <Route path="modules" element={<Modules />} />
                         <Route path="assignments" element={<h2>Assignments</h2>} />
                         <Route path="assignments/:aid" element={<h2>Assignment Editor</h2>} />
