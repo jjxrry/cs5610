@@ -18,7 +18,19 @@ export const Dashboard = () => {
             <Link to="/kanbas/courses/1234/home"> Go </Link>
           </div>
         </div>
-        <div className="wd-dashboard-course"> 1 </div>
+        <div className="wd-dashboard-course"> 
+            <img src="./vite.svg" width={200} />
+            <div>
+            <Link className="wd-dashboard-course-link"
+                to="/kanbas/courses/1234/home">
+                CS5610 Web Dev
+            </Link>
+            <p className="wd-dashboard-course-title">
+                Full Stack software developer
+            </p>
+            <Link to="/kanbas/courses/1234/home"> Go </Link>
+            </div>
+        </div>
         <div className="wd-dashboard-course"> 2 </div>
         <div className="wd-dashboard-course"> 3 </div>
         <div className="wd-dashboard-course"> 4 </div>
