@@ -8,6 +8,7 @@ export const Labs = () => {
   return (
     <div id="wd-labs">
       <h1>Labs</h1>
+      <h2>Jerry Gao</h2>
       <TOC />
       <Routes>
         <Route path="/" element={<Navigate to="lab1" />} />

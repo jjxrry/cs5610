@@ -15,7 +15,7 @@ export const Name = () => {
                     <a href="https://main--kanbas-react-app-cs5610-jerrygao.netlify.app">Kanbas Application (Live Deployment)</a> 
                 </li> */}
                 <li>
-                    <a href="https://github.com/jjxrry/cs5610">Source Code Repo (Github)</a>
+                    <a id="wd-github" href="https://github.com/jjxrry/cs5610">Source Code Repo (Github)</a>
                 </li>
                 <li>
                     {/* back to top ig */}
