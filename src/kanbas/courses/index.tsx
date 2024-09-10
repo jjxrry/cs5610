@@ -1,3 +1,5 @@
+import { Assignments } from "./assignments";
+import { AssignmentEditor } from "./assignments/Editor";
 import { Home } from "./home";
 import { Modules } from "./modules";
 import { CoursesNavigation } from "./Navigation";
@@ -18,8 +20,8 @@ export const Courses = () => {
                         <Route path="/" element={<Navigate to="home" />} />
                         <Route path="home" element={<Home />} />
                         <Route path="modules" element={<Modules />} />
-                        <Route path="assignments" element={<h2>Assignments</h2>} />
-                        <Route path="assignments/:aid" element={<h2>Assignment Editor</h2>} />
+                        <Route path="assignments" element={<Assignments />} />
+                        <Route path="assignments/:aid" element={< AssignmentEditor />} />
                         <Route path="people" element={<h2>People</h2>} />
                         </Routes>
                     </td>

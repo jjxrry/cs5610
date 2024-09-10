@@ -13,7 +13,7 @@ export const Kanbas = () => {
                         <KanbasNavigation />
                     </td>
                     <td valign="top">
-                        <h1>Kanbas</h1>
+                        {/* <h1>Kanbas</h1> */}
                         <Routes>
                             <Route path="/" element={<Navigate to="account" />} />
                             <Route path="/account/*" element={<Account />} />
