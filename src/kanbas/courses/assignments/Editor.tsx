@@ -103,11 +103,11 @@ export const AssignmentEditor = () => {
         <br />
         <tr>
             <td align="right" valign="top">
-                <label htmlFor="wd-available-until">Available from</label>
+                <label htmlFor="wd-available-from">Available from</label>
             </td>
             <td>
                 <input type="date"
-                    id="wd-available-until"
+                    id="wd-available-from"
                     value="2024-05-06"
                 />
             </td>
