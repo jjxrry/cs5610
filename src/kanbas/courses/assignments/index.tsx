@@ -1,13 +1,23 @@
+import { AssignmentControls } from "./AssignmentControls";
+import { FaSearch } from 'react-icons/fa';
+
 export const Assignments = () => {
     return (
       <div id="wd-assignments">
-        <input id="wd-search-assignment"
-               placeholder="Search for Assignments" />
-        <button id="wd-add-assignment-group">+ Group</button>
-        <button id="wd-add-assignment">+ Assignment</button>
-        <h3 id="wd-assignments-title">
-          ASSIGNMENTS 40% of Total <button>+</button>
-        </h3>
+        <div className="assignment-controls">
+            <div className="assignment-search">
+                {/* move this inside search bar */}
+                <FaSearch className="search-icon" />
+                <input id="wd-search-assignment" placeholder="Search..." />
+            </div>
+            <AssignmentControls />
+        </div>
+        
+        <div className="assignment-tile-card">
+            <h3 id="wd-assignments-title">
+                ASSIGNMENTS 40% of Total <button>+</button>
+            </h3>
+        </div>
         <ul id="wd-assignment-list">
           <li className="wd-assignment-list-item">
             <a className="wd-assignment-link"
