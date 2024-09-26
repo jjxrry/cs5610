@@ -5,6 +5,7 @@ import { Home } from "./home";
 import { Modules } from "./modules";
 import { CoursesNavigation } from "./Navigation";
 import { Navigate, Route, Routes } from "react-router";
+import { PeopleTable } from "./people/Table";
 
 export const Courses = () => {
     return (
@@ -18,12 +19,12 @@ export const Courses = () => {
             </div>
             <div className="flex-fill">
                 <Routes>
-                <Route path="/" element={<Navigate to="home" />} />
-                <Route path="home" element={<Home />} />
-                <Route path="modules" element={<Modules />} />
-                <Route path="assignments" element={<Assignments />} />
-                <Route path="assignments/:aid" element={< AssignmentEditor />} />
-                <Route path="people" element={<h2>People</h2>} />
+                    <Route path="/" element={<Navigate to="home" />} />
+                    <Route path="home" element={<Home />} />
+                    <Route path="modules" element={<Modules />} />
+                    <Route path="assignments" element={<Assignments />} />
+                    <Route path="assignments/:aid" element={< AssignmentEditor />} />
+                    <Route path="people" element={<PeopleTable />} />
                 </Routes>
             </div>
         </div>
