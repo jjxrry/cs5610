@@ -1,5 +1,6 @@
 import { FaPlus } from "react-icons/fa6";
 import { GreenCheckmark } from "./GreenCheckmark";
+import { CrossedOut } from "./CrossedOut";
 export const ModulesControls = () => {
   return (
     <div id="wd-modules-controls" className="text-nowrap">
@@ -25,23 +26,21 @@ export const ModulesControls = () => {
             </li>
             <li>
                 <a id="wd-unpublish-all-modules-and-items" className="dropdown-item" href="#">
-                <GreenCheckmark />
+                <CrossedOut />
                 Unpublish all modules and items</a>
             </li>
             <li>
                 <a id="wd-unpublish-modules-only" className="dropdown-item" href="#">
-                <GreenCheckmark />
+                <CrossedOut />
                 Unpublish modules only</a>
             </li>
             </ul>
         </div>
-        <button id="wd-view-progress" className="btn btn-lg btn-danger me-1 float-end">
-            <FaPlus className="position-relative me-2" style={{ bottom: "1px" }} />
-            Module
+        <button id="wd-view-progress" className="btn btn-lg btn-secondary me-1 float-end">
+            View Progress
         </button>
-        <button id="wd-collapse-all" className="btn btn-lg btn-danger me-1 float-end">
-            <FaPlus className="position-relative me-2" style={{ bottom: "1px" }} />
-            Module
+        <button id="wd-collapse-all" className="btn btn-lg btn-secondary me-1 float-end">
+            Collapse All
         </button>
     </div>
 );}
