@@ -8,7 +8,7 @@ export const AssignmentControls = () => {
         </button>
         <button id="wd-collapse-all" className="btn btn-lg btn-secondary me-1 float-end">
             <FaPlus className="position-relative me-2" style={{ bottom: "1px" }} />
-            Collapse All
+            Group
         </button>
     </div>
 );}
