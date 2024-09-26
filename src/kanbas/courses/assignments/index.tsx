@@ -22,7 +22,7 @@ export const Assignments = () => {
         <ul id="wd-assignment-list" className="list-group rounded-0">
             <li className="list-group-item p-0 mb-5 fs-5 border-gray">
                 <div id="wd-assignments-title" className="p-3 ps-2 d-flex justify-content-between align-items-center"
-                style={{ backgroundColor: '#F5F5F5', height: "12vh" }}>
+                style={{ backgroundColor: '#E0E0E0', height: "12vh" }}>
 
                     <div className="d-flex align-items-center">
                         <BsGripVertical className="me-2 fs-3" />
