@@ -4,6 +4,6 @@ export const AssignmentItemControls = () => {
   return (
     <div className="float-end">
         <GreenCheckmark />
-        <IoEllipsisVertical className="fs-4" />
+        <IoEllipsisVertical className="fs-4 ms-4" />
     </div>
 );}
