@@ -1,5 +1,5 @@
 import { FaPlus } from "react-icons/fa6";
-export const AssignmentControls = () => {
+export const AssignmentModuleControls = () => {
   return (
     <div id="wd-modules-controls" className="text-nowrap">
         <button id="wd-add-module-btn" className="btn btn-lg btn-danger me-1 float-end">
