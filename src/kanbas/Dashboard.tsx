@@ -13,7 +13,7 @@ export const Dashboard = () => {
                         <img src="./images/reactjs.png" width="100%" height={160} />
                         <div className="card-body">
                             <h5 className="wd-dashboard-course-title card-title">
-                                CS1234 React JS
+                                CS1234 React JS and Web Development
                             </h5>
                             <p className="wd-dashboard-course-title card-text">
                             Full Stack Development
@@ -30,7 +30,7 @@ export const Dashboard = () => {
                         <img src="./vite.svg" width="100%" height={160} />
                         <div className="card-body">
                             <h5 className="wd-dashboard-course-title card-title">
-                                CS2212 Vite
+                                CS2212 Front End Development
                             </h5>
                             <p className="wd-dashboard-course-title card-text">
                             Front End Build Tools
@@ -64,7 +64,7 @@ export const Dashboard = () => {
                         <img src="./images/compilers.png" width="100%" height={160} />
                         <div className="card-body">
                             <h5 className="wd-dashboard-course-title card-title">
-                            CS5260 Compilers
+                            CS5260 Compilers and C Fundamentals
                             </h5>
                             <p className="wd-dashboard-course-title card-text">
                             Compiler Fundamentals
@@ -81,7 +81,7 @@ export const Dashboard = () => {
                         <img src="./images/java.png" width="100%" height={160} />
                         <div className="card-body">
                             <h5 className="wd-dashboard-course-title card-title">
-                            CS4060 OOP
+                            CS4060 Object Oriented Programming
                             </h5>
                             <p className="wd-dashboard-course-title card-text">
                             Java Fundamentals
@@ -98,7 +98,7 @@ export const Dashboard = () => {
                         <img src="./images/db.png" width="100%" height={160} />
                         <div className="card-body">
                             <h5 className="wd-dashboard-course-title card-title">
-                            CS6200 Databases
+                            CS6200 Relational Databases
                             </h5>
                             <p className="wd-dashboard-course-title card-text">
                             SQL Databases
@@ -115,7 +115,7 @@ export const Dashboard = () => {
                         <img src="./images/math.png" width="100%" height={160} />
                         <div className="card-body">
                             <h5 className="wd-dashboard-course-title card-title">
-                            CS5800 Discrete Math
+                            CS5800 Discrete Mathematics
                             </h5>
                             <p className="wd-dashboard-course-title card-text">
                             Fundamental Problems
