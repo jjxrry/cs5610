@@ -66,14 +66,6 @@ export const Modules = () => {
                     </li>
                 </ul>
             </li>
-            {/* <li className="wd-module">
-                <div className="wd-title">Week 1, Lecture 2 - Formatting User Interfaces with HTML</div>
-                <ul className="wd-lessons">
-                <li className="wd-lesson">
-                    <span className="wd-title">LEARNING OBJECTIVES</span>
-                </li>
-                </ul>
-            </li> */}
         </ul>
     </div>
   );}
