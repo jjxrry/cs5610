@@ -3,7 +3,7 @@ export const AssignmentEditor = () => {
       <div id="wd-assignments-editor" className="container">
         <div className="mb-3">
             <label htmlFor="wd-name" className="form-label">Assignment Name</label>
-            <input id="wd-name" className="form-control" value="A1 - ENV + HTML" />
+            <input id="wd-name" className="form-control" value="A1" />
         </div>
   
         <div className="mb-3">
