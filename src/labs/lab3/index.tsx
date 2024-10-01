@@ -1,3 +1,8 @@
+import { BooleanVariables } from "./BooleanVariables";
+import { ConditionalOutputIfElse } from "./ConditionalOutputIfElse";
+import { ConditionalOutputInline } from "./ConditionalOutputInline";
+import { IfElse } from "./IfElse";
+import { TernaryOperator } from "./TernaryOperator";
 import { VariablesAndConstants } from "./VariablesAndConstants";
 import { VariableTypes } from "./VariableTypes";
 
@@ -7,6 +12,11 @@ export const Lab3 = () => {
             <h2>Lab 3</h2>
             <VariablesAndConstants />
             <VariableTypes />
+            <BooleanVariables />
+            <IfElse />
+            <TernaryOperator />
+            <ConditionalOutputIfElse />
+            <ConditionalOutputInline />
         </div>
     );
 }
