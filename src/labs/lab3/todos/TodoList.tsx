@@ -12,6 +12,5 @@ export const TodoList = () => {
                 })}
             </ul><hr />
         </>
-
     )
 }
