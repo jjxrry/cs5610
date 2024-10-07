@@ -15,7 +15,7 @@ export const CoursesNavigation = () => {
         <div id="wd-courses-navigation" className="wd list-group fs-5 rounded-0">
             {links.map((link) => (
                 <Link to={link.path} key={link.path} className={`list-group-item text-danger border border-0
-                ${pathname.includes(link.label.toLowerCase()) ? "active text-black" : "text-danger"}`}>  {/* this will be the checker to make the menu highlights later on */}
+                ${pathname.includes(link.label.toLowerCase()) ? "active text-black" : "text-danger"}`}>
                     {link.label}
                 </Link>
             ))}
