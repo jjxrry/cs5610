@@ -22,7 +22,8 @@ export const KanbasNavigation = () => {
             </a><br />
             <Link to="/kanbas/account" className={`list-group-item text-center border-0 bg-black
             ${pathname.includes("account") ? "bg-white text-danger" : "bg-black text-white"}`}>
-                <FaRegCircleUser className={`fs-1 ${pathname.includes("Account") ? "text-danger" : "text-white"}`} />
+                {/* this ternary from the homework is wrong, we shouldn't even need it because the default makes the icon invisible when active'*/}
+                <FaRegCircleUser className={`fs-1 ${pathname.includes("Account") ? "text-danger" : "text-danger"}`} />
                 <br />
                 Account
             </Link>

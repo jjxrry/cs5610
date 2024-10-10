@@ -7,7 +7,6 @@ export const AssignmentEditor = () => {
     const assignments = db.assignments
     const filteredAssignment = assignments.filter((assignment: any) => assignment._id === aid)
 
-    console.log("filtered", filteredAssignment)
     return (
         <div id="wd-assignments-editor" className="container">
             <div className="mb-3">
