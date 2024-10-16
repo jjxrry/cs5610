@@ -1,6 +1,7 @@
 import { AddRedux } from "./AddRedux"
 import { CounterRedux } from "./CounterRedux"
 import { HelloRedux } from "./HelloRedux"
+import { TodoList } from "./todos/TodoList"
 
 export const ReduxExamples = () => {
     return (
@@ -9,6 +10,7 @@ export const ReduxExamples = () => {
             <HelloRedux />
             <CounterRedux />
             <AddRedux />
+            <TodoList />
         </div>
     )
 }
