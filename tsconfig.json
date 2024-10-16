@@ -6,5 +6,9 @@
   ],
 	"compilerOptions": {
 		"suppressImplicitAnyIndexErrors": true
+	},
+	"paths": {
+		"redux/*": ["node_modules/redux/*"],
+		"react-redux/*": ["node_modules/react-redux/*"],
 	}
 }

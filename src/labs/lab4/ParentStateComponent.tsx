@@ -9,7 +9,7 @@ export const ParentStateComponent = () => {
             <ChildStateComponent
                 counter={counter}
                 setCounter={setCounter} />
-            <hr />
+            {/* <hr /> */}
         </div>
     )
 }

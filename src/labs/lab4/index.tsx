@@ -8,6 +8,7 @@ import { ObjectStateVariable } from "./ObjectStateVariable"
 import { ParentStateComponent } from "./ParentStateComponent"
 import { PassingDataOnEvent } from "./PassingDataOnEvent"
 import { PassingFunctions } from "./PassingFunctions"
+import { ReduxExamples } from "./ReduxExamples"
 import { StringStateVariables } from "./StringStateVariables"
 
 const sayHello = () => {
@@ -29,6 +30,7 @@ export const Lab4 = () => {
             <ObjectStateVariable />
             <ArrayStateVariable />
             <ParentStateComponent />
+            <ReduxExamples />
         </div>
     )
 }
