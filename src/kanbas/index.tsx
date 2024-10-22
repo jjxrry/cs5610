@@ -5,6 +5,8 @@ import { Courses } from "./courses";
 import { Routes, Route, Navigate } from "react-router";
 import * as db from "./database"
 import { useState } from "react";
+import { store } from "./store"
+import { Provider } from "react-redux";
 import "./styles.css"
 
 export const Kanbas = () => {
@@ -41,27 +43,29 @@ export const Kanbas = () => {
 
 
     return (
-        <div id="wd-kanbas">
-            <KanbasNavigation />
-            <div className="wd-main-content-offset p-3">
-                <Routes>
-                    <Route path="/" element={<Navigate to="account" />} />
-                    <Route path="/account/*" element={<Account />} />
-                    <Route path="/dashboard/*" element={
-                        <Dashboard
-                            courses={courses}
-                            course={course}
-                            setCourse={setCourse}
-                            addNewCourse={addNewCourse}
-                            deleteCourse={deleteCourse}
-                            updateCourse={updateCourse}
-                        />} />
-                    <Route path="/courses/:cid/*" element={<Courses courses={courses} />} />
-                    <Route path="/calendar" element={<h1>Calendar</h1>} />
-                    <Route path="/inbox" element={<h1>Inbox</h1>} />
-                </Routes>
+        <Provider store={store}>
+            <div id="wd-kanbas">
+                <KanbasNavigation />
+                <div className="wd-main-content-offset p-3">
+                    <Routes>
+                        <Route path="/" element={<Navigate to="account" />} />
+                        <Route path="/account/*" element={<Account />} />
+                        <Route path="/dashboard/*" element={
+                            <Dashboard
+                                courses={courses}
+                                course={course}
+                                setCourse={setCourse}
+                                addNewCourse={addNewCourse}
+                                deleteCourse={deleteCourse}
+                                updateCourse={updateCourse}
+                            />} />
+                        <Route path="/courses/:cid/*" element={<Courses courses={courses} />} />
+                        <Route path="/calendar" element={<h1>Calendar</h1>} />
+                        <Route path="/inbox" element={<h1>Inbox</h1>} />
+                    </Routes>
+                </div>
             </div>
-        </div>
+        </Provider >
     );
 }
 
