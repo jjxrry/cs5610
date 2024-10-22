@@ -3,6 +3,7 @@ import { Dashboard } from "./Dashboard";
 import { KanbasNavigation } from "./Navigation";
 import { Courses } from "./courses";
 import { Routes, Route, Navigate } from "react-router";
+import { ProtectedRoute } from "./account/ProtectedRoute";
 import * as db from "./database"
 import { useState } from "react";
 import { store } from "./store"
@@ -51,15 +52,18 @@ export const Kanbas = () => {
                         <Route path="/" element={<Navigate to="account" />} />
                         <Route path="/account/*" element={<Account />} />
                         <Route path="/dashboard/*" element={
-                            <Dashboard
-                                courses={courses}
-                                course={course}
-                                setCourse={setCourse}
-                                addNewCourse={addNewCourse}
-                                deleteCourse={deleteCourse}
-                                updateCourse={updateCourse}
-                            />} />
-                        <Route path="/courses/:cid/*" element={<Courses courses={courses} />} />
+                            <ProtectedRoute>
+                                <Dashboard
+                                    courses={courses}
+                                    course={course}
+                                    setCourse={setCourse}
+                                    addNewCourse={addNewCourse}
+                                    deleteCourse={deleteCourse}
+                                    updateCourse={updateCourse}
+                                />
+                            </ProtectedRoute>
+                        } />
+                        <Route path="/courses/:cid/*" element={<ProtectedRoute><Courses courses={courses} /></ProtectedRoute>} />
                         <Route path="/calendar" element={<h1>Calendar</h1>} />
                         <Route path="/inbox" element={<h1>Inbox</h1>} />
                     </Routes>

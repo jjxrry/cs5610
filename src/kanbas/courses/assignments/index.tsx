@@ -4,6 +4,7 @@ import { FaSearch } from 'react-icons/fa';
 import { SlBookOpen } from "react-icons/sl";
 import { AssignmentTitleControls } from "./AssignmentTitleControls";
 import { AssignmentItemControls } from "./AssignmentItemControls";
+import { ProtectedControls } from "../modules/ProtectedControls";
 import { useParams } from "react-router";
 import * as db from "../../database"
 
@@ -18,7 +19,9 @@ export const Assignments = () => {
                     <FaSearch className="search-icon me-2" />
                     <input id="wd-search-assignment" placeholder="Search..." className="assignment-searchbar" />
                 </div>
-                <AssignmentModuleControls />
+                <ProtectedControls>
+                    <AssignmentModuleControls />
+                </ProtectedControls>
             </div>
 
             <br /> <br />
@@ -37,7 +40,9 @@ export const Assignments = () => {
                             <span className="me-3 px-3 py-2 text-dark rounded-pill"
                                 style={{ border: "1px solid #484848" }}
                             >40% of Total</span>
-                            <AssignmentTitleControls />
+                            <ProtectedControls>
+                                <AssignmentTitleControls />
+                            </ProtectedControls>
                         </div>
                     </div>
 
@@ -63,7 +68,9 @@ export const Assignments = () => {
                                     </div>
 
                                     <div className="col-4 d-flex align-items-center justify-content-end assignment-item-controls">
-                                        <AssignmentItemControls />
+                                        <ProtectedControls>
+                                            <AssignmentItemControls />
+                                        </ProtectedControls>
                                     </div>
                                 </div>
                             </li>
