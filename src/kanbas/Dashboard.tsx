@@ -7,9 +7,9 @@ import { useState } from "react";
 export const Dashboard = (
     { courses, course, setCourse, addNewCourse, deleteCourse, updateCourse }:
         {
-            courses: any[]; course: any; setCourse: (course: any) => void;
-            addNewCourse: () => void; deleteCourse: (course: any) => void;
-            updateCourse: () => void;
+            courses: any[]; course: any; setCourse: (course: any) => void
+            addNewCourse: () => void; deleteCourse: (course: any) => void
+            updateCourse: () => void
         }
 ) => {
 
@@ -73,8 +73,8 @@ export const Dashboard = (
                                                 </button>
                                                 <button id="wd-edit-course-click"
                                                     onClick={(e) => {
-                                                        e.preventDefault();
-                                                        setCourse(course);
+                                                        e.preventDefault()
+                                                        setCourse(course)
                                                     }}
                                                     className="btn btn-warning me-2 float-end" >
                                                     Edit
@@ -88,5 +88,5 @@ export const Dashboard = (
                 </div>
             </div>
         </div>
-    );
+    )
 }

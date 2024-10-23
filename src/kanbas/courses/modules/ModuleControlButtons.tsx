@@ -15,5 +15,5 @@ export const ModuleControlButtons = (
             <BsPlus />
             <IoEllipsisVertical className="fs-4" />
         </div>
-    );
+    )
 }

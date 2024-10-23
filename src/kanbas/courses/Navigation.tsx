@@ -15,5 +15,5 @@ export const CoursesNavigation = () => {
                 </Link>
             ))}
         </div>
-    );
+    )
 }

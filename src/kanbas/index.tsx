@@ -22,9 +22,9 @@ export const Kanbas = () => {
         const newCourse = {
             ...course,
             _id: new Date().getTime().toString()
-        };
-        setCourses([...courses, { ...course, ...newCourse }]);
-    };
+        }
+        setCourses([...courses, { ...course, ...newCourse }])
+    }
 
     const deleteCourse = (courseId: string) => {
         setCourses(courses.filter((course) => course._id !== courseId))
@@ -70,6 +70,6 @@ export const Kanbas = () => {
                 </div>
             </div>
         </Provider >
-    );
+    )
 }
 

@@ -23,5 +23,5 @@ export const AccountNavigation = () => {
                 </Link>
             ))}
         </div>
-    );
+    )
 }

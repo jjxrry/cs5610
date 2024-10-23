@@ -33,5 +33,5 @@ export const Signin = () => {
                 Sign up
             </Link>
         </div>
-    );
+    )
 }

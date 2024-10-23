@@ -4,19 +4,19 @@ import { useSelector, useDispatch } from "react-redux";
 import { setCurrentUser } from "./reducer";
 
 export const Profile = () => {
-    const [profile, setProfile] = useState<any>({});
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-    const { currentUser } = useSelector((state: any) => state.accountReducer);
+    const [profile, setProfile] = useState<any>({})
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const { currentUser } = useSelector((state: any) => state.accountReducer)
     const fetchProfile = () => {
-        if (!currentUser) return navigate("/kanbas/account/signin");
-        setProfile(currentUser);
-    };
+        if (!currentUser) return navigate("/kanbas/account/signin")
+        setProfile(currentUser)
+    }
     const signout = () => {
-        dispatch(setCurrentUser(null));
-        navigate("/Kanbas/Account/Signin");
-    };
-    useEffect(() => { fetchProfile(); }, []);
+        dispatch(setCurrentUser(null))
+        navigate("/kanbas/account/signin")
+    }
+    useEffect(() => { fetchProfile() }, [])
 
     return (
         <div id="wd-profile-screen" style={{ width: "400px" }}>
@@ -46,5 +46,5 @@ export const Profile = () => {
                 </div>
             )}
         </div>
-    );
+    )
 }

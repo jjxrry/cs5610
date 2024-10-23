@@ -4,7 +4,6 @@ import { Signup } from "./Signup";
 import { AccountNavigation } from "./Navigation";
 import { Routes, Route, Navigate } from "react-router";
 import { useSelector } from "react-redux";
-import { ProtectedRoute } from "./ProtectedRoute";
 
 export const Account = () => {
     const { currentUser } = useSelector((state: any) => state.accountReducer)
@@ -26,5 +25,5 @@ export const Account = () => {
                 </tr>
             </table>
         </div>
-    );
+    )
 }

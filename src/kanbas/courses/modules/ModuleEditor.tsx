@@ -1,5 +1,3 @@
-// import React from "react";
-
 export const ModuleEditor = ({ dialogTitle, moduleName, setModuleName, addModule }:
     { dialogTitle: string; moduleName: string; setModuleName: (name: string) => void; addModule: () => void; }) => {
     return (
@@ -24,5 +22,5 @@ export const ModuleEditor = ({ dialogTitle, moduleName, setModuleName, addModule
                 </div>
             </div>
         </div>
-    );
+    )
 }
