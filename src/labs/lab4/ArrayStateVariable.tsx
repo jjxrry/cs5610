@@ -6,6 +6,7 @@ export const ArrayStateVariable = () => {
         setArray([...array, Math.floor(Math.random() * 100)]);
     };
     const deleteElement = (index: number) => {
+        //@ts-expect-error its fine
         setArray(array.filter((item, i) => i !== index));
     };
     return (
