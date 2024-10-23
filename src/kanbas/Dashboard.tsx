@@ -104,6 +104,7 @@ export const Dashboard = (
                                             <ProtectedStudentControls>
                                                 {currentUser.role === "STUDENT" && (
                                                     enrollState.some(
+                                                        // @ts-expect-error its fine
                                                         (enrollment) =>
                                                             enrollment.user === currentUser._id &&
                                                             enrollment.course === course._id

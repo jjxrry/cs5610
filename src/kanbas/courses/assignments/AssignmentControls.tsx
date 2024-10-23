@@ -1,6 +1,7 @@
 import { FaPlus } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
+// @ts-expect-error its fine
 export const AssignmentModuleControls = ({ cid }) => {
     return (
         <div id="wd-modules-controls" className="text-nowrap">

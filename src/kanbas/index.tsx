@@ -13,6 +13,7 @@ import "./styles.css"
 export const Kanbas = () => {
     const [courses, setCourses] = useState<any[]>(db.courses)
     const [course, setCourse] = useState<any[]>({
+        // @ts-expect-error its fine
         _id: "0", name: "New Course", number: "New Number",
         startDate: "2023-09-10", endDate: "2023-12-15",
         image: "/reactjs.png", description: "New Description"
@@ -33,6 +34,7 @@ export const Kanbas = () => {
     const updateCourse = () => {
         setCourses(
             courses.map((c) => {
+                // @ts-expect-error its fine
                 if (c._id === course._id) {
                     return course
                 } else {

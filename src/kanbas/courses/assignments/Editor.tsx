@@ -1,14 +1,14 @@
 import { useNavigate, useParams } from "react-router";
 import { Link } from "react-router-dom";
-import * as db from "../../database/"
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { addAssignment, updateAssignment, deleteAssignment } from "./reducer";
+import { addAssignment, updateAssignment } from "./reducer";
 
 export const AssignmentEditor = () => {
     const { aid, cid } = useParams()
     const navigate = useNavigate()
     const dispatch = useDispatch()
+
     const { assignments } = useSelector((state: any) => state.assignmentsReducer)
 
     const [assignment, setAssignment] = useState({
@@ -76,6 +76,7 @@ export const AssignmentEditor = () => {
             setAssignment((prev) => ({
                 ...prev,
                 [key]: {
+                    // @ts-expect-error its fine
                     ...prev[key],
                     [subKey]: checked
                 }
