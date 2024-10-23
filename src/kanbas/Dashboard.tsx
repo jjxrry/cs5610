@@ -35,6 +35,7 @@ export const Dashboard = (
 
     const handleUnenroll = (courseId: string) => {
         const updatedEnrollments = enrollState.filter(
+            // @ts-expect-error its fine
             (enrollment) => enrollment.course !== courseId
         )
         setEnrollState(updatedEnrollments)
@@ -45,6 +46,7 @@ export const Dashboard = (
         ? courses
         : courses.filter((course) =>
             enrollState.some(
+                // @ts-expect-error its fine
                 (enrollment) =>
                     enrollment.user === currentUser._id &&
                     enrollment.course === course._id

@@ -26,9 +26,9 @@ export const Signin = () => {
             <input defaultValue={credentials.password}
                 onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
                 id="wd-password" placeholder="password" type="password" className="form-control mb-2" />
-            <button onClick={signin} id="wd-signin-btn" to="/kanbas/dashboard" className="btn btn-primary w-100 mb-2">
+            <Link onClick={signin} id="wd-signin-btn" to="/kanbas/dashboard" className="btn btn-primary w-100 mb-2">
                 Sign In
-            </button>
+            </Link>
             <Link id="wd-signup-link" to="/kanbas/account/signup">
                 Sign up
             </Link>
