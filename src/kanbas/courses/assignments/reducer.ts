@@ -17,6 +17,16 @@ const assignmentsSlice = createSlice({
                 dueDate: assignment.dueDate,
                 availableFrom: assignment.availableFrom,
                 availableUntil: assignment.availableUntil,
+                submissionType: assignment.submissionType,
+                displayGradeAs: assignment.displayGradeAs,
+                assignmentGroup: assignment.assignmentGroup,
+                mediaOptions: {
+                    textEntry: assignment.mediaOptions.textEntry,
+                    websiteUrl: assignment.mediaOptions.websiteUrl,
+                    mediaRecordings: assignment.mediaOptions.mediaRecordings,
+                    studentAnnotation: assignment.mediaOptions.studentAnnotation,
+                    fileUpload: assignment.mediaOptions.fileUpload
+                }
             }
             state.assignments = [...state.assignments, newAssignment] as any
         },

@@ -96,9 +96,9 @@ export const AssignmentEditor = () => {
                 course: cid || "default-id"
             };
             dispatch(addAssignment(newAssignment));
-            const updatedAssignments = [...assignments, newAssignment];
 
-            console.log(updatedAssignments.filter((a) => a.course === cid));
+            // const updatedAssignments = [...assignments, newAssignment];
+            // console.log(updatedAssignments.filter((a) => a.course === cid));
         } else {
             const updatedAssignment = {
                 ...assignment,
