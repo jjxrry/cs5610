@@ -3,6 +3,10 @@ import { PathParameters } from "./PathParameters";
 import { QueryParameters } from "./QueryParameters";
 import { WorkingWithObjects } from "./WorkingWithObjects";
 import { WorkingWithArrays } from "./WorkingWithArrays"
+import { HttpClient } from "./HttpClient";
+import { WorkingWithObjectsAsynchronously } from "./WorkingWithObjectsAsynchronously";
+import { WorkingWithArraysAsynchronously } from "./WorkingWithArraysAsynchronously";
+
 const REMOTE_SERVER = import.meta.env.VITE_REMOTE_SERVER
 
 export const Lab5 = () => {
@@ -20,6 +24,9 @@ export const Lab5 = () => {
             <QueryParameters />
             <WorkingWithObjects />
             <WorkingWithArrays />
+            <HttpClient />
+            <WorkingWithObjectsAsynchronously />
+            <WorkingWithArraysAsynchronously />
         </div>
     );
 }
