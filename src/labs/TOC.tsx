@@ -35,6 +35,12 @@ export const TOC = () => {
                 </a>
             </li>
             <li className="nav-item">
+                <a id="wd-a5" href="#/labs/lab5"
+                    className={`nav-link ${pathname.includes("lab5") ? "active" : ""}`}>
+                    Lab 5
+                </a>
+            </li>
+            <li className="nav-item">
                 <a id="wd-k" href="#/kanbas" className="nav-link">
                     Kanbas
                 </a>
