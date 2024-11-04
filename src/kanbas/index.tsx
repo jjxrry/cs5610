@@ -4,7 +4,6 @@ import { KanbasNavigation } from "./Navigation";
 import { Courses } from "./courses";
 import { Routes, Route, Navigate } from "react-router";
 import { ProtectedRoute } from "./account/ProtectedRoute";
-// import * as db from "./database"
 import { useEffect, useState } from "react";
 import { store } from "./store"
 import { Provider } from "react-redux";

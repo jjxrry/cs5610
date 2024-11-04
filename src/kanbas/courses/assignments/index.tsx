@@ -6,25 +6,31 @@ import { AssignmentTitleControls } from "./AssignmentTitleControls";
 import { AssignmentItemControls } from "./AssignmentItemControls";
 import { ProtectedControls } from "../modules/ProtectedControls";
 import { useParams } from "react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteAssignment } from "./reducer";
+import { deleteAssignment, setAssignments } from "./reducer";
 import { DeleteConfirmationModal } from "./DeleteAssignmentModal";
+import * as client from "./client"
 
 export const Assignments = () => {
     const { cid } = useParams()
     const { assignments } = useSelector((state: any) => state.assignmentsReducer)
     const dispatch = useDispatch()
-
     const [assignmentToDelete, setAssignmentToDelete] = useState<any>(null)
+
+    const fetchAssignments = async () => {
+        const assignments = await client.fetchAllAssignments(cid as string)
+        dispatch(setAssignments(assignments))
+    }
 
     const handleDeleteClick = (assignmentId: any) => {
         const assignment = assignments.find((a: any) => a._id === assignmentId)
         setAssignmentToDelete(assignment)
     }
 
-    const confirmDelete = () => {
+    const confirmDelete = async () => {
         if (assignmentToDelete) {
+            await client.deleteAssignment(cid as string, assignmentToDelete._id)
             dispatch(deleteAssignment(assignmentToDelete._id))
         }
         setAssignmentToDelete(null)
@@ -33,6 +39,10 @@ export const Assignments = () => {
     const cancelDelete = () => {
         setAssignmentToDelete(null)
     }
+
+    useEffect(() => {
+        fetchAssignments()
+    }, [])
 
     return (
         <div id="wd-assignments">

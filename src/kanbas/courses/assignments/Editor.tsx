@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { addAssignment, updateAssignment } from "./reducer";
+import * as client from "./client"
 
 export const AssignmentEditor = () => {
     const { aid, cid } = useParams()
@@ -89,14 +90,15 @@ export const AssignmentEditor = () => {
         }
     };
 
-    const handleSave = () => {
+    const handleSave = async () => {
         if (aid === "new") {
             const newAssignment = {
                 ...assignment,
                 _id: new Date().getTime().toString(),
                 course: cid || "default-id"
             };
-            dispatch(addAssignment(newAssignment));
+            const createdAssignment = await client.createAssignment(cid as string, newAssignment)
+            dispatch(addAssignment(createdAssignment));
 
             // const updatedAssignments = [...assignments, newAssignment];
             // console.log(updatedAssignments.filter((a) => a.course === cid));
@@ -106,6 +108,7 @@ export const AssignmentEditor = () => {
                 _id: aid,
                 course: cid || assignment.course
             };
+            await client.updateAssignment(cid as string, aid as string, updatedAssignment)
             dispatch(updateAssignment(updatedAssignment));
         }
 
