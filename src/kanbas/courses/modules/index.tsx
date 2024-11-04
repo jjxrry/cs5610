@@ -3,22 +3,45 @@ import { ModulesControls } from "./ModulesControls";
 import { ModuleControlButtons } from "./ModuleControlButtons";
 import { LessonControlButtons } from "./LessonControlButtons";
 import { useParams } from "react-router";
-import { useState } from "react";
-import { addModule, editModule, updateModule, deleteModule } from "./reducer";
+import { useState, useEffect } from "react";
+import { setModules, addModule, editModule, updateModule, deleteModule } from "./reducer";
 import { useSelector, useDispatch } from "react-redux";
 import { ProtectedControls } from "./ProtectedControls";
+import * as client from "./client"
 
 export const Modules = () => {
     const { cid } = useParams()
     const [moduleName, setModuleName] = useState("")
     const { modules } = useSelector((state: any) => state.modulesReducer)
     const dispatch = useDispatch()
+    const fetchModules = async () => {
+        const modules = await client.findModulesForCourse(cid as string)
+        dispatch(setModules(modules))
+    }
+    const createModule = async (module: any) => {
+        const newModule = await client.createModule(cid as string, module)
+        dispatch(addModule(newModule))
+    }
+
+    const removeModule = async (moduleId: string) => {
+        await client.deleteModule(moduleId)
+        dispatch(deleteModule(moduleId))
+    }
+
+    const saveModule = async (module: any) => {
+        const status = await client.updateModule(module)
+        dispatch(updateModule(module))
+    }
+
+    useEffect(() => {
+        fetchModules()
+    }, [])
 
     return (
         <div className="module">
             <ModulesControls setModuleName={setModuleName} moduleName={moduleName}
                 addModule={() => {
-                    dispatch(addModule({ name: moduleName, course: cid }))
+                    createModule({ name: moduleName, course: cid })
                     setModuleName("")
                 }} />
             <br /><br /><br /><br />
@@ -32,10 +55,10 @@ export const Modules = () => {
                                 {!module.editing && module.name}
                                 {module.editing && (
                                     <input className="form-control w-50 d-inline-block"
-                                        onChange={(e) => dispatch(updateModule({ ...module, name: e.target.value }))}
+                                        onChange={(e) => saveModule({ ...module, name: e.target.value })}
                                         onKeyDown={(e) => {
                                             if (e.key === "Enter") {
-                                                dispatch(updateModule({ ...module, editing: false }))
+                                                saveModule({ ...module, editing: false })
                                             }
                                         }}
                                         defaultValue={module.name} />
@@ -43,7 +66,7 @@ export const Modules = () => {
                                 <ProtectedControls>
                                     <ModuleControlButtons
                                         moduleId={module._id}
-                                        deleteModule={(moduleId) => { dispatch(deleteModule(moduleId)) }}
+                                        deleteModule={(moduleId) => { removeModule(moduleId) }}
                                         editModule={(moduleId) => { dispatch(editModule(moduleId)) }}
                                     />
                                 </ProtectedControls>
