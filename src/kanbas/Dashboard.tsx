@@ -76,7 +76,7 @@ export const Dashboard = (
                 <br />
             </ProtectedControls>
             <h2 id="wd-dashboard-published">Published Courses ({courseDisplay.length})</h2> <hr />
-            {currentUser.role === "STUDENT" && (
+            {currentUser.role === "STUDENT" || currentUser.role === "FACULTY" && (
                 <div id="wd-student-enrollment-button">
                     <button className="btn btn-primary float-end me-4" onClick={handleToggleCourses}>
                         {showAllCourses ? "Show Enrollments" : "Show All Courses"}

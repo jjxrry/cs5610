@@ -4,14 +4,25 @@ import { KanbasNavigation } from "./Navigation";
 import { Courses } from "./courses";
 import { Routes, Route, Navigate } from "react-router";
 import { ProtectedRoute } from "./account/ProtectedRoute";
-import * as db from "./database"
-import { useState } from "react";
+// import * as db from "./database"
+import { useEffect, useState } from "react";
 import { store } from "./store"
 import { Provider } from "react-redux";
 import "./styles.css"
+import * as client from "./courses/client"
 
 export const Kanbas = () => {
-    const [courses, setCourses] = useState<any[]>(db.courses)
+    const [courses, setCourses] = useState<any[]>([])
+
+    const fetchCourses = async () => {
+        const courses = await client.fetchAllCourses()
+        setCourses(courses)
+    }
+
+    useEffect(() => {
+        fetchCourses()
+    }, [])
+
     const [course, setCourse] = useState<any[]>({
         // @ts-expect-error its fine
         _id: "0", name: "New Course", number: "New Number",
@@ -19,19 +30,18 @@ export const Kanbas = () => {
         image: "/reactjs.png", description: "New Description"
     })
 
-    const addNewCourse = () => {
-        const newCourse = {
-            ...course,
-            _id: new Date().getTime().toString()
-        }
+    const addNewCourse = async () => {
+        const newCourse = await client.createCourse(course)
         setCourses([...courses, { ...course, ...newCourse }])
     }
 
-    const deleteCourse = (courseId: string) => {
+    const deleteCourse = async (courseId: string) => {
+        await client.deleteCourse(courseId)
         setCourses(courses.filter((course) => course._id !== courseId))
     }
 
-    const updateCourse = () => {
+    const updateCourse = async () => {
+        await client.updateCourse(course)
         setCourses(
             courses.map((c) => {
                 // @ts-expect-error its fine
