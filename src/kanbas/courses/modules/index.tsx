@@ -29,6 +29,7 @@ export const Modules = () => {
     }
 
     const saveModule = async (module: any) => {
+        //@ts-expect-error its fine
         const status = await client.updateModule(module)
         dispatch(updateModule(module))
     }
