@@ -1,30 +1,19 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 export const CoursesNavigation = () => {
-  return (
-    <div id="wd-courses-navigation" className="wd list-group fs-5 rounded-0">
-        <Link id="wd-course-home-link" to="/kanbas/courses/:cid/home" className="list-group-item active border border-0">
-            Home
-        </Link> 
-        <Link id="wd-course-modules-link" to="/kanbas/courses/:cid/modules" className="list-group-item text-danger border border-0">
-            Modules
-        </Link> 
-        <Link id="wd-course-piazza-link" to="/kanbas/courses/:cid/piazza" className="list-group-item text-danger border border-0">
-            Piazza
-        </Link> 
-        <Link id="wd-course-zoom-link" to="/kanbas/courses/:cid/zoom" className="list-group-item text-danger border border-0">
-            Zoom
-        </Link> 
-        <Link id="wd-course-quizzes-link" to="/kanbas/courses/:cid/assignments" className="list-group-item text-danger border border-0">
-            Assignments
-        </Link> 
-        <Link id="wd-course-assignments-link" to="/kanbas/courses/:cid/quizzes" className="list-group-item text-danger border border-0">
-            Quizzes
-        </Link> 
-        <Link id="wd-course-grades-link" to="/kanbas/courses/:cid/grades" className="list-group-item text-danger border border-0">
-            Grades
-        </Link> 
-        <Link id="wd-course-people-link" to="/kanbas/courses/:cid/people" className="list-group-item text-danger border border-0">
-            People
-        </Link> 
-    </div>
-);}
+    const { cid } = useParams()
+    const { pathname } = useLocation()
+    const links = ["Home", "Modules", "Piazza", "Zoom", "Assignments", "Quizzes", "Grades", "People"]
+    const getPath = (link: string) => {
+        return `/kanbas/courses/${cid}/${link.toLowerCase()}`
+    }
+    return (
+        <div id="wd-courses-navigation" className="wd list-group fs-5 rounded-0">
+            {links.map((link) => (
+                <Link to={getPath(link)} key={link} className={`list-group-item text-danger border border-0
+                ${pathname.includes(link.toLowerCase()) ? "active text-black" : "text-danger"}`}>
+                    {link}
+                </Link>
+            ))}
+        </div>
+    );
+}

@@ -9,9 +9,9 @@ function App() {
         <HashRouter>
             <div>
                 <Routes>
-                    <Route path='/' element={<Navigate to="labs"/>}/>
-                    <Route path='/labs/*' element={<Labs />}/>
-                    <Route path='/kanbas/*' element={<Kanbas />}/>
+                    <Route path='/' element={<Navigate to="labs" />} />
+                    <Route path='/labs/*' element={<Labs />} />
+                    <Route path='/kanbas/*' element={<Kanbas />} />
                 </Routes>
             </div>
         </HashRouter>
