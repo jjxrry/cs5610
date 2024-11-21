@@ -1,9 +1,11 @@
-import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { ProtectedControls } from "./courses/modules/ProtectedControls";
-import { useState } from "react";
-import { enrollCourse, unenrollCourse } from "./courses/enrollments/reducer";
-import { ProtectedStudentControls } from "./courses/modules/ProtectedStudentControls";
+import { Link } from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux"
+import { ProtectedControls } from "./courses/modules/ProtectedControls"
+import { useEffect, useState } from "react"
+import { enrollCourse, unenrollCourse } from "./courses/enrollments/reducer"
+import { ProtectedStudentControls } from "./courses/modules/ProtectedStudentControls"
+import * as courseClient from "./courses/client"
+import * as enrollmentClient from "./client"
 
 export const Dashboard = (
     { courses, course, setCourse, addNewCourse, deleteCourse, updateCourse }:
@@ -15,43 +17,49 @@ export const Dashboard = (
 ) => {
     const { currentUser } = useSelector((state: any) => state.accountReducer)
     const enrollments = useSelector((state: any) => state.enrollmentReducer.enrollments)
-
     const dispatch = useDispatch()
-    const [showAllCourses, setShowAllCourses] = useState(false)
 
+    const [showAllCourses, setShowAllCourses] = useState(false)
     const [enrollState, setEnrollState] = useState(enrollments)
-    // might need to add a useEffect to sync state after mount
+    const [allCourses, setAllCourses] = useState([])
+
+
+    useEffect(() => {
+        const fetchInitialData = async () => {
+            try {
+                const fetchedAllCourses = await courseClient.fetchAllCourses()
+                setAllCourses(fetchedAllCourses)
+
+                if (currentUser?._id) {
+                    const userEnrollments = await enrollmentClient.fetchUserEnrollments(currentUser._id)
+                    setCourse(userEnrollments)
+                }
+            } catch (error) {
+                console.error("Error fetching initial data:", error)
+            }
+        };
+
+        fetchInitialData()
+    }, [currentUser?._id, setCourse])
 
     const handleToggleCourses = () => {
-        setShowAllCourses(!showAllCourses)
+        setShowAllCourses(!showAllCourses);
     }
 
-    const handleEnroll = (courseId: string) => {
-        const newEnrollment = { user: currentUser._id, course: courseId }
+    const handleEnroll = async (courseId: string) => {
+        const newEnrollment = await enrollmentClient.enrollUser(currentUser, courseId)
         setEnrollState([...enrollments, newEnrollment])
-
         dispatch(enrollCourse({ user: currentUser._id, course: courseId }))
     }
 
-    const handleUnenroll = (courseId: string) => {
-        const updatedEnrollments = enrollState.filter(
-            // @ts-expect-error its fine
-            (enrollment) => enrollment.course !== courseId
-        )
+    const handleUnenroll = async (courseId: string) => {
+        const updatedEnrollments = await enrollmentClient.enrollUser(currentUser, courseId)
         setEnrollState(updatedEnrollments)
         dispatch(unenrollCourse({ user: currentUser._id, course: courseId }))
     }
 
-    // const courseDisplay = showAllCourses
-    //     ? courses
-    //     : courses.filter((course) =>
-    //         enrollState.some(
-    //             // @ts-expect-error its fine
-    //             (enrollment) =>
-    //                 enrollment.user === currentUser._id &&
-    //                 enrollment.course === course._id
-    //         )
-    //     )
+    const displayedCourses = showAllCourses ? allCourses : courses
+
 
     return (
         <div id="wd-dashboard">
@@ -75,7 +83,7 @@ export const Dashboard = (
                 </button>
                 <br />
             </ProtectedControls>
-            <h2 id="wd-dashboard-published">Published Courses ({courses.length})</h2> <hr />
+            <h2 id="wd-dashboard-published">Published Courses ({displayedCourses.length})</h2> <hr />
             {(currentUser.role === "STUDENT" || currentUser.role === "FACULTY") && (
                 <div id="wd-student-enrollment-button">
                     <button className="btn btn-primary float-end me-4" onClick={handleToggleCourses}>
@@ -86,7 +94,7 @@ export const Dashboard = (
             )}
             <div id="wd-dashboard-courses" className="row">
                 <div className="row row-cols-1 row-cols-md-5 g-4">
-                    {courses
+                    {displayedCourses
                         .map((course) => (
                             <div className="wd-dashboard-course col" style={{ width: "270px" }}>
                                 <div className="card rounded-3 overflow-hidden">
@@ -158,3 +166,4 @@ export const Dashboard = (
         </div>
     )
 }
+
