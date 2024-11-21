@@ -7,7 +7,6 @@ import { useState, useEffect } from "react";
 import { setModules, addModule, editModule, updateModule, deleteModule } from "./reducer";
 import { useSelector, useDispatch } from "react-redux";
 import { ProtectedControls } from "./ProtectedControls";
-import * as client from "./client"
 import * as coursesClient from "../client"
 import * as modulesClient from "./client"
 
@@ -35,14 +34,13 @@ export const Modules = () => {
     }
 
     const saveModule = async (module: any) => {
-        //@ts-expect-error its fine
         await modulesClient.updateModule(module)
         dispatch(updateModule(module))
     }
 
     useEffect(() => {
         fetchModules()
-    }, [])
+    })
 
     return (
         <div className="module">
@@ -50,7 +48,6 @@ export const Modules = () => {
             <br /><br /><br /><br />
             <ul id="wd-modules" className="list-group rounded-0 wd-modules">
                 {modules
-                    // .filter((module: any) => module.course === cid)
                     .map((module: any) => (
                         <li className="wd-module list-group-item p-0 mb-5 fs-5 border-gray">
                             <div className="wd-title p-3 ps-2 bg-secondary">

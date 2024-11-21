@@ -20,10 +20,10 @@ export const Profile = () => {
         navigate("/kanbas/account/signin")
     }
 
-    useEffect(() => { fetchProfile() }, [])
+    useEffect(() => { fetchProfile() })
 
     const updateProfile = async () => {
-        const updatedProfile = await client.updateUser(profile)
+        await client.updateUser(profile)
         dispatch(setCurrentUser(profile))
     }
 
