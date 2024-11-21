@@ -17,21 +17,21 @@ export const createCourse = async (course: any) => {
 export const fetchAllCourses = async () => {
     const { data } = await axios.get(COURSES_API);
     return data;
-};
-
+}
 
 export const enrollUser = async (userId: string, courseId: string) => {
     const response = await axios.post(`${ENROLLMENT_API}/enroll`, { userId, courseId })
+    console.log("enroll client!")
     return response.data
 }
 
 export const unenrollUser = async (userId: string, courseId: string) => {
-    const response = await axios.post(`${ENROLLMENT_API}/unenroll`, { userId, courseId })
-    return response.data
+    const response = await axios.delete(`${ENROLLMENT_API}/unenroll`, { data: { userId, courseId } })
+    console.log("unenroll client!")
+    return Array.isArray(response.data) ? response.data : []
 }
 
 export const fetchUserEnrollments = async (userId: string) => {
     const response = await axios.get(`${ENROLLMENT_API}/${userId}`)
-    // console.log(response.data)
     return response.data
 }
