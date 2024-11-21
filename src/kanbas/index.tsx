@@ -8,7 +8,6 @@ import { useEffect, useState } from "react";
 import { store } from "./store"
 import { Provider, useSelector } from "react-redux";
 import "./styles.css"
-import * as client from "./courses/client"
 import { Session } from "./account/Session"
 import * as userClient from "./account/client.ts"
 import * as courseClient from "./courses/client.ts"
