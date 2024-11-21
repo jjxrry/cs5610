@@ -6,21 +6,33 @@ import { Routes, Route, Navigate } from "react-router";
 import { ProtectedRoute } from "./account/ProtectedRoute";
 import { useEffect, useState } from "react";
 import { store } from "./store"
-import { Provider } from "react-redux";
+import { Provider, useSelector } from "react-redux";
 import "./styles.css"
 import * as client from "./courses/client"
+import { Session } from "./account/Session"
+import * as userClient from "./account/client.ts"
+import * as courseClient from "./courses/client.ts"
 
-export const Kanbas = () => {
+
+type RootState = ReturnType<typeof store.getState>
+
+const KanbasContent = () => {
     const [courses, setCourses] = useState<any[]>([])
+    const { currentUser } = useSelector((state: RootState) => state.accountReducer);
 
     const fetchCourses = async () => {
-        const courses = await client.fetchAllCourses()
-        setCourses(courses)
+        try {
+            const courses = await userClient.findMyCourses()
+            setCourses(courses)
+        } catch (error) {
+            console.error(error)
+
+        }
     }
 
     useEffect(() => {
         fetchCourses()
-    }, [])
+    }, [currentUser])
 
     const [course, setCourse] = useState<any[]>({
         // @ts-expect-error its fine
@@ -30,17 +42,17 @@ export const Kanbas = () => {
     })
 
     const addNewCourse = async () => {
-        const newCourse = await client.createCourse(course)
-        setCourses([...courses, { ...course, ...newCourse }])
+        const newCourse = await userClient.createCourse(course)
+        setCourses([...courses, { ...course, newCourse }])
     }
 
     const deleteCourse = async (courseId: string) => {
-        await client.deleteCourse(courseId)
+        await courseClient.deleteCourse(courseId)
         setCourses(courses.filter((course) => course._id !== courseId))
     }
 
     const updateCourse = async () => {
-        await client.updateCourse(course)
+        await courseClient.updateCourse(course)
         setCourses(
             courses.map((c) => {
                 // @ts-expect-error its fine
@@ -55,7 +67,7 @@ export const Kanbas = () => {
 
 
     return (
-        <Provider store={store}>
+        <Session>
             <div id="wd-kanbas">
                 <KanbasNavigation />
                 <div className="wd-main-content-offset p-3">
@@ -80,7 +92,15 @@ export const Kanbas = () => {
                     </Routes>
                 </div>
             </div>
-        </Provider >
+        </Session>
+    )
+}
+
+export const Kanbas = () => {
+    return (
+        <Provider store={store}>
+            <KanbasContent />
+        </Provider>
     )
 }
 
