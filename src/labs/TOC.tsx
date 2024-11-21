@@ -51,6 +51,9 @@ export const TOC = () => {
             <li className="nav-item">
                 <a id="wd-github" href="https://github.com/jjxrry/cs5610-node" className="nav-link">Github Backend</a>
             </li>
+            <li className="nav-item">
+                <a id="wd-root" href="https://cs5610-node.onrender.com" className="nav-link">Root Backend</a>
+            </li>
 
         </ul>
     );
