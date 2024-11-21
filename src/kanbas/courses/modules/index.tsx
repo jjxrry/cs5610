@@ -21,6 +21,7 @@ export const Modules = () => {
         const modules = await coursesClient.findModulesForCourse(cid as string)
         dispatch(setModules(modules))
     }
+
     const createModuleForCourse = async () => {
         if (!cid) return
         const newModule = { name: moduleName, course: cid }
