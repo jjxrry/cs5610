@@ -42,16 +42,16 @@ export const Dashboard = (
         dispatch(unenrollCourse({ user: currentUser._id, course: courseId }))
     }
 
-    const courseDisplay = showAllCourses
-        ? courses
-        : courses.filter((course) =>
-            enrollState.some(
-                // @ts-expect-error its fine
-                (enrollment) =>
-                    enrollment.user === currentUser._id &&
-                    enrollment.course === course._id
-            )
-        )
+    // const courseDisplay = showAllCourses
+    //     ? courses
+    //     : courses.filter((course) =>
+    //         enrollState.some(
+    //             // @ts-expect-error its fine
+    //             (enrollment) =>
+    //                 enrollment.user === currentUser._id &&
+    //                 enrollment.course === course._id
+    //         )
+    //     )
 
     return (
         <div id="wd-dashboard">
@@ -75,8 +75,8 @@ export const Dashboard = (
                 </button>
                 <br />
             </ProtectedControls>
-            <h2 id="wd-dashboard-published">Published Courses ({courseDisplay.length})</h2> <hr />
-            {currentUser.role === "STUDENT" || currentUser.role === "FACULTY" && (
+            <h2 id="wd-dashboard-published">Published Courses ({courses.length})</h2> <hr />
+            {(currentUser.role === "STUDENT" || currentUser.role === "FACULTY") && (
                 <div id="wd-student-enrollment-button">
                     <button className="btn btn-primary float-end me-4" onClick={handleToggleCourses}>
                         {showAllCourses ? "Show Enrollments" : "Show All Courses"}
@@ -86,7 +86,7 @@ export const Dashboard = (
             )}
             <div id="wd-dashboard-courses" className="row">
                 <div className="row row-cols-1 row-cols-md-5 g-4">
-                    {courseDisplay
+                    {courses
                         .map((course) => (
                             <div className="wd-dashboard-course col" style={{ width: "270px" }}>
                                 <div className="card rounded-3 overflow-hidden">
