@@ -8,7 +8,6 @@ import * as courseClient from "./courses/client"
 import * as enrollmentClient from "./client"
 
 export const Dashboard = (
-    //@ts-expect-error its fine
     { course, setCourse, addNewCourse, deleteCourse, updateCourse }:
         {
             courses: any[]; course: any; setCourse: (course: any) => void
@@ -69,6 +68,7 @@ export const Dashboard = (
     }
 
     const enrolledCourseIds = enrollments.map((enrollment: any) => enrollment.course)
+    //@ts-expect-error its fine
     const enrolledCourses = allCourses.filter((course) => enrolledCourseIds.includes(course._id))
     const displayedCourses = showAllCourses ? allCourses : enrolledCourses
 
