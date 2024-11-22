@@ -33,7 +33,7 @@ export const Dashboard = (
         }
 
         fetchInitialData()
-    }, [currentUser._id, enrollState])
+    }, [currentUser._id])
 
     const handleToggleCourses = async () => {
         await fetchUpdatedData()
