@@ -33,5 +33,6 @@ export const unenrollUser = async (userId: string, courseId: string) => {
 
 export const fetchUserEnrollments = async (userId: string) => {
     const response = await axios.get(`${ENROLLMENT_API}/${userId}`)
+    // console.log(response.data)
     return response.data
 }

@@ -28,6 +28,7 @@ export const Dashboard = (
             const fetchedAllCourses = await courseClient.fetchAllCourses()
             setAllCourses(fetchedAllCourses)
             const fetchedEnrollments = await enrollmentClient.fetchUserEnrollments(currentUser._id)
+            // console.log("fetched enrollmnets: ", fetchedEnrollments)
             setEnrollState(fetchedEnrollments)
         }
 
@@ -67,11 +68,19 @@ export const Dashboard = (
         }
     }
 
-    const enrolledCourseIds = enrollments.map((enrollment: any) => enrollment.course)
-    //@ts-expect-error its fine
-    const enrolledCourses = allCourses.filter((course) => enrolledCourseIds.includes(course._id))
-    const displayedCourses = showAllCourses ? allCourses : enrolledCourses
+    const enrolledCourseIds = enrollments
+        .filter((enrollment: any) => enrollment.user === currentUser._id)
+        .map((enrollment: any) => String(enrollment.course))
 
+    const enrolledCourses = allCourses.filter((course: any) =>
+        enrolledCourseIds.includes(String(course._id))
+    );
+
+    const displayedCourses = showAllCourses ? allCourses : enrolledCourses;
+
+    // console.log("Enrolled Course IDs:", enrolledCourseIds);
+    // console.log("Enrolled Courses:", enrolledCourses);
+    // console.log("Displayed Courses:", displayedCourses);
 
     return (
         <div id="wd-dashboard">
