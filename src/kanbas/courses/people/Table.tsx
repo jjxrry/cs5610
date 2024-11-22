@@ -1,12 +1,11 @@
 import { FaUserCircle } from "react-icons/fa";
-import { useParams } from "react-router";
-import * as db from "../../database"
+import PeopleDetails from "./Details";
+import { Link } from "react-router-dom";
 
-export const PeopleTable = () => {
-    const { cid } = useParams()
-    const { users, enrollments } = db
+export const PeopleTable = ({ users = [] }: { users?: any }) => {
     return (
         <div id="wd-people-table">
+            <PeopleDetails />
             <table className="table table-striped">
                 <thead>
                     <tr>
@@ -15,15 +14,15 @@ export const PeopleTable = () => {
                 </thead>
                 <tbody>
                     {users
-                        .filter((user: any) =>
-                            enrollments.some((enrollment) => enrollment.user === user._id && enrollment.course === cid)
-                        )
                         .map((user: any) => (
                             <tr key={user._id}>
                                 <td className="wd-full-name text-nowrap">
-                                    <FaUserCircle className="me-2 fs-1 text-secondary" />
-                                    <span className="wd-first-name">{user.firstName} </span>
-                                    <span className="wd-last-name">{user.lastName}</span>
+                                    <Link to={`/kanbas/account/users/${user._id}`} className="text-decoration-none">
+                                        <FaUserCircle className="me-2 fs-1 text-secondary" />
+                                        <span className="wd-first-name">{user.firstName} </span>
+                                        <span className="wd-last-name">{user.lastName}</span>
+                                    </Link>
+
                                 </td>
                                 <td className="wd-login-id">{user.loginId}</td>
                                 <td className="wd-section">{user.section}</td>

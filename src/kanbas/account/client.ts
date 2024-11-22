@@ -38,3 +38,23 @@ export const createCourse = async (course: any) => {
     const { data } = await axiosWithCredentials.post(`${USERS_API}/current/courses`, course)
     return data
 }
+
+export const findAllUsers = async () => {
+    const { data } = await axios.get(USERS_API)
+    return data
+}
+
+export const findUsersByRole = async (role: string) => {
+    const { data } = await axios.get(`${USERS_API}?role=${role}`)
+    return data
+}
+
+export const findUsersByPartialName = async (name: string) => {
+    const { data } = await axios.get(`${USERS_API}?name=${name}`)
+    return data
+}
+
+export const findUserById = async (id: string) => {
+    const { data } = await axios.get(`${USERS_API}/${id}`)
+    return data
+}
