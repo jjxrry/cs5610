@@ -4,6 +4,7 @@ import { Signup } from "./Signup";
 import { AccountNavigation } from "./Navigation";
 import { Routes, Route, Navigate } from "react-router";
 import { useSelector } from "react-redux";
+import Users from "./Users";
 
 export const Account = () => {
     const { currentUser } = useSelector((state: any) => state.accountReducer)
@@ -20,6 +21,8 @@ export const Account = () => {
                             <Route path="/signin" element={<Signin />} />
                             <Route path="/profile" element={<Profile />} />
                             <Route path="/signup" element={<Signup />} />
+                            <Route path="/users" element={<Users />} />
+                            <Route path="/users/:uid" element={<Users />} />
                         </Routes>
                     </td>
                 </tr>
