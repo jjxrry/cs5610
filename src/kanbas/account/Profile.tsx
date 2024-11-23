@@ -44,7 +44,7 @@ export const Profile = () => {
                         id="wd-dob" className="form-control mb-2" />
                     <input defaultValue={profile.email} onChange={(e) => setProfile({ ...profile, email: e.target.value })}
                         id="wd-email" className="form-control mb-2" />
-                    <select onChange={(e) => setProfile({ ...profile, role: e.target.value })}
+                    <select onChange={(e) => setProfile({ ...profile, role: e.target.value })} value={profile.role}
                         id="wd-role" className="form-control mb-2">
                         <option value="USER">User</option>
                         <option value="ADMIN">Admin</option>
