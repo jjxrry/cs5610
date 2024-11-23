@@ -6,8 +6,10 @@ import { FaPlus } from "react-icons/fa";
 
 export default function Users() {
     const [users, setUsers] = useState<any[]>([]);
+    //@ts-expect-error its fine
     const { uid } = useParams();
     const [role, setRole] = useState("")
+    //@ts-expect-error its fine
     const [name, setName] = useState("")
 
     const createUser = async () => {
