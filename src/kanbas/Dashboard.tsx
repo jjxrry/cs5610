@@ -8,7 +8,7 @@ import * as courseClient from "./courses/client"
 import * as enrollmentClient from "./client"
 
 export const Dashboard = (
-    { course, setCourse, addNewCourse, deleteCourse, updateCourse }:
+    { courses, course, setCourse, addNewCourse, deleteCourse, updateCourse }:
         {
             courses: any[]; course: any; setCourse: (course: any) => void
             addNewCourse: () => void; deleteCourse: (course: any) => void
@@ -32,7 +32,7 @@ export const Dashboard = (
         }
 
         fetchInitialData()
-    }, [currentUser._id, enrollState])
+    }, [currentUser._id])
 
     const handleToggleCourses = async () => {
         await fetchUpdatedData()
@@ -71,6 +71,7 @@ export const Dashboard = (
     //@ts-expect-error its fine
     const enrolledCourses = allCourses.filter((course) => enrolledCourseIds.includes(course._id))
     const displayedCourses = showAllCourses ? allCourses : enrolledCourses
+    // console.log(courses)
 
 
     return (
@@ -95,7 +96,7 @@ export const Dashboard = (
                 </button>
                 <br />
             </ProtectedControls>
-            <h2 id="wd-dashboard-published">Published Courses ({displayedCourses.length})</h2> <hr />
+            <h2 id="wd-dashboard-published">Published Courses ({courses.length})</h2> <hr />
             {(currentUser.role === "STUDENT" || currentUser.role === "FACULTY") && (
                 <div id="wd-student-enrollment-button">
                     <button className="btn btn-primary float-end me-4" onClick={handleToggleCourses}>
@@ -106,7 +107,7 @@ export const Dashboard = (
             )}
             <div id="wd-dashboard-courses" className="row">
                 <div className="row row-cols-1 row-cols-md-5 g-4">
-                    {displayedCourses
+                    {courses
                         .map((course) => (
                             <div className="wd-dashboard-course col" style={{ width: "270px" }}>
                                 <div className="card rounded-3 overflow-hidden">
