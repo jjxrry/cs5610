@@ -8,11 +8,13 @@ import * as courseClient from "./courses/client"
 import * as enrollmentClient from "./client"
 
 export const Dashboard = (
-    { courses, course, setCourse, addNewCourse, deleteCourse, updateCourse }:
+    { courses, course, setCourse, addNewCourse, deleteCourse, updateCourse, enrolling, setEnrolling, updateEnrollment }:
         {
             courses: any[]; course: any; setCourse: (course: any) => void
             addNewCourse: () => void; deleteCourse: (course: any) => void
             updateCourse: () => void
+            enrolling: boolean; setEnrolling: (enrolling: boolean) => void
+            updateEnrollment: (courseId: string, enrolled: boolean) => void
         }
 ) => {
     const { currentUser } = useSelector((state: any) => state.accountReducer)
@@ -77,6 +79,9 @@ export const Dashboard = (
     return (
         <div id="wd-dashboard">
             <h1 id="wd-dashboard-title">Dashboard</h1> <hr />
+            <button onClick={() => setEnrolling(!enrolling)} className="float-end btn btn-primary" >
+                {enrolling ? "My Courses" : "All Courses"}
+            </button>
             <ProtectedControls>
                 <h5>New Course</h5> <br />
                 <input value={course.name} className="form-control mb-2"
@@ -118,6 +123,15 @@ export const Dashboard = (
                                         <img src={`./images/${course.image}`} width="100%" height={160} />
                                         <div className="card-body">
                                             <h5 className="wd-dashboard-course-title card-title">
+                                                {enrolling && (
+                                                    <button onClick={(event) => {
+                                                        event.preventDefault()
+                                                        updateEnrollment(course._id, !course.enrolled)
+                                                    }}
+                                                        className={`btn ${course.enrolled ? "btn-danger" : "btn-success"} float-end`} >
+                                                        {course.enrolled ? "Unenroll" : "Enroll"}
+                                                    </button>
+                                                )}
                                                 {/* @ts-expect-error its fine */}
                                                 {course.name}
                                             </h5>
