@@ -22,7 +22,9 @@ export const Dashboard = (
     // const dispatch = useDispatch()
 
     // const [showAllCourses, setShowAllCourses] = useState(false)
+    // @ts-expect-error its fine
     const [enrollState, setEnrollState] = useState<any[]>(enrollments)
+    // @ts-expect-error its fine
     const [allCourses, setAllCourses] = useState([])
 
     useEffect(() => {
@@ -122,9 +124,7 @@ export const Dashboard = (
                             <div className="wd-dashboard-course col" style={{ width: "270px" }}>
                                 <div className="card rounded-3 overflow-hidden">
                                     <Link className="wd-dashboard-course-link text-decoration-none text-dark"
-                                        //@ts-expect-error its fine
                                         to={`/kanbas/courses/${course._id}/home`}>
-                                        {/* @ts-expect-error its fine */}
                                         <img src={`./images/${course.image}`} width="100%" height={160} />
                                         <div className="card-body">
                                             <h5 className="wd-dashboard-course-title card-title">
@@ -137,11 +137,9 @@ export const Dashboard = (
                                                         {course.enrolled ? "Unenroll" : "Enroll"}
                                                     </button>
                                                 )}
-                                                {/* @ts-expect-error its fine */}
                                                 {course.name}
                                             </h5>
                                             <p className="wd-dashboard-course-title card-text overflow-y-hidden" style={{ maxHeight: 100 }}>
-                                                {/* @ts-expect-error its fine */}
                                                 {course.description}
                                             </p>
 
@@ -179,7 +177,6 @@ export const Dashboard = (
                                             <ProtectedControls>
                                                 <button onClick={(e) => {
                                                     e.preventDefault()
-                                                    // @ts-expect-error its fine
                                                     deleteCourse(course._id)
                                                 }}
                                                     className="btn btn-danger float-end"
