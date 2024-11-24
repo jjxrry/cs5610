@@ -24,6 +24,10 @@ const KanbasContent = () => {
         try {
             //@ts-expect-error its fine
             const courses = await userClient.findCoursesForUser(currentUser._id);
+            //non-null id
+            console.log("CURRUSER ID: ", currentUser._id)
+            //still not returning anything
+            console.log("FRONTEND COURSES: ", courses)
             setCourses(courses);
         } catch (error) {
             console.error(error);
@@ -57,6 +61,7 @@ const KanbasContent = () => {
                 //@ts-expect-error its fine
                 currentUser._id
             );
+            console.log("ENROLLED COURSES FE: ", enrolledCourses)
             const courses = allCourses.map((course: any) => {
                 if (enrolledCourses.find((c: any) => c._id === course._id)) {
                     return { ...course, enrolled: true };

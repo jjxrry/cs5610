@@ -30,7 +30,9 @@ export const Dashboard = (
             const fetchedAllCourses = await courseClient.fetchAllCourses()
             setAllCourses(fetchedAllCourses)
             const fetchedEnrollments = await enrollmentClient.fetchUserEnrollments(currentUser._id)
-            setEnrollState(fetchedEnrollments)
+            console.log('fetched enrollments: ', fetchedEnrollments)
+            // returned as objects
+            setEnrollState(Array.from(fetchedEnrollments))
         }
 
         fetchInitialData()
@@ -79,9 +81,12 @@ export const Dashboard = (
     return (
         <div id="wd-dashboard">
             <h1 id="wd-dashboard-title">Dashboard</h1> <hr />
-            <button onClick={() => setEnrolling(!enrolling)} className="float-end btn btn-primary" >
-                {enrolling ? "My Courses" : "All Courses"}
-            </button>
+            <div id="wd-student-enrollment-button">
+                <button onClick={() => setEnrolling(!enrolling)} className="float-end btn btn-primary" >
+                    {enrolling ? "My Courses" : "All Courses"}
+                </button>
+                <br />
+            </div>
             <ProtectedControls>
                 <h5>New Course</h5> <br />
                 <input value={course.name} className="form-control mb-2"
@@ -104,9 +109,9 @@ export const Dashboard = (
             <h2 id="wd-dashboard-published">Published Courses ({courses.length})</h2> <hr />
             {(currentUser.role === "STUDENT" || currentUser.role === "FACULTY") && (
                 <div id="wd-student-enrollment-button">
-                    <button className="btn btn-primary float-end me-4" onClick={handleToggleCourses}>
-                        {showAllCourses ? "Show Enrollments" : "Show All Courses"}
-                    </button>
+                    {/* <button className="btn btn-primary float-end me-4" onClick={handleToggleCourses}> */}
+                    {/*     {showAllCourses ? "Show Enrollments" : "Show All Courses"} */}
+                    {/* </button> */}
                     <br />
                 </div>
             )}
@@ -140,36 +145,36 @@ export const Dashboard = (
                                                 {course.description}
                                             </p>
 
-                                            <ProtectedStudentControls>
-                                                {currentUser.role === "STUDENT" && (
-                                                    enrollState.some(
-                                                        (enrollment) =>
-                                                            enrollment.user === currentUser._id &&
-                                                            // @ts-expect-error its fine
-                                                            enrollment.course === course._id
-                                                    ) ? (
-                                                        <button className="btn btn-danger me-2"
-                                                            onClick={(e) => {
-                                                                e.preventDefault();
-                                                                // @ts-expect-error its fine
-                                                                handleUnenroll(course._id)
-                                                            }}
-                                                        >
-                                                            Unenroll
-                                                        </button>
-                                                    ) : (
-                                                        <button className="btn btn-success me-2"
-                                                            onClick={(e) => {
-                                                                e.preventDefault();
-                                                                // @ts-expect-error its fine
-                                                                handleEnroll(course._id)
-                                                            }}>
-                                                            Enroll
-                                                        </button>
-                                                    )
-                                                )}
-                                            </ProtectedStudentControls>
-
+                                            {/* <ProtectedStudentControls> */}
+                                            {/*     {currentUser.role === "STUDENT" && ( */}
+                                            {/*         enrollState.some( */}
+                                            {/*             (enrollment) => */}
+                                            {/*                 enrollment.user === currentUser._id && */}
+                                            {/*                 // @ts-expect-error its fine */}
+                                            {/*                 enrollment.course === course._id */}
+                                            {/*         ) ? ( */}
+                                            {/*             <button className="btn btn-danger me-2" */}
+                                            {/*                 onClick={(e) => { */}
+                                            {/*                     e.preventDefault(); */}
+                                            {/*                     // @ts-expect-error its fine */}
+                                            {/*                     handleUnenroll(course._id) */}
+                                            {/*                 }} */}
+                                            {/*             > */}
+                                            {/*                 Unenroll */}
+                                            {/*             </button> */}
+                                            {/*         ) : ( */}
+                                            {/*             <button className="btn btn-success me-2" */}
+                                            {/*                 onClick={(e) => { */}
+                                            {/*                     e.preventDefault(); */}
+                                            {/*                     // @ts-expect-error its fine */}
+                                            {/*                     handleEnroll(course._id) */}
+                                            {/*                 }}> */}
+                                            {/*                 Enroll */}
+                                            {/*             </button> */}
+                                            {/*         ) */}
+                                            {/*     )} */}
+                                            {/* </ProtectedStudentControls> */}
+                                            {/**/}
                                             <button className="btn btn-primary"> Go </button>
                                             <ProtectedControls>
                                                 <button onClick={(e) => {
