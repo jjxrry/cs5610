@@ -17,7 +17,7 @@ export const unenrollFromCourse = async (userId: string, courseId: string) => {
 // this doesn't return anything
 export const findCoursesForUser = async (userId: string) => {
     const response = await axiosWithCredentials.get(`${USERS_API}/${userId}/courses`);
-    console.log("FIND COURSES FOR USER: ", response.data)
+    // console.log("FIND COURSES FOR USER: ", response.data)
     return response.data;
 };
 

@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom"
-import { useDispatch, useSelector } from "react-redux"
+import { useSelector } from "react-redux"
 import { ProtectedControls } from "./courses/modules/ProtectedControls"
 import { useEffect, useState } from "react"
-import { enrollCourse, unenrollCourse } from "./courses/enrollments/reducer"
-import { ProtectedStudentControls } from "./courses/modules/ProtectedStudentControls"
+// import { enrollCourse, unenrollCourse } from "./courses/enrollments/reducer"
+// import { ProtectedStudentControls } from "./courses/modules/ProtectedStudentControls"
 import * as courseClient from "./courses/client"
 import * as enrollmentClient from "./client"
 
@@ -19,9 +19,9 @@ export const Dashboard = (
 ) => {
     const { currentUser } = useSelector((state: any) => state.accountReducer)
     const enrollments = useSelector((state: any) => state.enrollmentReducer.enrollments)
-    const dispatch = useDispatch()
+    // const dispatch = useDispatch()
 
-    const [showAllCourses, setShowAllCourses] = useState(false)
+    // const [showAllCourses, setShowAllCourses] = useState(false)
     const [enrollState, setEnrollState] = useState<any[]>(enrollments)
     const [allCourses, setAllCourses] = useState([])
 
@@ -30,51 +30,51 @@ export const Dashboard = (
             const fetchedAllCourses = await courseClient.fetchAllCourses()
             setAllCourses(fetchedAllCourses)
             const fetchedEnrollments = await enrollmentClient.fetchUserEnrollments(currentUser._id)
-            console.log('fetched enrollments: ', fetchedEnrollments)
-            // returned as objects
+            // console.log('fetched enrollments: ', fetchedEnrollments)
+            // returned as objects so need to convert
             setEnrollState(Array.from(fetchedEnrollments))
         }
 
         fetchInitialData()
     }, [currentUser._id])
 
-    const handleToggleCourses = async () => {
-        await fetchUpdatedData()
-        setShowAllCourses(!showAllCourses);
-    }
+    // const handleToggleCourses = async () => {
+    //     await fetchUpdatedData()
+    //     setShowAllCourses(!showAllCourses);
+    // }
+    //
+    // const handleEnroll = async (courseId: string) => {
+    //     const newEnrollment = await enrollmentClient.enrollUser(currentUser._id, courseId)
+    //     await fetchUpdatedData()
+    //     setEnrollState([...enrollments, newEnrollment])
+    //     dispatch(enrollCourse({ user: currentUser._id, course: courseId }))
+    // }
+    //
+    // const handleUnenroll = async (courseId: string) => {
+    //     const updatedEnrollments = await enrollmentClient.unenrollUser(currentUser._id, courseId)
+    //     await fetchUpdatedData()
+    //     setEnrollState(updatedEnrollments)
+    //     dispatch(unenrollCourse({ user: currentUser._id, course: courseId }))
+    // }
+    //
+    //
+    // const fetchUpdatedData = async () => {
+    //     try {
+    //         const fetchedAllCourses = await courseClient.fetchAllCourses()
+    //         setAllCourses(fetchedAllCourses)
+    //
+    //         if (currentUser._id) {
+    //             const updatedEnrollments = await enrollmentClient.fetchUserEnrollments(currentUser._id)
+    //             setEnrollState(updatedEnrollments);
+    //         }
+    //     } catch (error) {
+    //         console.error("Error fetching updated data:", error)
+    //     }
+    // }
 
-    const handleEnroll = async (courseId: string) => {
-        const newEnrollment = await enrollmentClient.enrollUser(currentUser._id, courseId)
-        await fetchUpdatedData()
-        setEnrollState([...enrollments, newEnrollment])
-        dispatch(enrollCourse({ user: currentUser._id, course: courseId }))
-    }
-
-    const handleUnenroll = async (courseId: string) => {
-        const updatedEnrollments = await enrollmentClient.unenrollUser(currentUser._id, courseId)
-        await fetchUpdatedData()
-        setEnrollState(updatedEnrollments)
-        dispatch(unenrollCourse({ user: currentUser._id, course: courseId }))
-    }
-
-    const fetchUpdatedData = async () => {
-        try {
-            const fetchedAllCourses = await courseClient.fetchAllCourses()
-            setAllCourses(fetchedAllCourses)
-
-            if (currentUser._id) {
-                const updatedEnrollments = await enrollmentClient.fetchUserEnrollments(currentUser._id)
-                setEnrollState(updatedEnrollments);
-            }
-        } catch (error) {
-            console.error("Error fetching updated data:", error)
-        }
-    }
-
-    const enrolledCourseIds = enrollments.map((enrollment: any) => enrollment.course)
-    //@ts-expect-error its fine
-    const enrolledCourses = allCourses.filter((course) => enrolledCourseIds.includes(course._id))
-    const displayedCourses = showAllCourses ? allCourses : enrolledCourses
+    // const enrolledCourseIds = enrollments.map((enrollment: any) => enrollment.course)
+    // const enrolledCourses = allCourses.filter((course) => enrolledCourseIds.includes(course._id))
+    // const displayedCourses = showAllCourses ? allCourses : enrolledCourses
     // console.log(courses)
 
 

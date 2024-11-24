@@ -4,6 +4,12 @@ const axiosWithCredentials = axios.create({ withCredentials: true })
 const REMOTE_SERVER = import.meta.env.VITE_REMOTE_SERVER;
 const COURSES_API = `${REMOTE_SERVER}/api/courses`;
 
+export const findUsersForCourse = async (courseId: string) => {
+    const response = await axios.get(`${COURSES_API}/${courseId}/users`);
+    console.log("USERS FOR COURSE: ", response.data)
+    return response.data;
+};
+
 export const updateCourse = async (course: any) => {
     const { data } = await axiosWithCredentials.put(`${COURSES_API}/${course._id}`, course)
     return data

@@ -25,9 +25,9 @@ const KanbasContent = () => {
             //@ts-expect-error its fine
             const courses = await userClient.findCoursesForUser(currentUser._id);
             //non-null id
-            console.log("CURRUSER ID: ", currentUser._id)
+            // console.log("CURRUSER ID: ", currentUser._id)
             //still not returning anything
-            console.log("FRONTEND COURSES: ", courses)
+            // console.log("FRONTEND COURSES: ", courses)
             setCourses(courses);
         } catch (error) {
             console.error(error);
