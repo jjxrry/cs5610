@@ -25,11 +25,11 @@ export const deleteCourse = async (id: string) => {
 }
 
 export const findModulesForCourse = async (courseId: string) => {
-    const { data } = await axios.get(`${COURSES_API}/${courseId}/modules`)
+    const { data } = await axiosWithCredentials.get(`${COURSES_API}/${courseId}/modules`)
     return data
 }
 
 export const createModule = async (courseId: string, module: any) => {
-    const { data } = await axios.post(`${COURSES_API}/${courseId}/modules`, module)
+    const { data } = await axiosWithCredentials.post(`${COURSES_API}/${courseId}/modules`, module)
     return data
 }

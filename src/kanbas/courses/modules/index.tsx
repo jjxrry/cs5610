@@ -18,6 +18,7 @@ export const Modules = () => {
 
     const fetchModules = async () => {
         const modules = await coursesClient.findModulesForCourse(cid as string)
+        console.log("MODULES: ", modules)
         dispatch(setModules(modules))
     }
 
@@ -40,7 +41,7 @@ export const Modules = () => {
 
     useEffect(() => {
         fetchModules()
-    })
+    }, [])
 
     return (
         <div className="module">
