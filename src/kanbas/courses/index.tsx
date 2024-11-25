@@ -8,6 +8,7 @@ import { Navigate, Route, Routes, useParams, useLocation } from "react-router";
 import { PeopleTable } from "./people/Table";
 import * as coursesClient from "./client"
 import { useEffect, useState } from "react";
+import { Quizzes } from "./quizzes";
 
 export const Courses = ({ courses }: { courses: any[] }) => {
     const { cid } = useParams()
@@ -43,6 +44,8 @@ export const Courses = ({ courses }: { courses: any[] }) => {
                         <Route path="modules" element={<Modules />} />
                         <Route path="assignments" element={<Assignments />} />
                         <Route path="assignments/:aid" element={< AssignmentEditor />} />
+                        <Route path="quizzes" element={<Quizzes />} />
+                        {/* <Route path="quizzes/:qid" element={< QuizEditor />} /> */}
                         <Route path="people" element={<PeopleTable users={users} />} />
                     </Routes>
                 </div>
