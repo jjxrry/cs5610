@@ -6,7 +6,7 @@ const COURSES_API = `${REMOTE_SERVER}/api/courses`;
 
 export const findUsersForCourse = async (courseId: string) => {
     const response = await axiosWithCredentials.get(`${COURSES_API}/${courseId}/users`);
-    console.log("USERS FOR COURSE: ", response.data)
+    // console.log("USERS FOR COURSE: ", response.data)
     return response.data;
 };
 

@@ -1,19 +1,16 @@
 import { useNavigate, useParams } from "react-router";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { addAssignment, updateAssignment } from "./reducer";
+// import { useSelector } from "react-redux";
+// import { addAssignment, updateAssignment } from "./reducer";
 import * as client from "./client"
 
 export const AssignmentEditor = () => {
     const { aid, cid } = useParams()
     const navigate = useNavigate()
-    const dispatch = useDispatch()
-
-    const { assignments } = useSelector((state: any) => state.assignmentsReducer)
+    // const { assignments } = useSelector((state: any) => state.assignmentsReducer)
 
     const [assignment, setAssignment] = useState({
-        _id: "",
         title: "Title",
         course: "",
         description: "Description",
@@ -32,35 +29,51 @@ export const AssignmentEditor = () => {
             studentAnnotation: false,
             fileUpload: false
         }
-    });
+    })
+
+    const formatDate = (date: any) => {
+        const d = new Date(date)
+        const month = String(d.getMonth() + 1).padStart(2, '0')
+        const day = String(d.getDate()).padStart(2, '0')
+        const year = d.getFullYear()
+        return `${year}-${month}-${day}`
+    }
 
     useEffect(() => {
-        if (aid && aid !== "new") {
-            const foundAssignment = assignments.find((assignment: any) => assignment._id === aid);
-            if (foundAssignment) {
-                setAssignment((prev) => ({
-                    ...prev,
-                    ...foundAssignment,
-                    description: foundAssignment.description || "",
-                    points: foundAssignment.points || 100,
-                    dueDate: foundAssignment.dueDate || "2024-05-13",
-                    assignTo: foundAssignment.assignTo || "Everyone",
-                    availableFrom: foundAssignment.availableFrom || "2024-05-06",
-                    availableUntil: foundAssignment.availableUntil || "2024-05-20",
-                    submissionType: foundAssignment.submissionType || "Online",
-                    assignmentGroup: foundAssignment.assignmentGroup || "ASSIGNMENTS",
-                    displayGradeAs: foundAssignment.displayGradeAs || "Percentage",
+        const loadAssignment = async () => {
+            if (aid && aid !== "new") {
+                const curr = await client.fetchAssignmentById(cid as string, aid as string);
+                console.log("CONSOLE FOR CURR: ", curr)
+                setAssignment({
+                    ...curr,
+                    title: curr.title,
+                    description: curr.description,
+                    points: curr.points,
+                    dueDate: formatDate(curr.dueDate),
+                    assignTo: curr.assignTo,
+                    availableFrom: formatDate(curr.availableFrom),
+                    availableUntil: formatDate(curr.availableUntil),
+                    submissionType: curr.submissionType,
+                    assignmentGroup: curr.assignmentGroup,
+                    displayGradeAs: curr.displayGradeAs,
                     mediaOptions: {
-                        textEntry: foundAssignment.mediaOptions?.textEntry || false,
-                        websiteUrl: foundAssignment.mediaOptions?.websiteUrl || false,
-                        mediaRecordings: foundAssignment.mediaOptions?.mediaRecordings || false,
-                        studentAnnotation: foundAssignment.mediaOptions?.studentAnnotation || false,
-                        fileUpload: foundAssignment.mediaOptions?.fileUpload || false
-                    }
-                }))
+                        textEntry: curr.mediaOptions?.textEntry || false,
+                        websiteUrl: curr.mediaOptions?.websiteUrl || false,
+                        mediaRecordings: curr.mediaOptions?.mediaRecordings || false,
+                        studentAnnotation: curr.mediaOptions?.studentAnnotation || false,
+                        fileUpload: curr.mediaOptions?.fileUpload || false,
+                    },
+                });
+                console.log("SET ASSIGN: ", assignment)
             }
-        }
-    }, [aid, assignments])
+        };
+
+        loadAssignment();
+    }, [aid, cid])
+
+    useEffect(() => {
+        console.log("Updated Assignment: ", assignment);
+    }, [assignment]);
 
     const handleInputChange = (e: any) => {
         const { name, value } = e.target;
@@ -97,11 +110,7 @@ export const AssignmentEditor = () => {
                 _id: new Date().getTime().toString(),
                 course: cid || "default-id"
             };
-            const createdAssignment = await client.createAssignment(cid as string, newAssignment)
-            dispatch(addAssignment(createdAssignment));
-
-            // const updatedAssignments = [...assignments, newAssignment];
-            // console.log(updatedAssignments.filter((a) => a.course === cid));
+            await client.createAssignment(cid as string, newAssignment)
         } else {
             const updatedAssignment = {
                 ...assignment,
@@ -109,7 +118,6 @@ export const AssignmentEditor = () => {
                 course: cid || assignment.course
             };
             await client.updateAssignment(cid as string, aid as string, updatedAssignment)
-            dispatch(updateAssignment(updatedAssignment));
         }
 
         navigate(`/kanbas/courses/${cid}/assignments`);
