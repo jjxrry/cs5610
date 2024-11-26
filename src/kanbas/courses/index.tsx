@@ -9,6 +9,8 @@ import { PeopleTable } from "./people/Table";
 import * as coursesClient from "./client"
 import { useEffect, useState } from "react";
 import { Quizzes } from "./quizzes";
+import { QuizDetails } from "./quizzes/Details";
+import { QuizEditor } from "./quizzes/Editor";
 
 export const Courses = ({ courses }: { courses: any[] }) => {
     const { cid } = useParams()
@@ -45,7 +47,8 @@ export const Courses = ({ courses }: { courses: any[] }) => {
                         <Route path="assignments" element={<Assignments />} />
                         <Route path="assignments/:aid" element={< AssignmentEditor />} />
                         <Route path="quizzes" element={<Quizzes />} />
-                        {/* <Route path="quizzes/:qid" element={< QuizEditor />} /> */}
+                        <Route path="quizzes/:qid" element={<QuizDetails />} />
+                        <Route path="quizzes/:qid/editor" element={<QuizEditor />} />
                         <Route path="people" element={<PeopleTable users={users} />} />
                     </Routes>
                 </div>

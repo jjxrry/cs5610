@@ -1,14 +1,11 @@
 import { useNavigate, useParams } from "react-router";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-// import { useSelector } from "react-redux";
-// import { addAssignment, updateAssignment } from "./reducer";
 import * as client from "./client"
 
 export const AssignmentEditor = () => {
     const { aid, cid } = useParams()
     const navigate = useNavigate()
-    // const { assignments } = useSelector((state: any) => state.assignmentsReducer)
 
     const [assignment, setAssignment] = useState({
         title: "Title",
