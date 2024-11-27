@@ -1,14 +1,28 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useParams } from "react-router";
+import { Link } from "react-router-dom";
+import * as userClient from "../../account/client"
 
 export const QuizEditor = () => {
-    const { qid } = useParams()
+    const { cid, qid } = useParams()
     console.log(qid)
 
     const [activeTab, setActiveTab] = useState("details");
     const [questionType, setQuestionType] = useState("multiple-choice");
+
     //add state for all of the quiz object fields
     const [quizDetails, setQuizDetails] = useState({})
+    const [role, setRole] = useState("")
+
+    useEffect(() => {
+        const fetchUserRole = async () => {
+            const user = await userClient.profile()
+            // console.log(user.role)
+            setRole(user.role)
+        }
+        fetchUserRole()
+    }, [])
+
 
     // useEffect to fetch the quiz details if qid !== new
 
@@ -16,6 +30,9 @@ export const QuizEditor = () => {
     return (
         <div>
             <h3>Quiz Editor</h3>
+            <Link to={`/kanbas/courses/${cid}/quizzes/${qid}`}>
+                Back To Details
+            </Link>
 
             <div className="mb-4">
                 <button

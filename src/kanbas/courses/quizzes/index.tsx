@@ -3,10 +3,21 @@ import { ProtectedControls } from "./ProtectedControls"
 import { QuizModuleControls } from "./QuizModuleControls"
 import { FaSearch } from "react-icons/fa"
 import { BsGripVertical } from "react-icons/bs"
+import * as userClient from "../../account/client"
+import { useEffect, useState } from "react"
 
 export const Quizzes = () => {
-
     const { cid } = useParams()
+    // const [role, setRole] = useState("")
+    //
+    // useEffect(() => {
+    //     const fetchUserRole = async () => {
+    //         const user = await userClient.profile()
+    //         console.log(user)
+    //         setRole(user.role)
+    //     }
+    //     fetchUserRole()
+    // }, [])
 
     return (
         <div id="wd-quizzes">
@@ -33,15 +44,6 @@ export const Quizzes = () => {
                             <BsGripVertical className="me-2 fs-3" />
                             <span className="fw-bold">QUIZZES</span>
                         </div>
-
-                        {/* <div> */}
-                        {/*     <span className="me-3 px-3 py-2 text-dark rounded-pill" */}
-                        {/*         style={{ border: "1px solid #484848" }} */}
-                        {/*     >40% of Total</span> */}
-                        {/*     <ProtectedControls> */}
-                        {/*         <AssignmentTitleControls /> */}
-                        {/*     </ProtectedControls> */}
-                        {/* </div> */}
                     </div>
 
                     {/* {assignments */}
