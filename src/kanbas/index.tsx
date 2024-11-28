@@ -61,7 +61,7 @@ const KanbasContent = () => {
                 //@ts-expect-error its fine
                 currentUser._id
             );
-            console.log("ENROLLED COURSES FE: ", enrolledCourses)
+            // console.log("ENROLLED COURSES FE: ", enrolledCourses)
             const courses = allCourses.map((course: any) => {
                 if (enrolledCourses.find((c: any) => c._id === course._id)) {
                     return { ...course, enrolled: true };

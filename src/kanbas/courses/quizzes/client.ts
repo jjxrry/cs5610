@@ -46,3 +46,7 @@ export const publishQuiz = async (courseId: string, quizId: string) => {
     return data;
 };
 
+export const unpublishQuiz = async (courseId: string, quizId: string) => {
+    const { data } = await axiosWithCredentials.put(`${QUIZZES_API}/${courseId}/quizzes/${quizId}/unpublish`);
+    return data;
+};

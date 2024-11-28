@@ -18,10 +18,10 @@ export const QuizDetails = () => {
 
 
     //fetch existing data if exists, if qid !== "new"
-    const [details, setDetails] = useState({})
-
-    const defaultQuizDetails = {
+    const [details, setDetails] = useState({
         title: "",
+        course: "",
+        createdBy: "",
         description: "",
         totalPoints: 0,
         questions: [],
@@ -38,14 +38,14 @@ export const QuizDetails = () => {
         dueDate: "",
         availableFrom: "",
         availableUntil: "",
-        published: false
-    };
+        published: false,
+    })
 
     useEffect(() => {
         if (qid !== "new") {
             const fetchDetails = async () => {
                 try {
-                    const quizData = await quizClient.fetchQuizById(qid as string);
+                    const quizData = await quizClient.fetchQuizById(cid as string, qid as string);
                     setDetails(quizData);
                 } catch (error) {
                     console.error("Error fetching quiz details:", error);
