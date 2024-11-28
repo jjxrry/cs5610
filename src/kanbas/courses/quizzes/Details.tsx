@@ -6,23 +6,14 @@ import * as userClient from "../../account/client"
 export const QuizDetails = () => {
     const { qid, cid } = useParams()
     const [role, setRole] = useState("")
-
-    useEffect(() => {
-        const fetchUserRole = async () => {
-            const user = await userClient.profile()
-            console.log(user.role)
-            setRole(user.role)
-        }
-        fetchUserRole()
-    }, [])
-
-
+    const [id, setId] = useState("")
     //fetch existing data if exists, if qid !== "new"
-    const [details, setDetails] = useState({
-        title: "",
-        course: "",
-        createdBy: "",
-        description: "",
+    const [quizDetails, setQuizDetails] = useState({
+        title: "New Quiz",
+        course: cid as string,
+        createdBy: id as string,
+        description: "New Description",
+        //should this be questions.length?
         totalPoints: 0,
         questions: [],
         quizType: "Graded Quiz",
@@ -35,36 +26,51 @@ export const QuizDetails = () => {
         oneQuestionAtATime: true,
         webcamRequired: false,
         lockQuestionsAfterAnswering: false,
-        dueDate: "",
-        availableFrom: "",
-        availableUntil: "",
+        dueDate: "2025-01-01",
+        availableFrom: "2025-01-01",
+        availableUntil: "2025-01-01",
         published: false,
     })
 
     useEffect(() => {
-        if (qid !== "new") {
-            const fetchDetails = async () => {
-                try {
-                    const quizData = await quizClient.fetchQuizById(cid as string, qid as string);
-                    setDetails(quizData);
-                } catch (error) {
-                    console.error("Error fetching quiz details:", error);
-                }
-            };
-            fetchDetails();
+        const fetchUserRoleAndQuiz = async () => {
+            const user = await userClient.profile()
+            setRole(user.role)
+            setId(user._id)
+            if (qid !== "new") {
+                const fetchedQuiz = await quizClient.fetchQuizById(cid as string, qid as string)
+                setQuizDetails(fetchedQuiz)
+            }
         }
-    }, [qid, cid])
+        fetchUserRoleAndQuiz()
+    }, [cid, qid])
+
+    const formatDate = (date: string) => {
+        const d = new Date(date)
+        const month = String(d.getMonth() + 1).padStart(2, '0')
+        const day = String(d.getDate()).padStart(2, '0')
+        const year = d.getFullYear()
+        return `${year}-${month}-${day}`
+    }
 
     return (
         <div>
             <h3>Quiz Details</h3>
             <div>
-                <button>
-                    Preview
-                </button>
-                <Link to={`/kanbas/courses/${cid}/quizzes/${qid}/editor`}>
-                    Edit
-                </Link>
+                {role === "FACULTY" ? (
+                    <>
+                        <button>
+                            Preview
+                        </button>
+                        <Link to={`/kanbas/courses/${cid}/quizzes/${qid}/editor`}>
+                            Edit
+                        </Link>
+                    </>
+                ) : (
+                    <button>
+                        Start Quiz
+                    </button>
+                )}
             </div>
 
             <hr />
@@ -73,62 +79,30 @@ export const QuizDetails = () => {
             <div>
                 <div>
                     <h3>Details</h3>
-                    <p>Quiz Name</p>
+                    <p><strong>Quiz Type:</strong> {quizDetails.quizType}</p>
+                    <p><strong>Points:</strong> {quizDetails.totalPoints}</p>
+                    <p><strong>Assignment Group:</strong> {quizDetails.assignmentGroup}</p>
+                    <p><strong>Shuffle Answers:</strong> {quizDetails.shuffleAnswers ? "Yes" : "No"}</p>
+                    <p><strong>Time Limit:</strong> {quizDetails.timeLimit} Minutes</p>
+                    <p><strong>Multiple Attempts:</strong> {quizDetails.multipleAttempts ? "Yes" : "No"}</p>
+                    {quizDetails.multipleAttempts && (
+                        <p><strong>How Many Attempts:</strong> 1</p>
+                    )}
+                    <p><strong>Show Correct Answers:</strong> {quizDetails.showCorrectAnswers ? "Yes" : "No"}</p>
+                    <p><strong>Access Code:</strong> {quizDetails.accessCode || "None"}</p>
+                    <p><strong>One Question at a Time:</strong> {quizDetails.oneQuestionAtATime ? "Yes" : "No"}</p>
+                    <p><strong>Webcam Required:</strong> {quizDetails.webcamRequired ? "Yes" : "No"}</p>
+                    <p><strong>Lock Questions After Answering:</strong> {quizDetails.lockQuestionsAfterAnswering ? "Yes" : "No"}</p>
                 </div>
                 <hr />
                 <div>
-                    <p>Details</p>
-                    <p>{}</p>
-                </div>
-                <hr />
-                <div>
-                    <p>pDue Dates</p>
+                    <h3>Due Dates</h3>
+                    <p><strong>Due Date:</strong> {formatDate(quizDetails.dueDate)}</p>
+                    <p><strong>Available From:</strong> {formatDate(quizDetails.availableFrom)}</p>
+                    <p><strong>Available Until:</strong> {formatDate(quizDetails.availableUntil)}</p>
                 </div>
             </div>
         </div>
     )
 }
-
-
-//         title: { type: String, required: true, trim: true },
-//         course: { type: mongoose.Schema.Types.ObjectId, ref: "CourseModel", required: true },
-//         createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "UserModel", required: true },
-//         description: { type: String, required: true, trim: true },
-//         totalPoints: {
-//             type: Number,
-//             required: true,
-//             default: 0,
-//             set: function() {
-//                 return this.questions.reduce((sum, question) => sum + question.points, 0);
-//             }
-//         },
-//         questions: { type: [questionSchema], required: true },
-//         quizType: {
-//             type: String,
-//             enum: ["Graded Quiz", "Practice Quiz", "Graded Survey", "Ungraded Survey"],
-//             default: "Graded Quiz"
-//         },
-//         assignmentGroup: {
-//             type: String,
-//             enum: ["Quizzes", "Exams", "Assignments", "Project"],
-//             default: "Quizzes"
-//         },
-//         shuffleAnswers: { type: Boolean, default: true },
-//         timeLimit: { type: Number, default: 20 },
-//         multipleAttempts: { type: Boolean, default: false },
-//         showCorrectAnswers: { type: Boolean, default: false },
-//         accessCode: { type: String, default: "" },
-//         oneQuestionAtATime: { type: Boolean, default: true },
-//         webcamRequired: { type: Boolean, default: false },
-//         lockQuestionsAfterAnswering: { type: Boolean, default: false },
-//         dueDate: { type: Date, required: true },
-//         availableFrom: { type: Date, required: true },
-//         availableUntil: { type: Date, required: true },
-//         published: { type: Boolean, required: true, default: false }
-//     },
-//     { collection: "quizzes", timestamps: true }
-// );
-//
-// export default quizSchema;
-//
 

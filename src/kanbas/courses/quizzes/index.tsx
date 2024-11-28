@@ -25,7 +25,7 @@ export const Quizzes = () => {
                 setQuizzes(fetchedQuizzes)
             } else if (user.role === "STUDENT") {
                 const fetchedQuizzes = await quizClient.fetchAllPublishedQuizzes(cid as string)
-                // console.log("FETCHED PUBLISHED: ", fetchedQuizzes)
+                console.log("FETCHED PUBLISHED: ", fetchedQuizzes)
                 setQuizzes(fetchedQuizzes)
             }
         }
@@ -52,7 +52,6 @@ export const Quizzes = () => {
             )
         )
     }
-
 
 
     return (
@@ -108,20 +107,22 @@ export const Quizzes = () => {
                                         </span>
                                     </div>
 
-                                    <div className="col-4 d-flex align-items-center justify-content-end">
-                                        <button
-                                            className="btn btn-primary"
-                                            onClick={() => handleDeleteQuiz(quiz._id)}
-                                        >
-                                            Delete
-                                        </button>
-                                        <button
-                                            className="btn btn-secondary ms-2"
-                                            onClick={() => togglePublish(quiz._id, quiz.published)}
-                                        >
-                                            {quiz.published ? "Unpublish" : "Publish"}
-                                        </button>
-                                    </div>
+                                    <ProtectedControls>
+                                        <div className="col-4 d-flex align-items-center justify-content-end">
+                                            <button
+                                                className="btn btn-primary"
+                                                onClick={() => handleDeleteQuiz(quiz._id)}
+                                            >
+                                                Delete
+                                            </button>
+                                            <button
+                                                className="btn btn-secondary ms-2"
+                                                onClick={() => togglePublish(quiz._id, quiz.published)}
+                                            >
+                                                {quiz.published ? "Unpublish" : "Publish"}
+                                            </button>
+                                        </div>
+                                    </ProtectedControls>
                                 </div>
                             </li>
                         ))
