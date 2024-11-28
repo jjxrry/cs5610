@@ -1,12 +1,12 @@
 GENERAL:
-
-we need that backend schema to track quiz grades
+we need a mongodb object type schema to track quiz grades
 quiztakerId: objectid
 courseId: objectid
 quizId: objectid
 latest: true
 
 we need to be able to take the quiz itself
+one component QuizTaker.tsx where we conditionally render stuff for faculty preview vs student quiz 
 
 QUIZZES SCREEN:
 the 3 vertical dots on each of the quizzes need to have edit/delete/publish
@@ -21,4 +21,6 @@ fill out all of the details on the screen
 
 QUIZ QUESTIONS:
 add questions to the quiz object array
+    -handle the add to array
+    -handle populating the object fields before appending to array
 add functionality to all types of questions

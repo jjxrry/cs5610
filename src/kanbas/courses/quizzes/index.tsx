@@ -25,7 +25,7 @@ export const Quizzes = () => {
                 setQuizzes(fetchedQuizzes)
             } else if (user.role === "STUDENT") {
                 const fetchedQuizzes = await quizClient.fetchAllPublishedQuizzes(cid as string)
-                console.log("FETCHED PUBLISHED: ", fetchedQuizzes)
+                // console.log("FETCHED PUBLISHED: ", fetchedQuizzes)
                 setQuizzes(fetchedQuizzes)
             }
         }
@@ -40,10 +40,12 @@ export const Quizzes = () => {
     }
 
     const togglePublish = async (quizId: string, published: boolean) => {
-        if (published) {
+        if (!published) {
             await quizClient.publishQuiz(cid as string, quizId)
+            console.log("Publishing")
         } else {
             await quizClient.unpublishQuiz(cid as string, quizId)
+            console.log("UNPublishing")
         }
 
         setQuizzes((prev) =>

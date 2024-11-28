@@ -6,11 +6,12 @@ import * as quizClient from "./client"
 
 export const QuizEditor = () => {
     const { cid, qid } = useParams()
-    // console.log(qid)
+    const navigate = useNavigate()
 
-    const [activeTab, setActiveTab] = useState("details");
-    const [questionType, setQuestionType] = useState("multiple-choice");
-    const [isPublishing, setIsPublishing] = useState(false);
+    const [activeTab, setActiveTab] = useState("details")
+    const [questionType, setQuestionType] = useState("multiple-choice")
+    const [questionText, setQuestionText] = useState("")
+    const [correctAnswer, setCorrectAnswer] = useState("")
     const [role, setRole] = useState("")
     const [id, setId] = useState("")
 
@@ -20,14 +21,14 @@ export const QuizEditor = () => {
         course: cid as string,
         createdBy: id as string,
         description: "New Description",
-        //should this be questions.length?
-        totalPoints: 0,
+        totalPoints: 0, // need to sum all of questions.values
         questions: [],
         quizType: "Graded Quiz",
         assignmentGroup: "Quizzes",
         shuffleAnswers: true,
         timeLimit: 20,
         multipleAttempts: false,
+        numAttempts: 1,
         showCorrectAnswers: false,
         accessCode: "",
         oneQuestionAtATime: true,
@@ -39,7 +40,6 @@ export const QuizEditor = () => {
         published: false,
 
     })
-    const navigate = useNavigate()
 
     const formatDate = (date: any) => {
         const d = new Date(date)
@@ -72,19 +72,39 @@ export const QuizEditor = () => {
         fetchUserData()
     }, [cid, qid])
 
+    useEffect(() => {
+        console.log("Updated quiz details: ", quizDetails.questions);
+    }, [quizDetails.questions])
 
-    const handleAddQuestion = (newQuestion: any) => {
+    const handleAddQuestion = () => {
+        const newQuestion = {
+            type: questionType,
+            text: questionText,
+            options: [],
+            correctAnswer: correctAnswer,
+            points: 1
+        }
+
+        if (questionType === "multiple-choice") {
+            //@ts-expect-error its fine, we can make an interface if this gives issues
+            newQuestion.options = [1, 2, 3, 4].map((num) => ({ text: `Option ${num}` }))
+        } else if (questionType === "true-false") {
+            //@ts-expect-error its fine
+            newQuestion.options = [{ text: "True" }, { text: "False" }]
+        }
+
         //@ts-expect-error its fine
         setQuizDetails((prevDetails) => ({
             ...prevDetails,
             questions: [...prevDetails.questions, newQuestion],
-        }));
-        console.log(quizDetails.questions)
-    };
+        }))
 
+        setQuestionText("")
+        setCorrectAnswer("")
+    }
 
     const handleInputChange = (e: any) => {
-        const { name, value } = e.target;
+        const { name, value } = e.target
         setQuizDetails((prev) => ({
             ...prev,
             [name]: value,
@@ -92,7 +112,7 @@ export const QuizEditor = () => {
     }
 
     const handleCheckboxChange = (e: any) => {
-        const { name, checked } = e.target;
+        const { name, checked } = e.target
         setQuizDetails(prev => ({
             ...prev,
             [name]: checked
@@ -105,21 +125,19 @@ export const QuizEditor = () => {
             createdBy: id,
             published: publish,
             course: cid,
-        };
-
-        try {
-            if (qid === "new") {
-                await quizClient.createQuiz(cid as string, quizData);
-            } else {
-                await quizClient.updateQuiz(cid as string, qid as string, quizData);
-            }
-
-            navigate(`/kanbas/courses/${cid}/quizzes`);
-
-        } catch (error) {
-            console.error("Error saving quiz:", error);
         }
+
+        if (qid === "new") {
+            await quizClient.createQuiz(cid as string, quizData)
+        } else {
+            await quizClient.updateQuiz(cid as string, qid as string, quizData)
+        }
+
+        //doesnt work??
+        navigate(`/kanbas/courses/${cid}/quizzes`)
+
     }
+
 
     return (
         <div className="container">
@@ -244,6 +262,23 @@ export const QuizEditor = () => {
                             </label>
                         </div>
                     </div>
+
+                    {quizDetails.multipleAttempts && (
+                        <div className="mb-3">
+                            <label htmlFor="numAttempts" className="form-label">
+                                How Many Attempts
+                            </label>
+                            <input
+                                type="number"
+                                className="form-control"
+                                id="numAttempts"
+                                name="numAttempts"
+                                value={quizDetails.numAttempts}
+                                onChange={handleInputChange}
+                                min="1"
+                            />
+                        </div>
+                    )}
 
                     <div className="mb-3">
                         <div className="form-check">
@@ -411,16 +446,46 @@ export const QuizEditor = () => {
                         </div>
                     )}
 
-                    {questionType === "short-answer" && (
-                        <div className="mb-3">
-                            <h5>Answer</h5>
+                    <div className="mb-3">
+                        <label htmlFor="correct-answer" className="form-label">Correct Answer</label>
+                        {questionType === "multiple-choice" && (
+                            <select
+                                id="correct-answer"
+                                className="form-select"
+                                value={correctAnswer}
+                                onChange={(e) => setCorrectAnswer(e.target.value)}
+                            >
+                                {[1, 2, 3, 4].map((num) => (
+                                    <option key={num} value={num}>
+                                        {num}
+                                    </option>
+                                ))}
+                            </select>
+                        )}
+
+                        {questionType === "true-false" && (
+                            <select
+                                id="correct-answer"
+                                className="form-select"
+                                value={correctAnswer}
+                                onChange={(e) => setCorrectAnswer(e.target.value)}
+                            >
+                                <option value="true">True</option>
+                                <option value="false">False</option>
+                            </select>
+                        )}
+
+                        {questionType === "short-answer" && (
                             <input
                                 type="text"
+                                id="correct-answer"
                                 className="form-control"
-                                placeholder="Enter the short answer"
+                                placeholder="Enter correct answer"
+                                value={correctAnswer}
+                                onChange={(e) => setCorrectAnswer(e.target.value)}
                             />
-                        </div>
-                    )}
+                        )}
+                    </div>
 
                     <button onClick={handleAddQuestion} className="btn btn-primary">Add Question</button>
                 </div>
@@ -441,7 +506,6 @@ export const QuizEditor = () => {
                 <button
                     className="btn btn-success"
                     onClick={() => handleSave(true)}
-                    disabled={isPublishing}
                 >
                     Save & Publish
                 </button>

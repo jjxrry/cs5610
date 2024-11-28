@@ -13,7 +13,6 @@ export const QuizDetails = () => {
         course: cid as string,
         createdBy: id as string,
         description: "New Description",
-        //should this be questions.length?
         totalPoints: 0,
         questions: [],
         quizType: "Graded Quiz",
@@ -21,6 +20,7 @@ export const QuizDetails = () => {
         shuffleAnswers: true,
         timeLimit: 20,
         multipleAttempts: false,
+        numAttempts: 1,
         showCorrectAnswers: false,
         accessCode: "",
         oneQuestionAtATime: true,
@@ -36,9 +36,11 @@ export const QuizDetails = () => {
         const fetchUserRoleAndQuiz = async () => {
             const user = await userClient.profile()
             setRole(user.role)
+            // console.log("ROLE: ", user.role)
             setId(user._id)
             if (qid !== "new") {
                 const fetchedQuiz = await quizClient.fetchQuizById(cid as string, qid as string)
+                // console.log("DETAILS FETCHED QUIZ: ", fetchedQuiz)
                 setQuizDetails(fetchedQuiz)
             }
         }
@@ -86,7 +88,7 @@ export const QuizDetails = () => {
                     <p><strong>Time Limit:</strong> {quizDetails.timeLimit} Minutes</p>
                     <p><strong>Multiple Attempts:</strong> {quizDetails.multipleAttempts ? "Yes" : "No"}</p>
                     {quizDetails.multipleAttempts && (
-                        <p><strong>How Many Attempts:</strong> 1</p>
+                        <p><strong>How Many Attempts:</strong> {quizDetails.numAttempts}</p>
                     )}
                     <p><strong>Show Correct Answers:</strong> {quizDetails.showCorrectAnswers ? "Yes" : "No"}</p>
                     <p><strong>Access Code:</strong> {quizDetails.accessCode || "None"}</p>
