@@ -20,6 +20,11 @@ fill out all of the details on the screen
 
 
 QUIZ QUESTIONS:
+DOING:
+We also need to render all the previous questions and handle those edits as well
+Need to fix quiz details ui, if we did successfully add, then we need to render new question creation fields
+
+DONE:
 add questions to the quiz object array
     -handle the add to array
     -handle populating the object fields before appending to array
