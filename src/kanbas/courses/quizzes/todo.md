@@ -21,11 +21,17 @@ fill out all of the details on the screen
 
 QUIZ QUESTIONS:
 DOING:
-We also need to render all the previous questions and handle those edits as well
-Need to fix quiz details ui, if we did successfully add, then we need to render new question creation fields
+    - (OPTIONAL)fix that default value bug for question fields
+
+AFTER YOU FINISH THIS, WORK ON THE QUIZ TAKING COMPONENT 
 
 DONE:
-add questions to the quiz object array
-    -handle the add to array
-    -handle populating the object fields before appending to array
-add functionality to all types of questions
+- Handle populating multiple choice question options field correctly
+- add questions to the quiz object array
+    - handle the add to array
+    - handle populating the object fields before appending to array
+- add functionality to all types of questions
+- Need to fix quiz details ui, if we did successfully add, then we need to render new question creation fields
+- We also need to render all the previous questions and handle those edits as well
+    - handle the editing and deletion of existing quiz questions
+

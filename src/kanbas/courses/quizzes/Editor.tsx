@@ -12,6 +12,7 @@ export const QuizEditor = () => {
     const [questionType, setQuestionType] = useState("multiple-choice")
     const [questionText, setQuestionText] = useState("")
     const [correctAnswer, setCorrectAnswer] = useState("")
+    const [options, setOptions] = useState(["", "", "", ""])
     const [role, setRole] = useState("")
     const [id, setId] = useState("")
 
@@ -76,32 +77,7 @@ export const QuizEditor = () => {
         console.log("Updated quiz details: ", quizDetails.questions);
     }, [quizDetails.questions])
 
-    const handleAddQuestion = () => {
-        const newQuestion = {
-            type: questionType,
-            text: questionText,
-            options: [],
-            correctAnswer: correctAnswer,
-            points: 1
-        }
 
-        if (questionType === "multiple-choice") {
-            //@ts-expect-error its fine, we can make an interface if this gives issues
-            newQuestion.options = [1, 2, 3, 4].map((num) => ({ text: `Option ${num}` }))
-        } else if (questionType === "true-false") {
-            //@ts-expect-error its fine
-            newQuestion.options = [{ text: "True" }, { text: "False" }]
-        }
-
-        //@ts-expect-error its fine
-        setQuizDetails((prevDetails) => ({
-            ...prevDetails,
-            questions: [...prevDetails.questions, newQuestion],
-        }))
-
-        setQuestionText("")
-        setCorrectAnswer("")
-    }
 
     const handleInputChange = (e: any) => {
         const { name, value } = e.target
@@ -119,7 +95,7 @@ export const QuizEditor = () => {
         }));
     }
 
-    const handleSave = async (publish = false) => {
+    const handleSave = async (publish = false, nav: boolean) => {
         const quizData = {
             ...quizDetails,
             createdBy: id,
@@ -133,11 +109,83 @@ export const QuizEditor = () => {
             await quizClient.updateQuiz(cid as string, qid as string, quizData)
         }
 
-        //doesnt work??
-        navigate(`/kanbas/courses/${cid}/quizzes`)
-
+        if (nav) {
+            navigate(`/kanbas/courses/${cid}/quizzes`)
+        }
     }
 
+    const handleOptionChange = (index: number, value: string) => {
+        const newOptions = [...options]
+        newOptions[index] = value
+        setOptions(newOptions)
+    }
+
+    const handleAddQuestion = () => {
+        console.log("NEW TYPE: ", questionType)
+        console.log("NEW TEXT: ", questionText)
+        console.log("NEW CORRECT: ", correctAnswer)
+        let finalCorrectAnswer = correctAnswer
+        //@ts-expect-error its fine
+        let questionOptions = []
+
+        if (questionType === "multiple-choice") {
+            questionOptions = options
+                .filter(option => option.trim() !== "")
+                .map(option => ({ text: option }))
+
+            if (correctAnswer && questionOptions.length > 0) {
+                const selectedIndex = parseInt(correctAnswer) - 1
+                finalCorrectAnswer = questionOptions[selectedIndex]?.text || questionOptions[0].text
+            }
+        } else if (questionType === "true-false") {
+            //@ts-expect-error its fine
+            questionOptions = [{ text: "True" }, { text: "False" }]
+            finalCorrectAnswer = correctAnswer || "True"
+        }
+
+        const newQuestion = {
+            type: questionType,
+            text: questionText,
+            //@ts-expect-error its fine
+            options: questionOptions,
+            correctAnswer: finalCorrectAnswer,
+            points: 1
+        }
+
+        //@ts-expect-error its fine
+        setQuizDetails((prevDetails) => ({
+            ...prevDetails,
+            questions: [...prevDetails.questions, newQuestion],
+        }))
+
+        setQuestionText("")
+        setCorrectAnswer("")
+        setOptions(["", "", "", ""])
+    }
+
+    const handleDeleteQuestion = (index: number) => {
+        setQuizDetails(prevDetails => ({
+            ...prevDetails,
+            questions: prevDetails.questions.filter((_, i) => i !== index)
+        }));
+    }
+
+    const handleEditQuestion = (question: any, index: number) => {
+        // Load question data into form
+        setQuestionType(question.type);
+        setQuestionText(question.text);
+        setCorrectAnswer(question.correctAnswer);
+
+        if (question.type === "multiple-choice") {
+            // Populate options from existing question
+            const currentOptions = question.options.map((opt: any) => opt.text || "")
+            // Pad with empty strings if less than 4 options
+            setOptions([...currentOptions, ...Array(4 - currentOptions.length).fill("")])
+        }
+
+        // Remove the question from the list
+        handleDeleteQuestion(index);
+    }
 
     return (
         <div className="container">
@@ -396,6 +444,45 @@ export const QuizEditor = () => {
                 </div>
             ) : (
                 <div className="mt-4">
+                    {quizDetails.questions && quizDetails.questions.length > 0 && (
+                        <div className="mb-4">
+                            <h4>Existing Questions</h4>
+                            <ul className="list-group">
+                                {quizDetails.questions.map((question, index) => (
+                                    <li key={index} className="list-group-item">
+                                        <strong>Question {index + 1}:</strong> {question.text} <br />
+                                        <strong>Type:</strong> {question.type} <br />
+                                        {question.options?.length > 0 && (
+                                            <>
+                                                <strong>Options:</strong>
+                                                <ul>
+                                                    {question.options.map((option: any, idx: number) => (
+                                                        <li key={idx}>{option.text || option}</li>
+                                                    ))}
+                                                </ul>
+                                            </>
+                                        )}
+                                        <strong>Correct Answer:</strong> {question.correctAnswer} <br />
+                                        <strong>Points:</strong> {question.points}
+                                        <div>
+                                            <button
+                                                className="btn btn-warning btn-sm me-2"
+                                                onClick={() => handleEditQuestion(question, index)}
+                                            >
+                                                Edit
+                                            </button>
+                                            <button
+                                                className="btn btn-danger btn-sm"
+                                                onClick={() => handleDeleteQuestion(index)}
+                                            >
+                                                Delete
+                                            </button>
+                                        </div>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
                     <h4>Manage Questions</h4>
                     <div className="mb-3">
                         <label htmlFor="question-type" className="form-label">Question Type</label>
@@ -418,31 +505,24 @@ export const QuizEditor = () => {
                             className="form-control"
                             placeholder="Enter the question"
                             rows={3}
+                            onChange={(e) => setQuestionText(e.target.value)}
                         />
                     </div>
 
                     {questionType === "multiple-choice" && (
                         <div className="mb-3">
                             <h5>Options</h5>
-                            {[1, 2, 3, 4].map((num) => (
-                                <div key={num} className="mb-2">
+                            {options.map((option, index) => (
+                                <div key={index} className="mb-2">
                                     <input
                                         type="text"
                                         className="form-control"
-                                        placeholder={`Option ${num}`}
+                                        placeholder={`Option ${index + 1}`}
+                                        value={option}
+                                        onChange={(e) => handleOptionChange(index, e.target.value)}
                                     />
                                 </div>
                             ))}
-                        </div>
-                    )}
-
-                    {questionType === "true-false" && (
-                        <div className="mb-3">
-                            <h5>Answer</h5>
-                            <select id="true-false-answer" className="form-select">
-                                <option value="true">True</option>
-                                <option value="false">False</option>
-                            </select>
                         </div>
                     )}
 
@@ -452,8 +532,8 @@ export const QuizEditor = () => {
                             <select
                                 id="correct-answer"
                                 className="form-select"
-                                value={correctAnswer}
                                 onChange={(e) => setCorrectAnswer(e.target.value)}
+                                value={correctAnswer === "" ? "1" : correctAnswer}
                             >
                                 {[1, 2, 3, 4].map((num) => (
                                     <option key={num} value={num}>
@@ -467,8 +547,8 @@ export const QuizEditor = () => {
                             <select
                                 id="correct-answer"
                                 className="form-select"
-                                value={correctAnswer}
                                 onChange={(e) => setCorrectAnswer(e.target.value)}
+                                value={correctAnswer || "true"}
                             >
                                 <option value="true">True</option>
                                 <option value="false">False</option>
@@ -481,8 +561,8 @@ export const QuizEditor = () => {
                                 id="correct-answer"
                                 className="form-control"
                                 placeholder="Enter correct answer"
-                                value={correctAnswer}
                                 onChange={(e) => setCorrectAnswer(e.target.value)}
+                                value={correctAnswer || ""}
                             />
                         )}
                     </div>
@@ -499,13 +579,13 @@ export const QuizEditor = () => {
                 </Link>
                 <button
                     className="btn btn-primary me-2"
-                    onClick={() => handleSave(false)}
+                    onClick={() => handleSave(false, true)}
                 >
                     Save
                 </button>
                 <button
                     className="btn btn-success"
-                    onClick={() => handleSave(true)}
+                    onClick={() => handleSave(true, true)}
                 >
                     Save & Publish
                 </button>
