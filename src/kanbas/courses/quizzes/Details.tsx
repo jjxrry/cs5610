@@ -60,18 +60,19 @@ export const QuizDetails = () => {
             <h3>Quiz Details</h3>
             <div>
                 {role === "FACULTY" ? (
-                    <>
-                        <button>
+                    <div className="d-flex justify-content-around"
+                        style={{ "width": "6vw" }}>
+                        <Link to={`/kanbas/courses/${cid}/quizzes/${qid}/take`}>
                             Preview
-                        </button>
+                        </Link>
                         <Link to={`/kanbas/courses/${cid}/quizzes/${qid}/editor`}>
                             Edit
                         </Link>
-                    </>
+                    </div>
                 ) : (
-                    <button>
+                    <Link to={`/kanbas/courses/${cid}/quizzes/${qid}/take`}>
                         Start Quiz
-                    </button>
+                    </Link>
                 )}
             </div>
 

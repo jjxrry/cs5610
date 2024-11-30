@@ -14,10 +14,18 @@ under quiz title needs availability, also needs the score if current user === st
 points will be set in totalPoints, where we can sum the value of each question with foreach(q => sum + q.value)
 
 
-QUIZ DETAILS:
-Add quiz preview functionality
-fill out all of the details on the screen
+TAKE QUIZ DETAILS:
+Figure out how to keep score history, and check his wrong/right answers
+Create the TakeQuiz component
+Add Protected Controls if user is faculty to prevent editing
+Add a latest quiz history if attempts are maxxed out
+    - GetQuiz
+    - GetLatestAttempt
 
+
+Answer Comparison:
+    compare parseInt(correctAnswer) with index of options when we make that map 
+    so it will look like right = parseInt(correctAnswer) === userAnswerIndex (1-4)
 
 QUIZ QUESTIONS:
 DOING:
@@ -26,6 +34,7 @@ DOING:
 AFTER YOU FINISH THIS, WORK ON THE QUIZ TAKING COMPONENT 
 
 DONE:
+- FIX THE QUESTION TYPE AND TEXT NOT SAVING ON HANDLESAVE, works with HANDLEADDQUESTION
 - Handle populating multiple choice question options field correctly
 - add questions to the quiz object array
     - handle the add to array

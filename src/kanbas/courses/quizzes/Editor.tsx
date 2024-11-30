@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { useNavigate, useParams } from "react-router";
+import { useLocation, useNavigate, useParams } from "react-router";
 import { Link } from "react-router-dom";
 import * as userClient from "../../account/client"
 import * as quizClient from "./client"
@@ -7,14 +7,23 @@ import * as quizClient from "./client"
 export const QuizEditor = () => {
     const { cid, qid } = useParams()
     const navigate = useNavigate()
+    const location = useLocation()
 
     const [activeTab, setActiveTab] = useState("details")
     const [questionType, setQuestionType] = useState("multiple-choice")
-    const [questionText, setQuestionText] = useState("")
+    const [questionText, setQuestionText] = useState("test")
     const [correctAnswer, setCorrectAnswer] = useState("")
+    const [points, setPoints] = useState(1)
     const [options, setOptions] = useState(["", "", "", ""])
     const [role, setRole] = useState("")
     const [id, setId] = useState("")
+
+    // useLocation for render to questions instead of details
+    useEffect(() => {
+        if (location.state?.startOn === "questions") {
+            setActiveTab("questions");
+        }
+    }, [location.state]);
 
     //add state for all of the quiz object fields
     const [quizDetails, setQuizDetails] = useState({
@@ -103,6 +112,8 @@ export const QuizEditor = () => {
             course: cid,
         }
 
+        console.log("QUIZ ON SAVE: ", quizDetails)
+
         if (qid === "new") {
             await quizClient.createQuiz(cid as string, quizData)
         } else {
@@ -138,7 +149,6 @@ export const QuizEditor = () => {
                 finalCorrectAnswer = questionOptions[selectedIndex]?.text || questionOptions[0].text
             }
         } else if (questionType === "true-false") {
-            //@ts-expect-error its fine
             questionOptions = [{ text: "True" }, { text: "False" }]
             finalCorrectAnswer = correctAnswer || "True"
         }
@@ -149,7 +159,7 @@ export const QuizEditor = () => {
             //@ts-expect-error its fine
             options: questionOptions,
             correctAnswer: finalCorrectAnswer,
-            points: 1
+            points: points
         }
 
         //@ts-expect-error its fine
@@ -161,6 +171,7 @@ export const QuizEditor = () => {
         setQuestionText("")
         setCorrectAnswer("")
         setOptions(["", "", "", ""])
+        setPoints(1)
     }
 
     const handleDeleteQuestion = (index: number) => {
@@ -171,19 +182,16 @@ export const QuizEditor = () => {
     }
 
     const handleEditQuestion = (question: any, index: number) => {
-        // Load question data into form
         setQuestionType(question.type);
         setQuestionText(question.text);
         setCorrectAnswer(question.correctAnswer);
 
         if (question.type === "multiple-choice") {
-            // Populate options from existing question
             const currentOptions = question.options.map((opt: any) => opt.text || "")
             // Pad with empty strings if less than 4 options
             setOptions([...currentOptions, ...Array(4 - currentOptions.length).fill("")])
         }
 
-        // Remove the question from the list
         handleDeleteQuestion(index);
     }
 
@@ -509,6 +517,19 @@ export const QuizEditor = () => {
                         />
                     </div>
 
+                    <div className="mb-3">
+                        <label htmlFor="question-points" className="form-label">Points for Question</label>
+
+                        <input
+                            type="number"
+                            id="question-points"
+                            className="form-control"
+                            placeholder="1"
+                            onChange={(e) => setPoints(parseInt(e.target.value, 10))}
+                            value={points || "1"}
+                        />
+                    </div>
+
                     {questionType === "multiple-choice" && (
                         <div className="mb-3">
                             <h5>Options</h5>
@@ -579,7 +600,7 @@ export const QuizEditor = () => {
                 </Link>
                 <button
                     className="btn btn-primary me-2"
-                    onClick={() => handleSave(false, true)}
+                    onClick={() => handleSave(false, false)}
                 >
                     Save
                 </button>
