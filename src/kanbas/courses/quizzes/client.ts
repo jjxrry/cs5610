@@ -50,3 +50,18 @@ export const unpublishQuiz = async (courseId: string, quizId: string) => {
     const { data } = await axiosWithCredentials.put(`${QUIZZES_API}/${courseId}/quizzes/${quizId}/unpublish`);
     return data;
 };
+
+export const getAttempt = async (courseId: string, quizId: string, attemptId: string) => {
+    const { data } = await axiosWithCredentials.get(`${QUIZZES_API}/${courseId}/quizzes/${quizId}/${attemptId}`)
+    return data
+}
+
+export const createAttempt = async (courseId: string, quizId: string, attempt: any) => {
+    const { data } = await axiosWithCredentials.post(`${QUIZZES_API}/${courseId}/quizzes/${quizId}/attempts`, attempt)
+    return data
+}
+
+export const updateAttempt = async (courseId: string, quizId: string, attemptId: string) => {
+    const { data } = await axiosWithCredentials.put(`${QUIZZES_API}/${courseId}/quizzes/${quizId}/${attemptId}`)
+    return data
+}
