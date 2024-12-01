@@ -16,13 +16,13 @@ export const TakeQuiz = () => {
     const [questionIndex, setQuestionIndex] = useState(0)
     const [attemptCount, setAttemptCount] = useState(0)
     const [startTime, setStartTime] = useState("")
-    const [endTime, setEndTime] = useState("")
+    // const [endTime, setEndTime] = useState("")
     const [timeRemaining, setTimeRemaining] = useState(null)
     const [quizStarted, setQuizStarted] = useState(false)
-    const [totalPoints, setTotalPoints] = useState(0)
+    // const [totalPoints, setTotalPoints] = useState(0)
     const [scoringIndex, setScoringIndex] = useState(0)
     const [prevScores, setPrevScores] = useState([])
-    const [scoreObject, setScoreObject] = useState({})
+    // const [scoreObject, setScoreObject] = useState({})
 
     const formatDate = (date: any) => {
         const d = new Date(date)
@@ -47,8 +47,9 @@ export const TakeQuiz = () => {
             }));
             setQuestions(quiz?.questions || [])
             setPrevScores(quiz?.scores || [])
-            const startStamp = new Date().getTime().toString()
+            const startStamp = new Date().getTime()
             setStartTime(formatDate(startStamp))
+            console.log("Start Time INITIAL STATE: ", startTime)
             setQuizStarted(true)
         };
         fetchInitialData();
@@ -93,39 +94,45 @@ export const TakeQuiz = () => {
 
     }
 
-    const createScoreObject = (score: number) => {
-        const obj = {
-            score: score,
-            endTime: endTime,
-        }
-        return obj
-    }
+    // const handleAttemptScoring = () => {
+    //     while (scoringIndex > questions.length) {
+    //         //@ts-expect-error its fine
+    //         if (userAnswers[scoringIndex].selectedAnswer === questions[scoringIndex].correctAnswer) {
+    //             //@ts-expect-error its fine
+    //             setTotalPoints(totalPoints + questions[scoringIndex].points)
+    //             setScoringIndex(scoringIndex + 1)
+    //             console.log("ATTEMPT SCORE IS: ", totalPoints)
+    //         }
+    //     }
+    //
+    //     return totalPoints
+    // }
 
-    const handleAttemptScoring = () => {
-        while (scoringIndex > questions.length) {
+    const calculateScore = () => {
+        let points = 0
+        questions.forEach((question, index) => {
             //@ts-expect-error its fine
-            if (userAnswers[scoringIndex].selectedAnswer === questions[scoringIndex].correctAnswer) {
+            if (userAnswers[index]?.selectedAnswer === question.correctAnswer) {
                 //@ts-expect-error its fine
-                setTotalPoints(totalPoints + questions[scoringIndex].points)
-                setScoringIndex(scoringIndex + 1)
-                console.log("ATTEMPT SCORE IS: ", totalPoints)
+                points += question.points
             }
-        }
-
-        return totalPoints
+        })
+        return points
     }
 
     // handle submit attempt
     const handleQuizSubmission = async () => {
         // handle timers
         setQuizStarted(false)
-        const endTimeStamp = formatDate(new Date().getTime.toString())
-        setEndTime(endTimeStamp)
+        const endTimeCreation = new Date()
+        const formattedEndTime = formatDate(endTimeCreation)
 
         // handle score calculation and object formatting
-        const calcScore = handleAttemptScoring()
-        const finalScore = createScoreObject(calcScore)
-        setScoreObject(finalScore)
+        const calcScore = calculateScore()
+        const scoreObject = {
+            score: calcScore,
+            endTime: formattedEndTime,
+        }
 
         const attempt = {
             user: id as string,
@@ -133,15 +140,15 @@ export const TakeQuiz = () => {
             courseId: cid as string,
             attemptNumber: attemptCount + 1,
             answers: userAnswers,
-            totalPoints: totalPoints,
+            //@ts-expect-error its fine
+            totalPoints: quizDetails?.totalPoints,
             scores: [...prevScores, scoreObject],
             startTime: startTime,
-            endTime: endTime,
+            endTime: formattedEndTime,
         }
 
-        //this is broken, POST at endpoint returns 404
         await quizClient.createAttempt(cid as string, qid as string, attempt)
-        // navigate(`/kanbas/courses/${cid}/quizzes`)
+        navigate(`/kanbas/courses/${cid}/quizzes`)
     }
 
     // Render question types

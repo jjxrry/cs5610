@@ -105,11 +105,18 @@ export const QuizEditor = () => {
     }
 
     const handleSave = async (publish = false, nav: boolean) => {
+        //calc total points
+        const totalPts = quizDetails.questions.reduce((sum, q) => {
+            //@ts-expect-error its fine
+            return sum + q.points;
+        }, 0)
+
         const quizData = {
             ...quizDetails,
             createdBy: id,
             published: publish,
             course: cid,
+            totalPoints: totalPts,
         }
 
         console.log("QUIZ ON SAVE: ", quizDetails)
@@ -569,10 +576,10 @@ export const QuizEditor = () => {
                                 id="correct-answer"
                                 className="form-select"
                                 onChange={(e) => setCorrectAnswer(e.target.value)}
-                                value={correctAnswer || "true"}
+                                value={correctAnswer || "True"}
                             >
-                                <option value="true">True</option>
-                                <option value="false">False</option>
+                                <option value="True">True</option>
+                                <option value="False">False</option>
                             </select>
                         )}
 

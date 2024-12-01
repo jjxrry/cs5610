@@ -9,7 +9,7 @@ QUIZZES SCREEN:
 
 
 TAKE QUIZ COMPONENT:
-- Finish handleAttemptSubmission
+- Issue with submission answer/score tracking, we need to fix the compare for userAnswer[i] === question[i].answer
 - need state to handle if prevScores !== [] AND role === "STUDENT", render a div for previous highest score
 
 We figured this out i think
@@ -47,3 +47,4 @@ DONE:
 - Add Protected Controls if user is faculty to prevent editing
 - Create the TakeQuiz component
 - ADD THE ROUTES, ADD THE CLIENT REQUESTS
+- Finish handleAttemptSubmission

@@ -57,10 +57,7 @@ export const getAttempt = async (courseId: string, quizId: string, attemptId: st
 }
 
 export const createAttempt = async (courseId: string, quizId: string, attempt: any) => {
-    console.log(`${QUIZZES_API}/${courseId}/quizzes/${quizId}/attempts `)
-    console.log("ATTEMPT POST")
     const { data } = await axiosWithCredentials.post(`${QUIZZES_API}/${courseId}/quizzes/${quizId}/attempts`, attempt)
-    console.log("DATA POST: ", data)
     return data
 }
 
