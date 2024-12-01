@@ -8,16 +8,18 @@ QUIZZES SCREEN:
 - points will be set in totalPoints, where we can sum the value of each question with foreach(q => sum + q.value)
 
 
-TAKE QUIZ DETAILS:
-- Figure out how to keep score history, and check his wrong/right answers
-- Create the TakeQuiz component
-- Add a latest quiz history if attempts are maxxed out
-    - GetQuiz
-    - GetLatestAttempt
-- ADD THE ROUTES, ADD THE CLIENT REQUESTS
+TAKE QUIZ COMPONENT:
+- Finish handleAttemptSubmission
+- need state to handle if prevScores !== [] AND role === "STUDENT", render a div for previous highest score
+
+We figured this out i think
+<!-- - Figure out if we store all the user answers then check for score? -->
+<!--     - we have a handleAttemptScoring function that will run before the dao.createAttempt, where we iterate through questions/userAnswers[scoringIndex], then we sum the value based on if the user is correct -->
+<!--     - then finally, we submit -->
 
 
-Answer Comparison:
+ANSWER COMPARISON:
+i think these are done already
 - compare parseInt(correctAnswer) with index of options when we make that map 
 - so it will look like right = parseInt(correctAnswer) === userAnswerIndex (1-4)
 
@@ -43,4 +45,5 @@ DONE:
     - quizId: objectid
     - latest: true
 - Add Protected Controls if user is faculty to prevent editing
-
+- Create the TakeQuiz component
+- ADD THE ROUTES, ADD THE CLIENT REQUESTS

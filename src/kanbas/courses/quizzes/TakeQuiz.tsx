@@ -15,10 +15,14 @@ export const TakeQuiz = () => {
     const [userAnswers, setUserAnswers] = useState([])
     const [questionIndex, setQuestionIndex] = useState(0)
     const [attemptCount, setAttemptCount] = useState(0)
-    const [startTime, setStartTime] = useState(null)
-    // const [endTime, setEndTime] = useState(null)
+    const [startTime, setStartTime] = useState("")
+    const [endTime, setEndTime] = useState("")
     const [timeRemaining, setTimeRemaining] = useState(null)
     const [quizStarted, setQuizStarted] = useState(false)
+    const [totalPoints, setTotalPoints] = useState(0)
+    const [scoringIndex, setScoringIndex] = useState(0)
+    const [prevScores, setPrevScores] = useState([])
+    const [scoreObject, setScoreObject] = useState({})
 
     const formatDate = (date: any) => {
         const d = new Date(date)
@@ -42,6 +46,10 @@ export const TakeQuiz = () => {
                 points: 0
             }));
             setQuestions(quiz?.questions || [])
+            setPrevScores(quiz?.scores || [])
+            const startStamp = new Date().getTime().toString()
+            setStartTime(formatDate(startStamp))
+            setQuizStarted(true)
         };
         fetchInitialData();
     }, [cid, qid]);
@@ -51,16 +59,21 @@ export const TakeQuiz = () => {
             console.log("QUIZ FETCHED: ", quizDetails)
             //@ts-expect-error its fine
             console.log("QUESTIONS: ", quizDetails.questions)
+            console.log("USER ANSWER UPDATE: ", userAnswers)
         }
         //@ts-expect-error its fine
-    }, [quizDetails, quizDetails?.questions])
+    }, [quizDetails, quizDetails?.questions, userAnswers])
 
     // handle answer select
     const handleAnswerSelect = (answer: string) => {
         setUserAnswers((prev) => {
             const updatedAnswers = [...prev]
             //@ts-expect-error its fine
-            updatedAnswers[questionIndex].selectedAnswer = answer
+            updatedAnswers[questionIndex] = {
+                //@ts-expect-error its fine
+                ...updatedAnswers[questionIndex],
+                selectedAnswer: answer,
+            }
             return updatedAnswers
         })
 
@@ -80,21 +93,53 @@ export const TakeQuiz = () => {
 
     }
 
+    const createScoreObject = (score: number) => {
+        const obj = {
+            score: score,
+            endTime: endTime,
+        }
+        return obj
+    }
+
+    const handleAttemptScoring = () => {
+        while (scoringIndex > questions.length) {
+            //@ts-expect-error its fine
+            if (userAnswers[scoringIndex].selectedAnswer === questions[scoringIndex].correctAnswer) {
+                //@ts-expect-error its fine
+                setTotalPoints(totalPoints + questions[scoringIndex].points)
+                setScoringIndex(scoringIndex + 1)
+                console.log("ATTEMPT SCORE IS: ", totalPoints)
+            }
+        }
+
+        return totalPoints
+    }
+
     // handle submit attempt
     const handleQuizSubmission = async () => {
-        // const totalPoints = userAnswers.reduce((sum, ans) => sum + (ans?.points || 0), 0)
+        // handle timers
+        setQuizStarted(false)
+        const endTimeStamp = formatDate(new Date().getTime.toString())
+        setEndTime(endTimeStamp)
+
+        // handle score calculation and object formatting
+        const calcScore = handleAttemptScoring()
+        const finalScore = createScoreObject(calcScore)
+        setScoreObject(finalScore)
+
         const attempt = {
             user: id as string,
             quizId: qid as string,
             courseId: cid as string,
             attemptNumber: attemptCount + 1,
             answers: userAnswers,
-            totalPoints: 111,
-            scores: [],
-            // startTime:,
-            // endTime:,
+            totalPoints: totalPoints,
+            scores: [...prevScores, scoreObject],
+            startTime: startTime,
+            endTime: endTime,
         }
 
+        //this is broken, POST at endpoint returns 404
         await quizClient.createAttempt(cid as string, qid as string, attempt)
         // navigate(`/kanbas/courses/${cid}/quizzes`)
     }
@@ -199,6 +244,7 @@ export const TakeQuiz = () => {
 
             <ProtectedControls>
                 <div className="space-y-2 my-4">
+                    <h5 className="font-bold mt-4 rounded bg-danger text-white p-2 w-50">❕ This is a preview of the published version of the quiz</h5>
                     <Link to={`/kanbas/courses/${cid}/quizzes/${qid}/editor`} className="text-blue-600 hover:underline block">
                         Back to Editor
                     </Link>
@@ -207,7 +253,6 @@ export const TakeQuiz = () => {
                         state={{ startOn: "questions" }}>
                         Edit Quiz
                     </Link>
-                    <h5 className="font-bold mt-4">Faculty Preview</h5>
                 </div>
             </ProtectedControls>
 
@@ -222,6 +267,8 @@ export const TakeQuiz = () => {
                     <div className="mb-6">
                         {renderQuestion()}
                     </div>
+
+                    <br />
 
                     <div className="flex space-x-4 mt-2">
                         {questionIndex > 0 && (
@@ -242,7 +289,6 @@ export const TakeQuiz = () => {
                         )}
                     </div>
 
-                    <br />
                     <hr />
                     <div className="mt-6">
                         <button
