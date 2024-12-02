@@ -7,6 +7,7 @@ export const QuizDetails = () => {
     const { qid, cid } = useParams()
     const [role, setRole] = useState("")
     const [id, setId] = useState("")
+    const [canAttempt, setCanAttempt] = useState(true)
     //fetch existing data if exists, if qid !== "new"
     const [quizDetails, setQuizDetails] = useState({
         title: "New Quiz",

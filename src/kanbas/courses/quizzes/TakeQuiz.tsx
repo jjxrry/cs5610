@@ -11,18 +11,17 @@ export const TakeQuiz = () => {
     const navigate = useNavigate()
     const [id, setId] = useState("")
     const [quizDetails, setQuizDetails] = useState(null)
+    const [attemptDetails, setAttemptDetails] = useState(null)
     const [questions, setQuestions] = useState([])
     const [userAnswers, setUserAnswers] = useState([])
     const [questionIndex, setQuestionIndex] = useState(0)
-    const [attemptCount, setAttemptCount] = useState(0)
+    // const [attemptCount, setAttemptCount] = useState(0)
     const [startTime, setStartTime] = useState("")
-    // const [endTime, setEndTime] = useState("")
     const [timeRemaining, setTimeRemaining] = useState(null)
     const [quizStarted, setQuizStarted] = useState(false)
-    // const [totalPoints, setTotalPoints] = useState(0)
-    const [scoringIndex, setScoringIndex] = useState(0)
     const [prevScores, setPrevScores] = useState([])
-    // const [scoreObject, setScoreObject] = useState({})
+    const [existingAttempt, setExistingAttempt] = useState(false)
+    const [highScore, setHighScore] = useState(0)
 
     const formatDate = (date: any) => {
         const d = new Date(date)
@@ -39,6 +38,21 @@ export const TakeQuiz = () => {
             setId(user._id);
             const quiz = await quizClient.fetchQuizById(cid as string, qid as string);
             setQuizDetails(quiz);
+
+            const attempt = await quizClient.getAttemptByUserId(cid as string, qid as string, user._id as string)
+            // console.log("ATTEMPT FETCH: ", attempt)
+            if (attempt) {
+                setAttemptDetails(attempt)
+            }
+
+            //if there quizDetails.scores.length > 0, then we set existingAttempt to true
+            if (attempt.scores && attempt.scores.length > 0) {
+                setExistingAttempt(true)
+                //@ts-expect-error its fine
+                const bestScore = Math.max(...attempt.scores.map(scoreObj => scoreObj.score))
+                setHighScore(bestScore)
+            }
+
             //@ts-expect-error its fine
             setUserAnswers(new Array(quiz?.questions?.length || 0).fill({
                 selectedAnswer: "",
@@ -49,18 +63,19 @@ export const TakeQuiz = () => {
             setPrevScores(quiz?.scores || [])
             const startStamp = new Date().getTime()
             setStartTime(formatDate(startStamp))
-            console.log("Start Time INITIAL STATE: ", startTime)
+            // console.log("Start Time INITIAL STATE: ", startTime)
             setQuizStarted(true)
         };
         fetchInitialData();
     }, [cid, qid]);
 
+    // comment out when deployed then check for bugs
     useEffect(() => {
         if (quizDetails) {
             console.log("QUIZ FETCHED: ", quizDetails)
             //@ts-expect-error its fine
             console.log("QUESTIONS: ", quizDetails.questions)
-            console.log("USER ANSWER UPDATE: ", userAnswers)
+            // console.log("USER ANSWER UPDATE: ", userAnswers)
         }
         //@ts-expect-error its fine
     }, [quizDetails, quizDetails?.questions, userAnswers])
@@ -94,29 +109,19 @@ export const TakeQuiz = () => {
 
     }
 
-    // const handleAttemptScoring = () => {
-    //     while (scoringIndex > questions.length) {
-    //         //@ts-expect-error its fine
-    //         if (userAnswers[scoringIndex].selectedAnswer === questions[scoringIndex].correctAnswer) {
-    //             //@ts-expect-error its fine
-    //             setTotalPoints(totalPoints + questions[scoringIndex].points)
-    //             setScoringIndex(scoringIndex + 1)
-    //             console.log("ATTEMPT SCORE IS: ", totalPoints)
-    //         }
-    //     }
-    //
-    //     return totalPoints
-    // }
-
     const calculateScore = () => {
         let points = 0
-        questions.forEach((question, index) => {
+        for (let i = 0; i < userAnswers.length; i++) {
+            // console.log(`SELECTED ANSWER for QUESTION ${i + 1}: `, userAnswers[i].selectedAnswer)
+            // console.log(`CORRECT ANSWER for ${i + 1}: `, questions[i].correctAnswer)
             //@ts-expect-error its fine
-            if (userAnswers[index]?.selectedAnswer === question.correctAnswer) {
+            if (userAnswers[i]?.selectedAnswer === questions[i].correctAnswer) {
                 //@ts-expect-error its fine
-                points += question.points
+                points += questions[i].points
+                //@ts-expect-error its fine
+                userAnswers[i].isCorrect = true
             }
-        })
+        }
         return points
     }
 
@@ -129,6 +134,7 @@ export const TakeQuiz = () => {
 
         // handle score calculation and object formatting
         const calcScore = calculateScore()
+        // console.log("calcScore: ", calcScore)
         const scoreObject = {
             score: calcScore,
             endTime: formattedEndTime,
@@ -138,7 +144,8 @@ export const TakeQuiz = () => {
             user: id as string,
             quizId: qid as string,
             courseId: cid as string,
-            attemptNumber: attemptCount + 1,
+            //@ts-expect-error its fine
+            attemptNumber: quizDetails?.attemptNumber + 1 || 1,
             answers: userAnswers,
             //@ts-expect-error its fine
             totalPoints: quizDetails?.totalPoints,
@@ -198,8 +205,8 @@ export const TakeQuiz = () => {
                         <p className="font-medium text-lg">{text}</p>
                         <div className="space-y-2">
                             {[
-                                { value: "true", label: "True" },
-                                { value: "false", label: "False" }
+                                { value: "True", label: "True" },
+                                { value: "False", label: "False" }
                             ].map((option) => (
                                 <div>
                                     <label key={option.value} className="flex items-center space-x-2">
@@ -262,6 +269,12 @@ export const TakeQuiz = () => {
                     </Link>
                 </div>
             </ProtectedControls>
+            {existingAttempt && highScore !== 0 && (
+                <div>
+                    <p>Best Previous Score: {highScore}</p>
+                </div>
+
+            )}
 
             {questions.length > 0 && (
                 <div className="">

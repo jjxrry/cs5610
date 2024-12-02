@@ -9,8 +9,7 @@ QUIZZES SCREEN:
 
 
 TAKE QUIZ COMPONENT:
-- Issue with submission answer/score tracking, we need to fix the compare for userAnswer[i] === question[i].answer
-- need state to handle if prevScores !== [] AND role === "STUDENT", render a div for previous highest score
+- implement the attempt limit in Details component
 
 We figured this out i think
 <!-- - Figure out if we store all the user answers then check for score? -->
@@ -48,3 +47,5 @@ DONE:
 - Create the TakeQuiz component
 - ADD THE ROUTES, ADD THE CLIENT REQUESTS
 - Finish handleAttemptSubmission
+- Issue with submission answer/score tracking, we need to fix the compare for userAnswer[i] === question[i].answer
+- need state to handle if prevScores !== [] AND role === "STUDENT", render a div for previous highest score

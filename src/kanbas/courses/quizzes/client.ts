@@ -51,8 +51,8 @@ export const unpublishQuiz = async (courseId: string, quizId: string) => {
     return data;
 };
 
-export const getAttempt = async (courseId: string, quizId: string, attemptId: string) => {
-    const { data } = await axiosWithCredentials.get(`${QUIZZES_API}/${courseId}/quizzes/${quizId}/${attemptId}`)
+export const getAttemptByUserId = async (courseId: string, quizId: string, userId: string) => {
+    const { data } = await axiosWithCredentials.get(`${QUIZZES_API}/${courseId}/quizzes/${quizId}/attempts/${userId}`)
     return data
 }
 
