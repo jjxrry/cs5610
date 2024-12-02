@@ -68,7 +68,7 @@ export const createAttempt = async (courseId: string, quizId: string, attempt: a
     return data
 }
 
-export const updateAttempt = async (courseId: string, quizId: string, attemptId: string) => {
-    const { data } = await axiosWithCredentials.put(`${QUIZZES_API}/${courseId}/quizzes/${quizId}/${attemptId}`)
+export const updateAttempt = async (courseId: string, quizId: string, attemptId: string, attempt: any) => {
+    const { data } = await axiosWithCredentials.put(`${QUIZZES_API}/${courseId}/quizzes/${quizId}/${attemptId}`, attempt)
     return data
 }

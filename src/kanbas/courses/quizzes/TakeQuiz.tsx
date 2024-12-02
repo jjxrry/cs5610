@@ -156,12 +156,20 @@ export const TakeQuiz = () => {
             answers: userAnswers,
             //@ts-expect-error its fine
             totalPoints: quizDetails?.totalPoints,
-            scores: [...prevScores, scoreObject],
+            //@ts-expect-error its fine
+            scores: [...(attemptDetails?.scores || []), scoreObject],
             startTime: startTime,
             endTime: formattedEndTime,
         }
 
-        await quizClient.createAttempt(cid as string, qid as string, attempt)
+        if (!existingAttempt) {
+            await quizClient.createAttempt(cid as string, qid as string, attempt)
+        } else {
+            console.log("EXISTING ATTEMPT ID: ", attemptDetails)
+            // this is firing, we need to fix what is updated
+            //@ts-expect-error its fine
+            await quizClient.updateAttempt(cid as string, qid as string, attemptDetails._id, attempt)
+        }
         navigate(`/kanbas/courses/${cid}/quizzes`)
     }
 

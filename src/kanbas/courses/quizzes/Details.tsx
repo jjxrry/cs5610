@@ -8,6 +8,8 @@ export const QuizDetails = () => {
     const [role, setRole] = useState("")
     const [id, setId] = useState("")
     const [attempts, setAttempts] = useState(0)
+    const [highScore, setHighScore] = useState(0)
+    const [existingAttempt, setExistingAttempt] = useState(false)
     //fetch existing data if exists, if qid !== "new"
     const [quizDetails, setQuizDetails] = useState({
         title: "New Quiz",
@@ -47,12 +49,20 @@ export const QuizDetails = () => {
             let attempt
             try {
                 attempt = await quizClient.getAttemptByUserId(cid as string, qid as string, user._id as string)
-                // console.log("ATTEMPT FETCH: ", attempt)
+                console.log("fetch params: ", cid, qid, user._id)
+                console.log("ATTEMPT FETCH: ", attempt)
                 if (attempt) {
                     setAttempts(attempt.scores.length)
                 }
             } catch (error) {
                 console.log("No attempts yet: ", error)
+            }
+
+            if (attempt?.scores && attempt?.scores.length > 0) {
+                setExistingAttempt(true)
+                //@ts-expect-error its fine
+                const bestScore = Math.max(...attempt.scores.map(scoreObj => scoreObj.score))
+                setHighScore(bestScore)
             }
 
 
@@ -68,6 +78,7 @@ export const QuizDetails = () => {
         return `${year}-${month}-${day}`
     }
 
+    // this is wrong
     const attemptsRemaining = quizDetails?.numAttempts - attempts
 
     return (
@@ -105,14 +116,18 @@ export const QuizDetails = () => {
                     <h3>Details</h3>
                     <p><strong>Quiz Type:</strong> {quizDetails.quizType}</p>
                     <p><strong>Points:</strong> {quizDetails.totalPoints}</p>
+                    {existingAttempt && (
+                        <p><strong>Best Score:</strong> {highScore}</p>
+                    )}
                     <p><strong>Assignment Group:</strong> {quizDetails.assignmentGroup}</p>
                     <p><strong>Shuffle Answers:</strong> {quizDetails.shuffleAnswers ? "Yes" : "No"}</p>
                     <p><strong>Time Limit:</strong> {quizDetails.timeLimit} Minutes</p>
                     <p><strong>Multiple Attempts:</strong> {quizDetails.multipleAttempts ? "Yes" : "No"}</p>
+
                     {quizDetails.multipleAttempts && (
                         <>
                             <p><strong>How Many Attempts:</strong> {quizDetails.numAttempts}</p>
-                            <p><strong>Attempts Remaining:</strong> {quizDetails.numAttempts - attempts}</p>
+                            <p><strong>Attempts Remaining:</strong> {attemptsRemaining}</p>
                         </>
                     )}
                     <p><strong>Show Correct Answers:</strong> {quizDetails.showCorrectAnswers ? "Yes" : "No"}</p>

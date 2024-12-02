@@ -9,7 +9,6 @@ QUIZZES SCREEN:
 
 
 TAKE QUIZ COMPONENT:
-- implement the attempt limit in Details component
 - deploy that bitch
 - (optional if no time) add the correct answer vs wrong answer/quiz review component
 
@@ -51,3 +50,6 @@ DONE:
 - Finish handleAttemptSubmission
 - Issue with submission answer/score tracking, we need to fix the compare for userAnswer[i] === question[i].answer
 - need state to handle if prevScores !== [] AND role === "STUDENT", render a div for previous highest score
+- implement the attempt limit in Details component
+- quiz attempts aren't being fetched based on userId correctly
+- quiz submission keeps creating new attempts instead of appending to the same attempt.scores
