@@ -22,6 +22,7 @@ export const TakeQuiz = () => {
     const [prevScores, setPrevScores] = useState([])
     const [existingAttempt, setExistingAttempt] = useState(false)
     const [highScore, setHighScore] = useState(0)
+    const [attempts, setAttempts] = useState(0)
 
     const formatDate = (date: any) => {
         const d = new Date(date)
@@ -45,6 +46,7 @@ export const TakeQuiz = () => {
                 // console.log("ATTEMPT FETCH: ", attempt)
                 if (attempt) {
                     setAttemptDetails(attempt)
+                    setAttempts(attempt.scores.length)
                 }
             } catch (error) {
                 console.log("No attempts yet: ", error)
@@ -63,7 +65,7 @@ export const TakeQuiz = () => {
                 selectedAnswer: "",
                 isCorrect: false,
                 points: 0
-            }));
+            }))
             setQuestions(quiz?.questions || [])
             setPrevScores(quiz?.scores || [])
             const startStamp = new Date().getTime()
@@ -71,7 +73,7 @@ export const TakeQuiz = () => {
             // console.log("Start Time INITIAL STATE: ", startTime)
             setQuizStarted(true)
         };
-        fetchInitialData();
+        fetchInitialData()
     }, [cid, qid]);
 
     // comment out when deployed then check for bugs
@@ -276,7 +278,8 @@ export const TakeQuiz = () => {
             </ProtectedControls>
 
             <div className="d-flex flex-row gap-3">
-                <p>Attempts Remaining: 1</p>
+                {/* @ts-expect-error its fine */}
+                <p>Attempts Remaining: {quizDetails?.numAttempts - attempts}</p>
                 {existingAttempt && highScore !== 0 && (
                     <p>Best Previous Score: {highScore}</p>
 

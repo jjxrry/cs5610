@@ -7,7 +7,7 @@ export const QuizDetails = () => {
     const { qid, cid } = useParams()
     const [role, setRole] = useState("")
     const [id, setId] = useState("")
-    const [canAttempt, setCanAttempt] = useState(true)
+    const [attempts, setAttempts] = useState(0)
     //fetch existing data if exists, if qid !== "new"
     const [quizDetails, setQuizDetails] = useState({
         title: "New Quiz",
@@ -44,6 +44,18 @@ export const QuizDetails = () => {
                 // console.log("DETAILS FETCHED QUIZ: ", fetchedQuiz)
                 setQuizDetails(fetchedQuiz)
             }
+            let attempt
+            try {
+                attempt = await quizClient.getAttemptByUserId(cid as string, qid as string, user._id as string)
+                // console.log("ATTEMPT FETCH: ", attempt)
+                if (attempt) {
+                    setAttempts(attempt.scores.length)
+                }
+            } catch (error) {
+                console.log("No attempts yet: ", error)
+            }
+
+
         }
         fetchUserRoleAndQuiz()
     }, [cid, qid])
@@ -55,6 +67,8 @@ export const QuizDetails = () => {
         const year = d.getFullYear()
         return `${year}-${month}-${day}`
     }
+
+    const attemptsRemaining = quizDetails?.numAttempts - attempts
 
     return (
         <div>
@@ -71,9 +85,15 @@ export const QuizDetails = () => {
                         </Link>
                     </div>
                 ) : (
-                    <Link to={`/kanbas/courses/${cid}/quizzes/${qid}/take`}>
-                        Start Quiz
-                    </Link>
+                    attemptsRemaining > 0 ? (
+                        <Link to={`/kanbas/courses/${cid}/quizzes/${qid}/take`}>
+                            Start Quiz
+                        </Link>
+                    ) : (
+                        <Link to="#" onClick={() => alert("No attempts remaining")}>
+                            Start Quiz
+                        </Link>
+                    )
                 )}
             </div>
 
@@ -90,7 +110,10 @@ export const QuizDetails = () => {
                     <p><strong>Time Limit:</strong> {quizDetails.timeLimit} Minutes</p>
                     <p><strong>Multiple Attempts:</strong> {quizDetails.multipleAttempts ? "Yes" : "No"}</p>
                     {quizDetails.multipleAttempts && (
-                        <p><strong>How Many Attempts:</strong> {quizDetails.numAttempts}</p>
+                        <>
+                            <p><strong>How Many Attempts:</strong> {quizDetails.numAttempts}</p>
+                            <p><strong>Attempts Remaining:</strong> {quizDetails.numAttempts - attempts}</p>
+                        </>
                     )}
                     <p><strong>Show Correct Answers:</strong> {quizDetails.showCorrectAnswers ? "Yes" : "No"}</p>
                     <p><strong>Access Code:</strong> {quizDetails.accessCode || "None"}</p>
