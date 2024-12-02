@@ -52,8 +52,15 @@ export const unpublishQuiz = async (courseId: string, quizId: string) => {
 };
 
 export const getAttemptByUserId = async (courseId: string, quizId: string, userId: string) => {
-    const { data } = await axiosWithCredentials.get(`${QUIZZES_API}/${courseId}/quizzes/${quizId}/attempts/${userId}`)
-    return data
+    try {
+        const { data } = await axiosWithCredentials.get(`${QUIZZES_API}/${courseId}/quizzes/${quizId}/attempts/${userId}`)
+        return data
+    } catch (e) {
+        if (axios.isAxiosError(e)) {
+            return null
+        }
+        return null
+    }
 }
 
 export const createAttempt = async (courseId: string, quizId: string, attempt: any) => {

@@ -10,6 +10,8 @@ QUIZZES SCREEN:
 
 TAKE QUIZ COMPONENT:
 - implement the attempt limit in Details component
+- deploy that bitch
+- (optional if no time) add the correct answer vs wrong answer/quiz review component
 
 We figured this out i think
 <!-- - Figure out if we store all the user answers then check for score? -->

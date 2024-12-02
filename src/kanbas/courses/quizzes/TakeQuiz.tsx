@@ -39,14 +39,19 @@ export const TakeQuiz = () => {
             const quiz = await quizClient.fetchQuizById(cid as string, qid as string);
             setQuizDetails(quiz);
 
-            const attempt = await quizClient.getAttemptByUserId(cid as string, qid as string, user._id as string)
-            // console.log("ATTEMPT FETCH: ", attempt)
-            if (attempt) {
-                setAttemptDetails(attempt)
+            let attempt
+            try {
+                attempt = await quizClient.getAttemptByUserId(cid as string, qid as string, user._id as string)
+                // console.log("ATTEMPT FETCH: ", attempt)
+                if (attempt) {
+                    setAttemptDetails(attempt)
+                }
+            } catch (error) {
+                console.log("No attempts yet: ", error)
             }
 
             //if there quizDetails.scores.length > 0, then we set existingAttempt to true
-            if (attempt.scores && attempt.scores.length > 0) {
+            if (attempt?.scores && attempt?.scores.length > 0) {
                 setExistingAttempt(true)
                 //@ts-expect-error its fine
                 const bestScore = Math.max(...attempt.scores.map(scoreObj => scoreObj.score))
@@ -174,8 +179,8 @@ export const TakeQuiz = () => {
             case "multiple-choice":
                 return (
                     <div className="space-y-4">
-                        <p className="font-medium text-lg">{text}</p>
-                        <div className="space-y-2">
+                        <p className="font-medium text-lg ps-2 mt-2"> {text}</p>
+                        <div className="space-y-2 ps-2">
                             {questionOptions.map((option, index: number) => (
                                 <div>
                                     <label key={index} className="flex items-center space-x-2">
@@ -202,8 +207,8 @@ export const TakeQuiz = () => {
             case "true-false":
                 return (
                     <div className="space-y-4">
-                        <p className="font-medium text-lg">{text}</p>
-                        <div className="space-y-2">
+                        <p className="font-medium text-lg ps-2 mt-2"> {text}</p>
+                        <div className="space-y-2 ps-2">
                             {[
                                 { value: "True", label: "True" },
                                 { value: "False", label: "False" }
@@ -218,7 +223,7 @@ export const TakeQuiz = () => {
                                             onChange={() => handleAnswerSelect(option.value)}
                                             className="form-radio"
                                         />
-                                        <span>{option.label}</span>
+                                        <span> {option.label}</span>
                                     </label>
                                     <br />
                                 </div>
@@ -228,8 +233,8 @@ export const TakeQuiz = () => {
                 );
             case "short-answer":
                 return (
-                    <div className="space-y-4">
-                        <p className="font-medium text-lg">{text}</p>
+                    <div className="space-y-4 ps-2">
+                        <p className="font-medium text-lg mt-2"> {text}</p>
                         <input
                             type="text"
                             value={currentAnswer}
@@ -257,8 +262,8 @@ export const TakeQuiz = () => {
             </ProtectedStudentControls>
 
             <ProtectedControls>
-                <div className="space-y-2 my-4">
-                    <h5 className="font-bold mt-4 rounded bg-danger text-white p-2 w-50">❕ This is a preview of the published version of the quiz</h5>
+                <div className="space-y-2 my-4 mb-n2">
+                    <h5 className="font-bold rounded bg-danger text-white p-2 w-50">❕ This is a preview of the published version of the quiz</h5>
                     <Link to={`/kanbas/courses/${cid}/quizzes/${qid}/editor`} className="text-blue-600 hover:underline block">
                         Back to Editor
                     </Link>
@@ -269,22 +274,25 @@ export const TakeQuiz = () => {
                     </Link>
                 </div>
             </ProtectedControls>
-            {existingAttempt && highScore !== 0 && (
-                <div>
+
+            <div className="d-flex flex-row gap-3">
+                <p>Attempts Remaining: 1</p>
+                {existingAttempt && highScore !== 0 && (
                     <p>Best Previous Score: {highScore}</p>
-                </div>
 
-            )}
+                )}
 
+            </div>
             {questions.length > 0 && (
                 <div className="">
-                    <div className="mb-4">
+                    <div className="d-flex flex-row gap-2 bg-light"
+                        style={{ border: '1px solid black', padding: '0.5rem' }}>
                         <h4 className="text-xl font-semibold">Question {questionIndex + 1} of {questions.length}</h4>
                     </div>
 
-                    <hr className="my-4" />
 
-                    <div className="mb-6">
+                    <div style={{ border: '1px solid black', padding: '0.5rem' }}
+                        className="pl-4">
                         {renderQuestion()}
                     </div>
 

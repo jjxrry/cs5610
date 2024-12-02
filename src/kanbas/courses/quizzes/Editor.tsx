@@ -607,7 +607,7 @@ export const QuizEditor = () => {
                 </Link>
                 <button
                     className="btn btn-primary me-2"
-                    onClick={() => handleSave(false, false)}
+                    onClick={() => handleSave(false, true)}
                 >
                     Save
                 </button>
