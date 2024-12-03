@@ -12,7 +12,7 @@ export const fetchAllQuizzes = async (courseId: string) => {
 
 // Get all published quizzes
 export const fetchAllPublishedQuizzes = async (courseId: string) => {
-    const response = await axiosWithCredentials.get(`${QUIZZES_API}/${courseId}/quizzes/`);
+    const response = await axiosWithCredentials.get(`${QUIZZES_API}/${courseId}/publishedquizzes/`);
     return response.data;
 };
 
