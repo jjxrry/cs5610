@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router"
+import { useParams } from "react-router"
 import { Link } from "react-router-dom"
 import { ProtectedControls } from "./ProtectedControls"
 import { ProtectedStudentControls } from "./ProtectedStudentControls"

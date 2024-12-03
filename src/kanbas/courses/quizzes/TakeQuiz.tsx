@@ -135,7 +135,7 @@ export const TakeQuiz = () => {
     // handle submit attempt
     const handleQuizSubmission = async () => {
         // handle timers
-        setQuizStarted(false)
+        // setQuizStarted(false)
         const endTimeCreation = new Date()
         const formattedEndTime = formatDate(endTimeCreation)
 
