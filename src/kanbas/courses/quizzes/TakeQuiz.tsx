@@ -17,9 +17,9 @@ export const TakeQuiz = () => {
     const [questionIndex, setQuestionIndex] = useState(0)
     // const [attemptCount, setAttemptCount] = useState(0)
     const [startTime, setStartTime] = useState("")
-    const [timeRemaining, setTimeRemaining] = useState(null)
-    const [quizStarted, setQuizStarted] = useState(false)
-    const [prevScores, setPrevScores] = useState([])
+    // const [timeRemaining, setTimeRemaining] = useState(null)
+    // const [quizStarted, setQuizStarted] = useState(false)
+    // const [prevScores, setPrevScores] = useState([])
     const [existingAttempt, setExistingAttempt] = useState(false)
     const [highScore, setHighScore] = useState(0)
     const [attempts, setAttempts] = useState(0)
@@ -67,11 +67,11 @@ export const TakeQuiz = () => {
                 points: 0
             }))
             setQuestions(quiz?.questions || [])
-            setPrevScores(quiz?.scores || [])
+            // setPrevScores(quiz?.scores || [])
             const startStamp = new Date().getTime()
             setStartTime(formatDate(startStamp))
             // console.log("Start Time INITIAL STATE: ", startTime)
-            setQuizStarted(true)
+            // setQuizStarted(true)
         };
         fetchInitialData()
     }, [cid, qid]);

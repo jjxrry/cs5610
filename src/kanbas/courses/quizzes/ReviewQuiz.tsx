@@ -8,14 +8,14 @@ import * as userClient from "../../account/client"
 
 export const ReviewQuiz = () => {
     const { cid, qid } = useParams()
-    const navigate = useNavigate()
-    const [id, setId] = useState("")
+    // const navigate = useNavigate()
+    // const [id, setId] = useState("")
     const [quizDetails, setQuizDetails] = useState(null)
     const [attemptDetails, setAttemptDetails] = useState(null)
     const [questions, setQuestions] = useState([])
     const [userAnswers, setUserAnswers] = useState([])
     const [questionIndex, setQuestionIndex] = useState(0)
-    const [prevScores, setPrevScores] = useState([])
+    // const [prevScores, setPrevScores] = useState([])
     const [existingAttempt, setExistingAttempt] = useState(false)
     const [highScore, setHighScore] = useState(0)
 
@@ -23,7 +23,7 @@ export const ReviewQuiz = () => {
     useEffect(() => {
         const fetchInitialData = async () => {
             const user = await userClient.profile();
-            setId(user._id);
+            // setId(user._id);
             const quiz = await quizClient.fetchQuizById(cid as string, qid as string);
             setQuizDetails(quiz);
 
@@ -53,7 +53,7 @@ export const ReviewQuiz = () => {
                 points: 0
             }))
             setQuestions(quiz?.questions || [])
-            setPrevScores(quiz?.scores || [])
+            // setPrevScores(quiz?.scores || [])
         };
         fetchInitialData()
     }, [cid, qid]);
