@@ -109,7 +109,6 @@ export const QuizDetails = () => {
             </div>
 
             <hr />
-            <br />
 
             <div>
                 <div>
@@ -125,10 +124,11 @@ export const QuizDetails = () => {
                     <p><strong>Multiple Attempts:</strong> {quizDetails.multipleAttempts ? "Yes" : "No"}</p>
 
                     {quizDetails.multipleAttempts && (
-                        <>
-                            <p><strong>How Many Attempts:</strong> {quizDetails.numAttempts}</p>
-                            <p><strong>Attempts Remaining:</strong> {attemptsRemaining}</p>
-                        </>
+                        <p><strong>How Many Attempts:</strong> {quizDetails.numAttempts}</p>
+                    )}
+                    {role === "STUDENT" && (
+                        <p><strong>Attempts Remaining:</strong> {attemptsRemaining}</p>
+
                     )}
                     <p><strong>Show Correct Answers:</strong> {quizDetails.showCorrectAnswers ? "Yes" : "No"}</p>
                     <p><strong>Access Code:</strong> {quizDetails.accessCode || "None"}</p>
