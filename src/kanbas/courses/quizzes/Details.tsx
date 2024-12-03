@@ -10,7 +10,6 @@ export const QuizDetails = () => {
     const [attempts, setAttempts] = useState(0)
     const [highScore, setHighScore] = useState(0)
     const [existingAttempt, setExistingAttempt] = useState(false)
-    //fetch existing data if exists, if qid !== "new"
     const [quizDetails, setQuizDetails] = useState({
         title: "New Quiz",
         course: cid as string,
@@ -78,33 +77,52 @@ export const QuizDetails = () => {
         return `${year}-${month}-${day}`
     }
 
-    // this is wrong
     const attemptsRemaining = quizDetails?.numAttempts - attempts
 
     return (
-        <div>
+        <div className="ms-4">
             <h3>Quiz Details</h3>
             <div>
                 {role === "FACULTY" ? (
                     <div className="d-flex justify-content-around"
                         style={{ "width": "6vw" }}>
-                        <Link to={`/kanbas/courses/${cid}/quizzes/${qid}/take`}>
+                        <Link to={`/kanbas/courses/${cid}/quizzes/${qid}/take`}
+                            className="rounded btn btn-primary text-decoration-none custom-link"
+                            style={{ textDecoration: "none" }}
+                        >
                             Preview
                         </Link>
-                        <Link to={`/kanbas/courses/${cid}/quizzes/${qid}/editor`}>
+                        <Link to={`/kanbas/courses/${cid}/quizzes/${qid}/editor`}
+                            className="ms-2 rounded btn btn-secondary text-decoration-none custom-link"
+                            style={{ textDecoration: "none" }}
+                        >
                             Edit
                         </Link>
                     </div>
                 ) : (
                     attemptsRemaining > 0 ? (
-                        <Link to={`/kanbas/courses/${cid}/quizzes/${qid}/take`}>
+                        <Link to={`/kanbas/courses/${cid}/quizzes/${qid}/take`}
+                            className="rounded btn btn-primary text-decoration-none custom-link"
+                            style={{ textDecoration: "none" }}
+                        >
                             Start Quiz
                         </Link>
                     ) : (
-                        <Link to="#" onClick={() => alert("No attempts remaining")}>
+                        <Link to="#" onClick={() => alert("No attempts remaining")}
+                            className="ms-2 rounded btn btn-secondary text-decoration-none custom-link"
+                            style={{ textDecoration: "none" }}
+                        >
                             Start Quiz
                         </Link>
                     )
+                )}
+                {existingAttempt && (
+                    <Link to={`/kanbas/courses/${cid}/quizzes/${qid}/review`}
+                        style={{ textDecoration: "none" }}
+                        className="ms-2 rounded btn btn-secondary text-decoration-none custom-link"
+                    >
+                        Review Last Attempt
+                    </Link>
                 )}
             </div>
 

@@ -43,7 +43,7 @@ export const Quizzes = () => {
                             scores[quiz._id] = attemptDetails.scores[lastIndex].score
                         }
                     } catch (e) {
-                        console.log("Setting index gone wrong, possible no attempt for quiz: ", e)
+                        console.log(`Setting index gone wrong, possible no attempt for quiz named: ${quiz.title} `, e)
                         //@ts-expect-error its fine
                         scores[quiz._id] = 0
                     }
@@ -142,7 +142,7 @@ export const Quizzes = () => {
                                             <b> Questions</b> {quiz.questions.length}
                                             {role === "STUDENT" && (
                                                 // @ts-expect-error its fine
-                                                <><br /><b> Latest Score:</b> {quizScores[quiz._id] || 'No attempts'} Points | </>
+                                                <><br /><b> Latest Score:</b> {quizScores[quiz._id] ? `${quizScores[quiz._id]} Points` : 'No attempts'} | </>
                                             )}
                                             {role === "FACULTY" && (
                                                 <br />

@@ -205,7 +205,10 @@ export const QuizEditor = () => {
     return (
         <div className="container">
             <h3>Quiz Editor</h3>
-            <Link to={`/kanbas/courses/${cid}/quizzes/${qid}`}>
+            <Link to={`/kanbas/courses/${cid}/quizzes/${qid}`}
+                className="rounded btn btn-secondary text-decoration-none custom-link"
+                style={{ textDecoration: "none" }}
+            >
                 Back To Details
             </Link>
 

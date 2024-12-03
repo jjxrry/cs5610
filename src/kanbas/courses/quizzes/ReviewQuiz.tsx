@@ -6,7 +6,7 @@ import { useEffect, useState } from "react"
 import * as quizClient from "./client"
 import * as userClient from "../../account/client"
 
-export const TakeQuiz = () => {
+export const ReviewQuiz = () => {
     const { cid, qid } = useParams()
     const navigate = useNavigate()
     const [id, setId] = useState("")
@@ -15,22 +15,9 @@ export const TakeQuiz = () => {
     const [questions, setQuestions] = useState([])
     const [userAnswers, setUserAnswers] = useState([])
     const [questionIndex, setQuestionIndex] = useState(0)
-    // const [attemptCount, setAttemptCount] = useState(0)
-    const [startTime, setStartTime] = useState("")
-    const [timeRemaining, setTimeRemaining] = useState(null)
-    const [quizStarted, setQuizStarted] = useState(false)
     const [prevScores, setPrevScores] = useState([])
     const [existingAttempt, setExistingAttempt] = useState(false)
     const [highScore, setHighScore] = useState(0)
-    const [attempts, setAttempts] = useState(0)
-
-    const formatDate = (date: any) => {
-        const d = new Date(date)
-        const month = String(d.getMonth() + 1).padStart(2, '0')
-        const day = String(d.getDate()).padStart(2, '0')
-        const year = d.getFullYear()
-        return `${year}-${month}-${day}`
-    }
 
     //fetch user Id and initial quiz
     useEffect(() => {
@@ -46,7 +33,6 @@ export const TakeQuiz = () => {
                 // console.log("ATTEMPT FETCH: ", attempt)
                 if (attempt) {
                     setAttemptDetails(attempt)
-                    setAttempts(attempt.scores.length)
                 }
             } catch (error) {
                 console.log("No attempts yet: ", error)
@@ -68,10 +54,6 @@ export const TakeQuiz = () => {
             }))
             setQuestions(quiz?.questions || [])
             setPrevScores(quiz?.scores || [])
-            const startStamp = new Date().getTime()
-            setStartTime(formatDate(startStamp))
-            // console.log("Start Time INITIAL STATE: ", startTime)
-            setQuizStarted(true)
         };
         fetchInitialData()
     }, [cid, qid]);
@@ -116,115 +98,76 @@ export const TakeQuiz = () => {
 
     }
 
-    const calculateScore = () => {
-        let points = 0
-        for (let i = 0; i < userAnswers.length; i++) {
-            // console.log(`SELECTED ANSWER for QUESTION ${i + 1}: `, userAnswers[i].selectedAnswer)
-            // console.log(`CORRECT ANSWER for ${i + 1}: `, questions[i].correctAnswer)
-            //@ts-expect-error its fine
-            if (userAnswers[i]?.selectedAnswer === questions[i].correctAnswer) {
-                //@ts-expect-error its fine
-                points += questions[i].points
-                //@ts-expect-error its fine
-                userAnswers[i].isCorrect = true
-            }
-        }
-        return points
-    }
-
-    // handle submit attempt
-    const handleQuizSubmission = async () => {
-        // handle timers
-        setQuizStarted(false)
-        const endTimeCreation = new Date()
-        const formattedEndTime = formatDate(endTimeCreation)
-
-        // handle score calculation and object formatting
-        const calcScore = calculateScore()
-        // console.log("calcScore: ", calcScore)
-        const scoreObject = {
-            score: calcScore,
-            endTime: formattedEndTime,
-        }
-
-        const attempt = {
-            user: id as string,
-            quizId: qid as string,
-            courseId: cid as string,
-            //@ts-expect-error its fine
-            attemptNumber: quizDetails?.attemptNumber + 1 || 1,
-            answers: userAnswers,
-            //@ts-expect-error its fine
-            totalPoints: quizDetails?.totalPoints,
-            //@ts-expect-error its fine
-            scores: [...(attemptDetails?.scores || []), scoreObject],
-            startTime: startTime,
-            endTime: formattedEndTime,
-        }
-
-        if (!existingAttempt) {
-            await quizClient.createAttempt(cid as string, qid as string, attempt)
-        } else {
-            console.log("EXISTING ATTEMPT ID: ", attemptDetails)
-            // this is firing, we need to fix what is updated
-            //@ts-expect-error its fine
-            await quizClient.updateAttempt(cid as string, qid as string, attemptDetails._id, attempt)
-        }
-        navigate(`/kanbas/courses/${cid}/quizzes`)
-    }
-
     // Render question types
     const renderQuestion = () => {
         if (!questions[questionIndex]) return null;
 
         const currentQuestion = questions[questionIndex];
         const { type, text, options } = currentQuestion;
-        //@ts-expect-error its fine
+        // @ts-expect-error its fine
         const currentAnswer = userAnswers[questionIndex]?.selectedAnswer || "";
-        // console.log("RENDER QUESTION: ", currentQuestion)
-        // console.log("OPTIONS: ", options)
-        const questionOptions = Array.isArray(options) ? options : []
+        const questionOptions = Array.isArray(options) ? options : [];
+
+        // @ts-expect-error its fine
+        const previousAnswer = attemptDetails?.answers[questionIndex] || null;
+
+        // @ts-expect-error its fine
+        const renderPreviousAnswer = (optionText) => {
+            if (!previousAnswer) return null;
+
+            if (previousAnswer.selectedAnswer === optionText) {
+                return (
+                    <span className="ms-2">
+                        (Previous answer - {previousAnswer.isCorrect ?
+                            <span className="text-success">Correct</span> :
+                            <span className="text-danger">Incorrect</span>})
+                    </span>
+                );
+            }
+            return null;
+        };
 
         switch (type) {
             case "multiple-choice":
                 return (
                     <div className="space-y-4">
-                        <p className="font-medium text-lg ps-2 mt-2"> {text}</p>
+                        <p className="font-medium text-lg ps-2 mt-2">{text}</p>
                         <div className="space-y-2 ps-2">
-                            {questionOptions.map((option, index: number) => (
-                                <div>
-                                    <label key={index} className="flex items-center space-x-2">
+                            {questionOptions.map((option, index) => (
+                                <div key={index}>
+                                    <label className="flex items-center space-x-2">
                                         <input
                                             type="radio"
                                             name={`question-${questionIndex}`}
-                                            //@ts-expect-error its fine
-                                            value={option.text}
-                                            //@ts-expect-error its fine
-                                            checked={currentAnswer === option.text}
-                                            //@ts-expect-error its fine
-                                            onChange={() => handleAnswerSelect(option.text)}
+                                            value={(option as any).text}
+                                            checked={currentAnswer === (option as any).text}
+                                            onChange={() => handleAnswerSelect((option as any).text)}
                                             className="form-radio"
+                                            disabled
                                         />
                                         {/* @ts-expect-error its fine */}
-                                        <span> {option.text}</span>
+                                        <span>{option.text}</span>
+                                        {/* @ts-expect-error its fine */}
+                                        {renderPreviousAnswer(option.text)}
                                     </label>
                                     <br />
                                 </div>
                             ))}
                         </div>
                     </div>
-                )
+                );
+
             case "true-false":
                 return (
                     <div className="space-y-4">
-                        <p className="font-medium text-lg ps-2 mt-2"> {text}</p>
+                        <p className="font-medium text-lg ps-2 mt-2">{text}</p>
                         <div className="space-y-2 ps-2">
                             {[
                                 { value: "True", label: "True" },
                                 { value: "False", label: "False" }
                             ].map((option) => (
-                                <div>
-                                    <label key={option.value} className="flex items-center space-x-2">
+                                <div key={option.value}>
+                                    <label className="flex items-center space-x-2">
                                         <input
                                             type="radio"
                                             name={`question-${questionIndex}`}
@@ -232,8 +175,10 @@ export const TakeQuiz = () => {
                                             checked={currentAnswer === option.value}
                                             onChange={() => handleAnswerSelect(option.value)}
                                             className="form-radio"
+                                            disabled
                                         />
-                                        <span> {option.label}</span>
+                                        <span>{option.label}</span>
+                                        {renderPreviousAnswer(option.value)}
                                     </label>
                                     <br />
                                 </div>
@@ -241,29 +186,38 @@ export const TakeQuiz = () => {
                         </div>
                     </div>
                 );
+
             case "short-answer":
                 return (
                     <div className="space-y-4 ps-2">
-                        <p className="font-medium text-lg mt-2"> {text}</p>
+                        <p className="font-medium text-lg mt-2">{text}</p>
                         <input
                             type="text"
                             value={currentAnswer}
                             onChange={(e) => handleAnswerSelect(e.target.value)}
                             className="w-full p-2 border rounded"
                             placeholder="Type your answer here..."
+                            disabled
                         />
+                        {previousAnswer && (
+                            <div className="mt-3 text-muted">
+                                <p>Previous answer: {previousAnswer.selectedAnswer}</p>
+                                <p>Result: {previousAnswer.isCorrect ?
+                                    <span className="text-success">Correct</span> :
+                                    <span className="text-danger">Incorrect</span>}
+                                </p>
+                            </div>
+                        )}
                     </div>
                 );
-            default:
-                return (
-                    <div>no question</div>
-                )
-        }
-    }
 
+            default:
+                return <div>no question</div>;
+        }
+    };
     return (
         <div className="p-4 max-w-4xl mx-auto">
-            <h3 className="text-2xl font-bold">Take Quiz</h3>
+            <h3 className="text-2xl font-bold">Review Latest Attempt</h3>
 
             <ProtectedStudentControls>
                 <Link to={`/kanbas/courses/${cid}/quizzes/`}
@@ -275,7 +229,6 @@ export const TakeQuiz = () => {
 
             <ProtectedControls>
                 <div>
-                    <h5 className="font-bold rounded bg-danger text-white p-2 w-50">❕ This is a preview of the published version of the quiz</h5>
                     <Link to={`/kanbas/courses/${cid}/quizzes/${qid}/editor`}
                         className="rounded btn btn-secondary text-decoration-none custom-link"
                     >
@@ -291,8 +244,6 @@ export const TakeQuiz = () => {
             </ProtectedControls>
 
             <div className="d-flex flex-row gap-3">
-                {/* @ts-expect-error its fine */}
-                <p>Attempts Remaining: {quizDetails?.numAttempts - attempts}</p>
                 {existingAttempt && highScore !== 0 && (
                     <p>Best Previous Score: {highScore}</p>
 
@@ -332,36 +283,7 @@ export const TakeQuiz = () => {
                             </button>
                         )}
                     </div>
-
                     <hr />
-                    <div className="mt-6">
-                        <button
-                            onClick={handleQuizSubmission}
-                            className="px-4 py-2 text-black rounded"
-                        >
-                            Submit Quiz
-                        </button>
-                    </div>
-
-                    <hr className="my-6" />
-
-                    {/* <div> */}
-                    {/*     <h5 className="font-semibold mb-2">Questions:</h5> */}
-                    {/*     <div className="flex flex-wrap gap-2"> */}
-                    {/*         {questions.map((_, index) => ( */}
-                    {/*             <button */}
-                    {/*                 key={index} */}
-                    {/*                 onClick={() => setQuestionIndex(index)} */}
-                    {/*                 className={`w-8 h-8 rounded flex items-center justify-center */}
-                    {/*                     ${questionIndex === index */}
-                    {/*                         ? 'bg-blue-600 text-white' */}
-                    {/*                         : 'bg-gray-200 hover:bg-gray-300'}`} */}
-                    {/*             > */}
-                    {/*                 {index + 1} */}
-                    {/*             </button> */}
-                    {/*         ))} */}
-                    {/*     </div> */}
-                    {/* </div> */}
                 </div>
             )}
         </div>
