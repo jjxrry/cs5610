@@ -2,7 +2,7 @@ import { useParams } from "react-router"
 import { ProtectedControls } from "./ProtectedControls"
 import { QuizModuleControls } from "./QuizModuleControls"
 import { FaSearch } from "react-icons/fa"
-import { BsGripVertical } from "react-icons/bs"
+import { BsGripVertical, BsThreeDotsVertical } from "react-icons/bs"
 import * as userClient from "../../account/client"
 import { useEffect, useState } from "react"
 import * as quizClient from "./client"
@@ -12,6 +12,10 @@ export const Quizzes = () => {
     const { cid } = useParams()
     const [quizzes, setQuizzes] = useState<any[]>([])
     const [role, setRole] = useState("")
+    const [currDate, setCurrDate] = useState(new Date())
+    const [quizScores, setQuizScores] = useState({})
+    const [showMenu, setShowMenu] = useState(false)
+    const [menuStates, setMenuStates] = useState({})
 
     useEffect(() => {
         const fetchUserRoleAndQuizzes = async () => {
@@ -26,7 +30,26 @@ export const Quizzes = () => {
             } else if (user.role === "STUDENT") {
                 const fetchedQuizzes = await quizClient.fetchAllPublishedQuizzes(cid as string)
                 // console.log("FETCHED PUBLISHED: ", fetchedQuizzes)
+                const scores = {}
+                for (const quiz of fetchedQuizzes) {
+                    try {
+                        const attemptDetails = await quizClient.getAttemptByUserId(cid as string, quiz._id, user._id)
+                        if (attemptDetails) {
+                            console.log("ATTEMPT FETCH IN INDEX: ", attemptDetails)
+                        }
+                        const lastIndex = attemptDetails.scores.length - 1
+                        if (attemptDetails.scores.length > 0) {
+                            //@ts-expect-error its fine
+                            scores[quiz._id] = attemptDetails.scores[lastIndex].score
+                        }
+                    } catch (e) {
+                        console.log("Setting index gone wrong, possible no attempt for quiz: ", e)
+                        //@ts-expect-error its fine
+                        scores[quiz._id] = 0
+                    }
+                }
                 setQuizzes(fetchedQuizzes)
+                setQuizScores(scores)
             }
         }
 
@@ -42,10 +65,10 @@ export const Quizzes = () => {
     const togglePublish = async (quizId: string, published: boolean) => {
         if (!published) {
             await quizClient.publishQuiz(cid as string, quizId)
-            console.log("Publishing")
+            // console.log("Publishing")
         } else {
             await quizClient.unpublishQuiz(cid as string, quizId)
-            console.log("UNPublishing")
+            // console.log("UNPublishing")
         }
 
         setQuizzes((prev) =>
@@ -55,6 +78,16 @@ export const Quizzes = () => {
         )
     }
 
+    //@ts-expect-error its fine
+    const toggleMenu = (quizId) => {
+        setMenuStates((prevState) => ({
+            ...prevState,
+            //@ts-expect-error its fine
+            [quizId]: !prevState[quizId],
+        }));
+    };
+
+    // console.log("ROLE CHECK IN INDEX: ", role)
 
     return (
         <div id="wd-quizzes">
@@ -102,27 +135,64 @@ export const Quizzes = () => {
                                             {quiz.title}
                                         </a>
                                         <span>
-                                            {/* need to add if available check */}
                                             <b>Due</b> {new Date(quiz.dueDate).toLocaleDateString("en-US", {
                                                 year: "numeric", month: "long", day: "numeric"
-                                            })} | <b>Points</b> {quiz.totalPoints} Points | <b>Questions</b> {quiz.questions.length}
+                                            })} |
+                                            <b> Points</b> {quiz.totalPoints} Points |
+                                            <b> Questions</b> {quiz.questions.length}
+                                            {role === "STUDENT" && (
+                                                // @ts-expect-error its fine
+                                                <><br /><b> Latest Score:</b> {quizScores[quiz._id] || 'No attempts'} Points | </>
+                                            )}
+                                            {role === "FACULTY" && (
+                                                <br />
+                                            )}
+                                            <b> Availability:</b>
+                                            {new Date() < new Date(quiz.availableFrom)
+                                                ? ` Not Available Until ${new Date(quiz.availableFrom).toLocaleDateString("en-US", {
+                                                    year: "numeric", month: "long", day: "numeric"
+                                                })}`
+                                                : new Date() > new Date(quiz.availableUntil)
+                                                    ? " Closed"
+                                                    : " Available"
+                                            }
                                         </span>
                                     </div>
-
                                     <ProtectedControls>
                                         <div className="col-4 d-flex align-items-center justify-content-end">
-                                            <button
-                                                className="btn btn-primary"
-                                                onClick={() => handleDeleteQuiz(quiz._id)}
-                                            >
-                                                Delete
-                                            </button>
-                                            <button
-                                                className="btn btn-secondary ms-2"
-                                                onClick={() => togglePublish(quiz._id, quiz.published)}
-                                            >
-                                                {quiz.published ? "Unpublish" : "Publish"}
-                                            </button>
+                                            <div className="dropdown position-relative">
+                                                <span>{quiz.published ? "✅" : "🚫"}</span>
+                                                <button
+                                                    className="btn mb-2"
+                                                    onClick={() => toggleMenu(quiz._id)}
+                                                >
+                                                    <BsThreeDotsVertical />
+                                                </button>
+                                                {/* @ts-expect-error its fine */}
+                                                {menuStates[quiz._id] && (
+                                                    <div className="dropdown-menu show position-absolute end-0">
+                                                        <a
+                                                            className="dropdown-item"
+                                                            href={`#/kanbas/courses/${cid}/quizzes/${quiz._id}`}
+                                                        >
+                                                            Edit
+                                                        </a>
+                                                        <button
+                                                            className="dropdown-item"
+                                                            onClick={() => handleDeleteQuiz(quiz._id)}
+                                                        >
+                                                            Delete
+                                                        </button>
+                                                        <button
+                                                            className="dropdown-item"
+                                                            onClick={() => togglePublish(quiz._id, quiz.published)}
+                                                        >
+                                                            {quiz.published ? "Unpublish" : "Publish"}
+                                                        </button>
+                                                    </div>
+                                                )}
+                                            </div>
+
                                         </div>
                                     </ProtectedControls>
                                 </div>
