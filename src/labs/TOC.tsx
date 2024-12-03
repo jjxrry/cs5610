@@ -46,13 +46,13 @@ export const TOC = () => {
                 </a>
             </li>
             <li className="nav-item">
-                <a id="wd-github" href="https://github.com/jjxrry/cs5610" className="nav-link">Github Source</a>
+                <a id="wd-github" href="https://github.com/jjxrry/cs5610" className="nav-link">Github Source (Branch: Project)</a>
             </li>
             <li className="nav-item">
-                <a id="wd-github" href="https://github.com/jjxrry/cs5610-node" className="nav-link">Github Backend</a>
+                <a id="wd-github" href="https://github.com/jjxrry/cs5610-node" className="nav-link">Github Backend (Branch: Project)</a>
             </li>
             <li className="nav-item">
-                <a id="wd-root" href="https://cs5610-node.onrender.com" className="nav-link">Root Backend</a>
+                <a id="wd-root" href="https://cs5610-node.onrender.com" className="nav-link">Root Backend </a>
             </li>
 
         </ul>
