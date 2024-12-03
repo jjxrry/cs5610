@@ -15,7 +15,7 @@ export const QuizEditor = () => {
     const [correctAnswer, setCorrectAnswer] = useState("")
     const [points, setPoints] = useState(1)
     const [options, setOptions] = useState(["", "", "", ""])
-    const [role, setRole] = useState("")
+    // const [role, setRole] = useState("")
     const [id, setId] = useState("")
 
     // useLocation for render to questions instead of details
@@ -63,7 +63,7 @@ export const QuizEditor = () => {
     useEffect(() => {
         const fetchUserData = async () => {
             const user = await userClient.profile()
-            setRole(user.role)
+            // setRole(user.role)
             // console.log("ID: ", user._id)
             setId(user._id)
 
@@ -83,7 +83,7 @@ export const QuizEditor = () => {
     }, [cid, qid])
 
     useEffect(() => {
-        console.log("Updated quiz details: ", quizDetails.questions);
+        console.log("Updated quiz details: ", quizDetails.questions)
     }, [quizDetails.questions])
 
 

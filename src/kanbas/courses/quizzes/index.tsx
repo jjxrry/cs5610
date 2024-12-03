@@ -12,9 +12,9 @@ export const Quizzes = () => {
     const { cid } = useParams()
     const [quizzes, setQuizzes] = useState<any[]>([])
     const [role, setRole] = useState("")
-    const [currDate, setCurrDate] = useState(new Date())
+    // const [currDate, setCurrDate] = useState(new Date())
     const [quizScores, setQuizScores] = useState({})
-    const [showMenu, setShowMenu] = useState(false)
+    // const [showMenu, setShowMenu] = useState(false)
     const [menuStates, setMenuStates] = useState({})
 
     useEffect(() => {
