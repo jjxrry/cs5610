@@ -3,6 +3,7 @@ import { useLocation, useNavigate, useParams } from "react-router";
 import { Link } from "react-router-dom";
 import * as userClient from "../../account/client"
 import * as quizClient from "./client"
+import { Editor, EditorProvider, Toolbar, BtnBold, BtnItalic } from "react-simple-wysiwyg";
 
 export const QuizEditor = () => {
     const { cid, qid } = useParams()
@@ -50,6 +51,7 @@ export const QuizEditor = () => {
         published: false,
 
     })
+    const [html, setHtml] = useState(quizDetails.description || "")
 
     const formatDate = (date: any) => {
         const d = new Date(date)
@@ -77,6 +79,7 @@ export const QuizEditor = () => {
                     availableFrom: formatDate(quiz.availableFrom),
                     availableUntil: formatDate(quiz.availableUntil),
                 });
+                setHtml(quiz.description)
             }
         }
         fetchUserData()
@@ -87,6 +90,14 @@ export const QuizEditor = () => {
     }, [quizDetails.questions])
 
 
+    const handleWYSChange = (e: any) => {
+        const newValue = e.target.value
+        setHtml(newValue)
+        setQuizDetails((prev) => ({
+            ...prev,
+            description: newValue
+        }))
+    }
 
     const handleInputChange = (e: any) => {
         const { name, value } = e.target
@@ -242,15 +253,15 @@ export const QuizEditor = () => {
                     </div>
 
                     <div className="mb-3">
-                        <label htmlFor="description" className="form-label">Description</label>
-                        <textarea
-                            id="description"
-                            name="description"
-                            className="form-control"
-                            value={quizDetails.description}
-                            onChange={handleInputChange}
-                            rows={4}
-                        />
+                        <p>Description</p>
+                        <EditorProvider>
+                            <Editor value={html} onChange={handleWYSChange}>
+                                <Toolbar>
+                                    <BtnBold />
+                                    <BtnItalic />
+                                </Toolbar>
+                            </Editor>
+                        </EditorProvider>
                     </div>
 
                     <div className="mb-3">

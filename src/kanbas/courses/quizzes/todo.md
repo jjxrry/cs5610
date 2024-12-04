@@ -1,7 +1,6 @@
 GENERAL:
-- we need to add the project repo and relink in the main page
-- deploy that bitch
-
+- how to allow for more than one session?
+    - 
 
 QUIZZES SCREEN:
 DONE
@@ -52,3 +51,5 @@ DONE:
     - not available until avail date if the currDate is before avail date
 - (IMPORTANT) add latest score per quiz
 - the 3 vertical dots on each of the quizzes need to have edit/delete/publish
+- we need to add the project repo and relink in the main page
+- deploy 
