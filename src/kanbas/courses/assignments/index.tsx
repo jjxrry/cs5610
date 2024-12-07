@@ -4,12 +4,35 @@ import { FaSearch } from 'react-icons/fa';
 import { SlBookOpen } from "react-icons/sl";
 import { AssignmentTitleControls } from "./AssignmentTitleControls";
 import { AssignmentItemControls } from "./AssignmentItemControls";
+import { ProtectedControls } from "../modules/ProtectedControls";
 import { useParams } from "react-router";
-import * as db from "../../database"
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteAssignment } from "./reducer";
+import { DeleteConfirmationModal } from "./DeleteAssignmentModal";
 
 export const Assignments = () => {
     const { cid } = useParams()
-    const assignments = db.assignments
+    const { assignments } = useSelector((state: any) => state.assignmentsReducer)
+    const dispatch = useDispatch()
+
+    const [assignmentToDelete, setAssignmentToDelete] = useState<any>(null)
+
+    const handleDeleteClick = (assignmentId: any) => {
+        const assignment = assignments.find((a: any) => a._id === assignmentId)
+        setAssignmentToDelete(assignment)
+    }
+
+    const confirmDelete = () => {
+        if (assignmentToDelete) {
+            dispatch(deleteAssignment(assignmentToDelete._id))
+        }
+        setAssignmentToDelete(null)
+    }
+
+    const cancelDelete = () => {
+        setAssignmentToDelete(null)
+    }
 
     return (
         <div id="wd-assignments">
@@ -18,7 +41,9 @@ export const Assignments = () => {
                     <FaSearch className="search-icon me-2" />
                     <input id="wd-search-assignment" placeholder="Search..." className="assignment-searchbar" />
                 </div>
-                <AssignmentModuleControls />
+                <ProtectedControls>
+                    <AssignmentModuleControls cid={cid} />
+                </ProtectedControls>
             </div>
 
             <br /> <br />
@@ -37,7 +62,9 @@ export const Assignments = () => {
                             <span className="me-3 px-3 py-2 text-dark rounded-pill"
                                 style={{ border: "1px solid #484848" }}
                             >40% of Total</span>
-                            <AssignmentTitleControls />
+                            <ProtectedControls>
+                                <AssignmentTitleControls />
+                            </ProtectedControls>
                         </div>
                     </div>
 
@@ -58,12 +85,22 @@ export const Assignments = () => {
                                             {assignment.title}
                                         </a>
                                         <span>
-                                            <span style={{ color: "#D80000" }}>Multiple Modules</span> | <b>Not available until</b> May 6 at 12:00 am | <br /> <b>Due</b> May 13 at 11:59 pm | 100 pts
+                                            <span style={{ color: "#D80000" }}>Multiple Modules</span> | <b>Not available until</b> {new Date(assignment.availableFrom).toLocaleDateString("en-US", {
+                                                year: "numeric",
+                                                month: "long",
+                                                day: "numeric"
+                                            })} | <br /> <b>Due</b> {new Date(assignment.availableUntil).toLocaleDateString("en-US", {
+                                                year: "numeric",
+                                                month: "long",
+                                                day: "numeric"
+                                            })} | {assignment.points} Points
                                         </span>
                                     </div>
 
                                     <div className="col-4 d-flex align-items-center justify-content-end assignment-item-controls">
-                                        <AssignmentItemControls />
+                                        <ProtectedControls>
+                                            <AssignmentItemControls assignmentId={assignment._id} onDeleteClick={handleDeleteClick} />
+                                        </ProtectedControls>
                                     </div>
                                 </div>
                             </li>
@@ -72,6 +109,11 @@ export const Assignments = () => {
                     }
                 </li>
             </ul>
+            <DeleteConfirmationModal
+                dialogTitle="Delete Assignment"
+                confirmDelete={confirmDelete}
+                cancelDelete={cancelDelete}
+            />
         </div>
     );
 }
