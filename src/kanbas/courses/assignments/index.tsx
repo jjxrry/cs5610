@@ -26,6 +26,11 @@ export const Assignments = () => {
         // dispatch(setAssignments(assignments))
     }
 
+    const fetchAssignments = async () => {
+        const assignments = await client.fetchAllAssignments(cid as string)
+        dispatch(setAssignments(assignments))
+    }
+
     const handleDeleteClick = (assignmentId: any) => {
         const assignment = assignments.find((a: any) => a._id === assignmentId)
         setAssignmentToDelete(assignment)

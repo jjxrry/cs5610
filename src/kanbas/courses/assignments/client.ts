@@ -1,4 +1,5 @@
 import axios from "axios";
+
 const axiosWithCredentials = axios.create({ withCredentials: true })
 
 const REMOTE_SERVER = import.meta.env.VITE_REMOTE_SERVER;
@@ -13,6 +14,7 @@ export const fetchAllAssignments = async (courseId: string) => {
 
 // delete an assignment
 export const deleteAssignment = async (courseId: string, assignmentId: string) => {
+
     const response = await axiosWithCredentials.delete(`${ASSIGNMENTS_API}/${courseId}/assignments/${assignmentId}`)
     return response.data
 }
